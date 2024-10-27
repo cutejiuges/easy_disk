@@ -1,0 +1,15 @@
+{"level":"info","msg":"db connect success! db: \u0026{0xc001e0c240 \u003cnil\u003e 0 0xc001d08540 1}","time":"2024-10-28T00:01:28+08:00"}
+{"level":"info","msg":"connect redis success: Redis\u003c127.0.0.1:6379 db:1\u003e","time":"2024-10-28T00:01:28+08:00"}
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-28T00:01:28+08:00"}
+{"level":"info","msg":"_request_in_trace_id_19 method = EditFileInfo, req = {\"req\":{\"id\":10,\"file_name\":\"test_demo222\"}}\n","time":"2024-10-28T00:01:33+08:00"}
+{"level":"info","msg":"_request_out_trace_id_19 method = EditFileInfo, resp = {\"success\":{\"data\":{\"id\":10,\"file_name\":\"test_demo222\",\"msg\":\"文件更改成功\"},\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 12.326201ms","time":"2024-10-28T00:01:33+08:00"}
+{"level":"info","msg":"_request_in_trace_id_20 method = EditFileInfo, req = {\"req\":{\"id\":10,\"file_name\":\"test_demo\"}}\n","time":"2024-10-28T00:01:50+08:00"}
+{"level":"info","msg":"_request_out_trace_id_20 method = EditFileInfo, resp = {\"success\":{\"data\":{\"id\":10,\"file_name\":\"test_demo\",\"msg\":\"文件更改成功\"},\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 7.538389ms","time":"2024-10-28T00:01:50+08:00"}
+{"level":"info","msg":"db connect success! db: \u0026{0xc001da9b90 \u003cnil\u003e 0 0xc000536000 1}","time":"2024-10-28T00:03:13+08:00"}
+{"level":"info","msg":"connect redis success: Redis\u003c127.0.0.1:6379 db:1\u003e","time":"2024-10-28T00:03:13+08:00"}
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-28T00:03:13+08:00"}
+{"level":"info","msg":"db connect success! db: \u0026{0xc001d45b00 \u003cnil\u003e 0 0xc001f20000 1}","time":"2024-10-28T00:20:55+08:00"}
+{"level":"info","msg":"connect redis success: Redis\u003c127.0.0.1:6379 db:1\u003e","time":"2024-10-28T00:20:55+08:00"}
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-28T00:20:55+08:00"}
+{"level":"info","msg":"_request_in_trace_id_1 method = EditFileInfo, req = {\"req\":{\"id\":10,\"file_name\":\"test_demo11\"}}\n","time":"2024-10-28T00:21:13+08:00"}
+{"level":"info","msg":"_request_out_trace_id_1 method = EditFileInfo, resp = {\"success\":{\"data\":{\"id\":10,\"file_name\":\"test_demo11\",\"msg\":\"文件更改成功\"},\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 9.757211ms","time":"2024-10-28T00:21:13+08:00"}

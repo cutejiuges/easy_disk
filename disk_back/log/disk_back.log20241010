@@ -1,0 +1,13 @@
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-10T00:32:49+08:00"}
+{"level":"info","msg":"_request_in_trace_id_1 method = Ping, req = {\"req\":{\"msg\":\"2002\"}}\n","time":"2024-10-10T00:37:46+08:00"}
+{"level":"info","msg":"_request_out_trace_id_1 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2002!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 107.856µs","time":"2024-10-10T00:37:46+08:00"}
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-10T00:47:41+08:00"}
+{"level":"info","msg":"_request_in_trace_id_1 method = Ping, req = {\"req\":{\"msg\":\"2002\"}}\n","time":"2024-10-10T00:48:08+08:00"}
+{"level":"info","msg":"_request_out_trace_id_1 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2002!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 219.272µs","time":"2024-10-10T00:48:08+08:00"}
+{"level":"info","msg":"_request_in_trace_id_2 method = Ping, req = {\"req\":{\"msg\":\"2025\"}}\n","time":"2024-10-10T00:48:20+08:00"}
+{"level":"info","msg":"_request_out_trace_id_2 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2025!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 74.884µs","time":"2024-10-10T00:48:20+08:00"}
+{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-10T08:36:23+08:00"}
+{"level":"info","msg":"_request_in_trace_id_1 method = Ping, req = {\"req\":{\"msg\":\"2002\"}}\n","time":"2024-10-10T08:36:48+08:00"}
+{"level":"info","msg":"_request_out_trace_id_1 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2002!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 214.961µs","time":"2024-10-10T08:36:48+08:00"}
+{"level":"info","msg":"_request_in_trace_id_2 method = Ping, req = {\"req\":{\"msg\":\"2002\"}}\n","time":"2024-10-10T09:00:58+08:00"}
+{"level":"info","msg":"_request_out_trace_id_2 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2002!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 78.483µs","time":"2024-10-10T09:00:58+08:00"}

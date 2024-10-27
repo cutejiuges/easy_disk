@@ -1,0 +1,21 @@
+{"level":"info","msg":"HERTZ: Using network library=netpoll","time":"2024-10-16T22:07:54+08:00"}
+{"level":"info","msg":"HERTZ: HTTP server listening on address=192.168.0.106:20001","time":"2024-10-16T22:07:54+08:00"}
+{"level":"info","msg":" {22:10:26} | 200 |      0s | POST    | /file/uploadFile ","time":"2024-10-16T22:10:26+08:00"}
+{"level":"info","msg":"HERTZ: Received signal: interrupt\n","time":"2024-10-16T22:11:42+08:00"}
+{"level":"info","msg":"HERTZ: Begin graceful shutdown, wait at most num=5 seconds...","time":"2024-10-16T22:11:42+08:00"}
+{"level":"info","msg":"HERTZ: Using network library=netpoll","time":"2024-10-16T22:13:45+08:00"}
+{"level":"info","msg":"HERTZ: HTTP server listening on address=192.168.0.106:20001","time":"2024-10-16T22:13:45+08:00"}
+{"level":"info","msg":" {22:13:50} | 200 |      0s | POST    | /file/uploadFile ","time":"2024-10-16T22:13:50+08:00"}
+{"level":"info","msg":"HERTZ: Received signal: interrupt\n","time":"2024-10-16T22:15:20+08:00"}
+{"level":"info","msg":"HERTZ: Begin graceful shutdown, wait at most num=5 seconds...","time":"2024-10-16T22:15:20+08:00"}
+{"level":"info","msg":"HERTZ: Using network library=netpoll","time":"2024-10-16T23:39:01+08:00"}
+{"level":"info","msg":"HERTZ: HTTP server listening on address=192.168.0.106:20001","time":"2024-10-16T23:39:01+08:00"}
+{"level":"info","msg":" {23:39:07} | 200 |      0s | POST    | /file/uploadFile ","time":"2024-10-16T23:39:07+08:00"}
+{"level":"info","msg":"HERTZ: Received signal: interrupt\n","time":"2024-10-16T23:40:56+08:00"}
+{"level":"info","msg":"HERTZ: Begin graceful shutdown, wait at most num=5 seconds...","time":"2024-10-16T23:40:56+08:00"}
+{"level":"info","msg":"HERTZ: Using network library=netpoll","time":"2024-10-16T23:53:20+08:00"}
+{"level":"info","msg":"HERTZ: HTTP server listening on address=192.168.0.106:20001","time":"2024-10-16T23:53:20+08:00"}
+{"level":"info","msg":" {23:53:30} | 200 |      0s | POST    | /file/uploadFile ","time":"2024-10-16T23:53:31+08:00"}
+{"level":"info","msg":" {23:55:53} | 200 |      0s | POST    | /file/uploadFile ","time":"2024-10-16T23:55:53+08:00"}
+{"level":"info","msg":"HERTZ: Received signal: interrupt\n","time":"2024-10-16T23:58:51+08:00"}
+{"level":"info","msg":"HERTZ: Begin graceful shutdown, wait at most num=5 seconds...","time":"2024-10-16T23:58:51+08:00"}

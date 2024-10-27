@@ -1,0 +1,6 @@
+{"level":"info","msg":"HERTZ: Using network library=netpoll","time":"2024-10-02T23:35:18+08:00"}
+{"level":"info","msg":"HERTZ: HTTP server listening on address=192.168.0.106:20001","time":"2024-10-02T23:35:18+08:00"}
+{"level":"info","msg":" {23:35:27} | 200 |      0s | GET     | /pingMsg ","time":"2024-10-02T23:35:27+08:00"}
+{"level":"info","msg":" {23:35:35} | 200 |      0s | GET     | /pingMsg ","time":"2024-10-02T23:35:35+08:00"}
+{"level":"info","msg":"HERTZ: Received signal: interrupt\n","time":"2024-10-02T23:37:21+08:00"}
+{"level":"info","msg":"HERTZ: Begin graceful shutdown, wait at most num=5 seconds...","time":"2024-10-02T23:37:21+08:00"}
