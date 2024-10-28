@@ -1,5 +1,0 @@
-{"level":"info","msg":"KITEX: server listen at addr=192.168.0.106:20000","time":"2024-10-02T23:35:08+08:00"}
-{"level":"info","msg":"_request_in_trace_id_1 method = Ping, req = {\"req\":{\"msg\":\"2025\"}}\n","time":"2024-10-02T23:35:27+08:00"}
-{"level":"info","msg":"_request_out_trace_id_1 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2025!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 110.489µs","time":"2024-10-02T23:35:27+08:00"}
-{"level":"info","msg":"_request_in_trace_id_2 method = Ping, req = {\"req\":{\"msg\":\"2002\"}}\n","time":"2024-10-02T23:35:35+08:00"}
-{"level":"info","msg":"_request_out_trace_id_2 method = Ping, resp = {\"success\":{\"reply\":\"hello, 2002!\",\"base_resp\":{\"status_code\":0,\"status_msg\":\"OK\"}}}\n, cost = 32.849µs","time":"2024-10-02T23:35:35+08:00"}
