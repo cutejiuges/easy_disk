@@ -513,47 +513,47 @@ func (p *UploadFileRequest) Field255DeepEqual(src *base.Base) bool {
 	return true
 }
 
-type SaveFileRes struct {
+type OperateFileRes struct {
 	Id       int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
 	FileName string `thrift:"file_name,2,required" frugal:"2,required,string" json:"file_name"`
 	Msg      string `thrift:"msg,3,required" frugal:"3,required,string" json:"msg"`
 }
 
-func NewSaveFileRes() *SaveFileRes {
-	return &SaveFileRes{}
+func NewOperateFileRes() *OperateFileRes {
+	return &OperateFileRes{}
 }
 
-func (p *SaveFileRes) InitDefault() {
+func (p *OperateFileRes) InitDefault() {
 }
 
-func (p *SaveFileRes) GetId() (v int64) {
+func (p *OperateFileRes) GetId() (v int64) {
 	return p.Id
 }
 
-func (p *SaveFileRes) GetFileName() (v string) {
+func (p *OperateFileRes) GetFileName() (v string) {
 	return p.FileName
 }
 
-func (p *SaveFileRes) GetMsg() (v string) {
+func (p *OperateFileRes) GetMsg() (v string) {
 	return p.Msg
 }
-func (p *SaveFileRes) SetId(val int64) {
+func (p *OperateFileRes) SetId(val int64) {
 	p.Id = val
 }
-func (p *SaveFileRes) SetFileName(val string) {
+func (p *OperateFileRes) SetFileName(val string) {
 	p.FileName = val
 }
-func (p *SaveFileRes) SetMsg(val string) {
+func (p *OperateFileRes) SetMsg(val string) {
 	p.Msg = val
 }
 
-var fieldIDToName_SaveFileRes = map[int16]string{
+var fieldIDToName_OperateFileRes = map[int16]string{
 	1: "id",
 	2: "file_name",
 	3: "msg",
 }
 
-func (p *SaveFileRes) Read(iprot thrift.TProtocol) (err error) {
+func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -635,7 +635,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SaveFileRes[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OperateFileRes[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -644,10 +644,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_SaveFileRes[fieldId]))
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_OperateFileRes[fieldId]))
 }
 
-func (p *SaveFileRes) ReadField1(iprot thrift.TProtocol) error {
+func (p *OperateFileRes) ReadField1(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -658,7 +658,7 @@ func (p *SaveFileRes) ReadField1(iprot thrift.TProtocol) error {
 	p.Id = _field
 	return nil
 }
-func (p *SaveFileRes) ReadField2(iprot thrift.TProtocol) error {
+func (p *OperateFileRes) ReadField2(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -669,7 +669,7 @@ func (p *SaveFileRes) ReadField2(iprot thrift.TProtocol) error {
 	p.FileName = _field
 	return nil
 }
-func (p *SaveFileRes) ReadField3(iprot thrift.TProtocol) error {
+func (p *OperateFileRes) ReadField3(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -681,9 +681,9 @@ func (p *SaveFileRes) ReadField3(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *SaveFileRes) Write(oprot thrift.TProtocol) (err error) {
+func (p *OperateFileRes) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SaveFileRes"); err != nil {
+	if err = oprot.WriteStructBegin("OperateFileRes"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -717,7 +717,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SaveFileRes) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *OperateFileRes) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -734,7 +734,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SaveFileRes) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *OperateFileRes) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("file_name", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -751,7 +751,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *SaveFileRes) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *OperateFileRes) writeField3(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("msg", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -768,15 +768,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *SaveFileRes) String() string {
+func (p *OperateFileRes) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SaveFileRes(%+v)", *p)
+	return fmt.Sprintf("OperateFileRes(%+v)", *p)
 
 }
 
-func (p *SaveFileRes) DeepEqual(ano *SaveFileRes) bool {
+func (p *OperateFileRes) DeepEqual(ano *OperateFileRes) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -794,21 +794,21 @@ func (p *SaveFileRes) DeepEqual(ano *SaveFileRes) bool {
 	return true
 }
 
-func (p *SaveFileRes) Field1DeepEqual(src int64) bool {
+func (p *OperateFileRes) Field1DeepEqual(src int64) bool {
 
 	if p.Id != src {
 		return false
 	}
 	return true
 }
-func (p *SaveFileRes) Field2DeepEqual(src string) bool {
+func (p *OperateFileRes) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.FileName, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *SaveFileRes) Field3DeepEqual(src string) bool {
+func (p *OperateFileRes) Field3DeepEqual(src string) bool {
 
 	if strings.Compare(p.Msg, src) != 0 {
 		return false
@@ -817,9 +817,10 @@ func (p *SaveFileRes) Field3DeepEqual(src string) bool {
 }
 
 type UploadFileData struct {
-	Status     string                  `thrift:"status,1,required" frugal:"1,required,string" json:"status"`
-	SuccessRes map[string]*SaveFileRes `thrift:"success_res,2,required" frugal:"2,required,map<string:SaveFileRes>" json:"success_res"`
-	FailedRes  map[string]*SaveFileRes `thrift:"failed_res,3,required" frugal:"3,required,map<string:SaveFileRes>" json:"failed_res"`
+	Status     *int8                      `thrift:"status,1,optional" frugal:"1,optional,byte" json:"status,omitempty"`
+	StatusName *string                    `thrift:"status_name,2,optional" frugal:"2,optional,string" json:"status_name,omitempty"`
+	SuccessRes map[string]*OperateFileRes `thrift:"success_res,3,optional" frugal:"3,optional,map<string:OperateFileRes>" json:"success_res,omitempty"`
+	FailedRes  map[string]*OperateFileRes `thrift:"failed_res,4,optional" frugal:"4,optional,map<string:OperateFileRes>" json:"failed_res,omitempty"`
 }
 
 func NewUploadFileData() *UploadFileData {
@@ -829,40 +830,81 @@ func NewUploadFileData() *UploadFileData {
 func (p *UploadFileData) InitDefault() {
 }
 
-func (p *UploadFileData) GetStatus() (v string) {
-	return p.Status
+var UploadFileData_Status_DEFAULT int8
+
+func (p *UploadFileData) GetStatus() (v int8) {
+	if !p.IsSetStatus() {
+		return UploadFileData_Status_DEFAULT
+	}
+	return *p.Status
 }
 
-func (p *UploadFileData) GetSuccessRes() (v map[string]*SaveFileRes) {
+var UploadFileData_StatusName_DEFAULT string
+
+func (p *UploadFileData) GetStatusName() (v string) {
+	if !p.IsSetStatusName() {
+		return UploadFileData_StatusName_DEFAULT
+	}
+	return *p.StatusName
+}
+
+var UploadFileData_SuccessRes_DEFAULT map[string]*OperateFileRes
+
+func (p *UploadFileData) GetSuccessRes() (v map[string]*OperateFileRes) {
+	if !p.IsSetSuccessRes() {
+		return UploadFileData_SuccessRes_DEFAULT
+	}
 	return p.SuccessRes
 }
 
-func (p *UploadFileData) GetFailedRes() (v map[string]*SaveFileRes) {
+var UploadFileData_FailedRes_DEFAULT map[string]*OperateFileRes
+
+func (p *UploadFileData) GetFailedRes() (v map[string]*OperateFileRes) {
+	if !p.IsSetFailedRes() {
+		return UploadFileData_FailedRes_DEFAULT
+	}
 	return p.FailedRes
 }
-func (p *UploadFileData) SetStatus(val string) {
+func (p *UploadFileData) SetStatus(val *int8) {
 	p.Status = val
 }
-func (p *UploadFileData) SetSuccessRes(val map[string]*SaveFileRes) {
+func (p *UploadFileData) SetStatusName(val *string) {
+	p.StatusName = val
+}
+func (p *UploadFileData) SetSuccessRes(val map[string]*OperateFileRes) {
 	p.SuccessRes = val
 }
-func (p *UploadFileData) SetFailedRes(val map[string]*SaveFileRes) {
+func (p *UploadFileData) SetFailedRes(val map[string]*OperateFileRes) {
 	p.FailedRes = val
 }
 
 var fieldIDToName_UploadFileData = map[int16]string{
 	1: "status",
-	2: "success_res",
-	3: "failed_res",
+	2: "status_name",
+	3: "success_res",
+	4: "failed_res",
+}
+
+func (p *UploadFileData) IsSetStatus() bool {
+	return p.Status != nil
+}
+
+func (p *UploadFileData) IsSetStatusName() bool {
+	return p.StatusName != nil
+}
+
+func (p *UploadFileData) IsSetSuccessRes() bool {
+	return p.SuccessRes != nil
+}
+
+func (p *UploadFileData) IsSetFailedRes() bool {
+	return p.FailedRes != nil
 }
 
 func (p *UploadFileData) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetStatus bool = false
-	var issetSuccessRes bool = false
-	var issetFailedRes bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -879,20 +921,18 @@ func (p *UploadFileData) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.BYTE {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetStatus = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
 		case 2:
-			if fieldTypeId == thrift.MAP {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetSuccessRes = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -901,7 +941,14 @@ func (p *UploadFileData) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetFailedRes = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.MAP {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -918,20 +965,6 @@ func (p *UploadFileData) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetStatus {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetSuccessRes {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetFailedRes {
-		fieldId = 3
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -946,28 +979,37 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_UploadFileData[fieldId]))
 }
 
 func (p *UploadFileData) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int8
+	if v, err := iprot.ReadByte(); err != nil {
 		return err
 	} else {
-		_field = v
+		_field = &v
 	}
 	p.Status = _field
 	return nil
 }
 func (p *UploadFileData) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.StatusName = _field
+	return nil
+}
+func (p *UploadFileData) ReadField3(iprot thrift.TProtocol) error {
 	_, _, size, err := iprot.ReadMapBegin()
 	if err != nil {
 		return err
 	}
-	_field := make(map[string]*SaveFileRes, size)
-	values := make([]SaveFileRes, size)
+	_field := make(map[string]*OperateFileRes, size)
+	values := make([]OperateFileRes, size)
 	for i := 0; i < size; i++ {
 		var _key string
 		if v, err := iprot.ReadString(); err != nil {
@@ -990,13 +1032,13 @@ func (p *UploadFileData) ReadField2(iprot thrift.TProtocol) error {
 	p.SuccessRes = _field
 	return nil
 }
-func (p *UploadFileData) ReadField3(iprot thrift.TProtocol) error {
+func (p *UploadFileData) ReadField4(iprot thrift.TProtocol) error {
 	_, _, size, err := iprot.ReadMapBegin()
 	if err != nil {
 		return err
 	}
-	_field := make(map[string]*SaveFileRes, size)
-	values := make([]SaveFileRes, size)
+	_field := make(map[string]*OperateFileRes, size)
+	values := make([]OperateFileRes, size)
 	for i := 0; i < size; i++ {
 		var _key string
 		if v, err := iprot.ReadString(); err != nil {
@@ -1038,6 +1080,10 @@ func (p *UploadFileData) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 3
 			goto WriteFieldError
 		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -1057,14 +1103,16 @@ WriteStructEndError:
 }
 
 func (p *UploadFileData) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status", thrift.STRING, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Status); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetStatus() {
+		if err = oprot.WriteFieldBegin("status", thrift.BYTE, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteByte(*p.Status); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1074,25 +1122,16 @@ WriteFieldEndError:
 }
 
 func (p *UploadFileData) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("success_res", thrift.MAP, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRUCT, len(p.SuccessRes)); err != nil {
-		return err
-	}
-	for k, v := range p.SuccessRes {
-		if err := oprot.WriteString(k); err != nil {
+	if p.IsSetStatusName() {
+		if err = oprot.WriteFieldBegin("status_name", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.StatusName); err != nil {
 			return err
 		}
-		if err := v.Write(oprot); err != nil {
-			return err
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
 		}
-	}
-	if err := oprot.WriteMapEnd(); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1102,31 +1141,63 @@ WriteFieldEndError:
 }
 
 func (p *UploadFileData) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("failed_res", thrift.MAP, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRUCT, len(p.FailedRes)); err != nil {
-		return err
-	}
-	for k, v := range p.FailedRes {
-		if err := oprot.WriteString(k); err != nil {
+	if p.IsSetSuccessRes() {
+		if err = oprot.WriteFieldBegin("success_res", thrift.MAP, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRUCT, len(p.SuccessRes)); err != nil {
 			return err
 		}
-		if err := v.Write(oprot); err != nil {
+		for k, v := range p.SuccessRes {
+			if err := oprot.WriteString(k); err != nil {
+				return err
+			}
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteMapEnd(); err != nil {
 			return err
 		}
-	}
-	if err := oprot.WriteMapEnd(); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *UploadFileData) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFailedRes() {
+		if err = oprot.WriteFieldBegin("failed_res", thrift.MAP, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRUCT, len(p.FailedRes)); err != nil {
+			return err
+		}
+		for k, v := range p.FailedRes {
+			if err := oprot.WriteString(k); err != nil {
+				return err
+			}
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteMapEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *UploadFileData) String() string {
@@ -1146,23 +1217,43 @@ func (p *UploadFileData) DeepEqual(ano *UploadFileData) bool {
 	if !p.Field1DeepEqual(ano.Status) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.SuccessRes) {
+	if !p.Field2DeepEqual(ano.StatusName) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.FailedRes) {
+	if !p.Field3DeepEqual(ano.SuccessRes) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.FailedRes) {
 		return false
 	}
 	return true
 }
 
-func (p *UploadFileData) Field1DeepEqual(src string) bool {
+func (p *UploadFileData) Field1DeepEqual(src *int8) bool {
 
-	if strings.Compare(p.Status, src) != 0 {
+	if p.Status == src {
+		return true
+	} else if p.Status == nil || src == nil {
+		return false
+	}
+	if *p.Status != *src {
 		return false
 	}
 	return true
 }
-func (p *UploadFileData) Field2DeepEqual(src map[string]*SaveFileRes) bool {
+func (p *UploadFileData) Field2DeepEqual(src *string) bool {
+
+	if p.StatusName == src {
+		return true
+	} else if p.StatusName == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.StatusName, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UploadFileData) Field3DeepEqual(src map[string]*OperateFileRes) bool {
 
 	if len(p.SuccessRes) != len(src) {
 		return false
@@ -1175,7 +1266,7 @@ func (p *UploadFileData) Field2DeepEqual(src map[string]*SaveFileRes) bool {
 	}
 	return true
 }
-func (p *UploadFileData) Field3DeepEqual(src map[string]*SaveFileRes) bool {
+func (p *UploadFileData) Field4DeepEqual(src map[string]*OperateFileRes) bool {
 
 	if len(p.FailedRes) != len(src) {
 		return false
@@ -2989,8 +3080,8 @@ func (p *DownloadFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
 }
 
 type EditFileInfoResponse struct {
-	Data     *SaveFileRes   `thrift:"data,1,optional" frugal:"1,optional,SaveFileRes" json:"data,omitempty"`
-	BaseResp *base.BaseResp `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	Data     *OperateFileRes `thrift:"data,1,optional" frugal:"1,optional,OperateFileRes" json:"data,omitempty"`
+	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
 }
 
 func NewEditFileInfoResponse() *EditFileInfoResponse {
@@ -3000,9 +3091,9 @@ func NewEditFileInfoResponse() *EditFileInfoResponse {
 func (p *EditFileInfoResponse) InitDefault() {
 }
 
-var EditFileInfoResponse_Data_DEFAULT *SaveFileRes
+var EditFileInfoResponse_Data_DEFAULT *OperateFileRes
 
-func (p *EditFileInfoResponse) GetData() (v *SaveFileRes) {
+func (p *EditFileInfoResponse) GetData() (v *OperateFileRes) {
 	if !p.IsSetData() {
 		return EditFileInfoResponse_Data_DEFAULT
 	}
@@ -3017,7 +3108,7 @@ func (p *EditFileInfoResponse) GetBaseResp() (v *base.BaseResp) {
 	}
 	return p.BaseResp
 }
-func (p *EditFileInfoResponse) SetData(val *SaveFileRes) {
+func (p *EditFileInfoResponse) SetData(val *OperateFileRes) {
 	p.Data = val
 }
 func (p *EditFileInfoResponse) SetBaseResp(val *base.BaseResp) {
@@ -3102,7 +3193,7 @@ ReadStructEndError:
 }
 
 func (p *EditFileInfoResponse) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewSaveFileRes()
+	_field := NewOperateFileRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -3211,7 +3302,7 @@ func (p *EditFileInfoResponse) DeepEqual(ano *EditFileInfoResponse) bool {
 	return true
 }
 
-func (p *EditFileInfoResponse) Field1DeepEqual(src *SaveFileRes) bool {
+func (p *EditFileInfoResponse) Field1DeepEqual(src *OperateFileRes) bool {
 
 	if !p.Data.DeepEqual(src) {
 		return false
@@ -3226,8 +3317,473 @@ func (p *EditFileInfoResponse) Field255DeepEqual(src *base.BaseResp) bool {
 	return true
 }
 
+type DeleteFileData struct {
+	Status     *int8                     `thrift:"status,1,optional" frugal:"1,optional,byte" json:"status,omitempty"`
+	StatusName *string                   `thrift:"status_name,2,optional" frugal:"2,optional,string" json:"status_name,omitempty"`
+	SuccessMap map[int64]*OperateFileRes `thrift:"success_map,3,optional" frugal:"3,optional,map<i64:OperateFileRes>" json:"success_map,omitempty"`
+	FailedMap  map[int64]*OperateFileRes `thrift:"failed_map,4,optional" frugal:"4,optional,map<i64:OperateFileRes>" json:"failed_map,omitempty"`
+}
+
+func NewDeleteFileData() *DeleteFileData {
+	return &DeleteFileData{}
+}
+
+func (p *DeleteFileData) InitDefault() {
+}
+
+var DeleteFileData_Status_DEFAULT int8
+
+func (p *DeleteFileData) GetStatus() (v int8) {
+	if !p.IsSetStatus() {
+		return DeleteFileData_Status_DEFAULT
+	}
+	return *p.Status
+}
+
+var DeleteFileData_StatusName_DEFAULT string
+
+func (p *DeleteFileData) GetStatusName() (v string) {
+	if !p.IsSetStatusName() {
+		return DeleteFileData_StatusName_DEFAULT
+	}
+	return *p.StatusName
+}
+
+var DeleteFileData_SuccessMap_DEFAULT map[int64]*OperateFileRes
+
+func (p *DeleteFileData) GetSuccessMap() (v map[int64]*OperateFileRes) {
+	if !p.IsSetSuccessMap() {
+		return DeleteFileData_SuccessMap_DEFAULT
+	}
+	return p.SuccessMap
+}
+
+var DeleteFileData_FailedMap_DEFAULT map[int64]*OperateFileRes
+
+func (p *DeleteFileData) GetFailedMap() (v map[int64]*OperateFileRes) {
+	if !p.IsSetFailedMap() {
+		return DeleteFileData_FailedMap_DEFAULT
+	}
+	return p.FailedMap
+}
+func (p *DeleteFileData) SetStatus(val *int8) {
+	p.Status = val
+}
+func (p *DeleteFileData) SetStatusName(val *string) {
+	p.StatusName = val
+}
+func (p *DeleteFileData) SetSuccessMap(val map[int64]*OperateFileRes) {
+	p.SuccessMap = val
+}
+func (p *DeleteFileData) SetFailedMap(val map[int64]*OperateFileRes) {
+	p.FailedMap = val
+}
+
+var fieldIDToName_DeleteFileData = map[int16]string{
+	1: "status",
+	2: "status_name",
+	3: "success_map",
+	4: "failed_map",
+}
+
+func (p *DeleteFileData) IsSetStatus() bool {
+	return p.Status != nil
+}
+
+func (p *DeleteFileData) IsSetStatusName() bool {
+	return p.StatusName != nil
+}
+
+func (p *DeleteFileData) IsSetSuccessMap() bool {
+	return p.SuccessMap != nil
+}
+
+func (p *DeleteFileData) IsSetFailedMap() bool {
+	return p.FailedMap != nil
+}
+
+func (p *DeleteFileData) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.BYTE {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.MAP {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.MAP {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeleteFileData[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *DeleteFileData) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field *int8
+	if v, err := iprot.ReadByte(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Status = _field
+	return nil
+}
+func (p *DeleteFileData) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.StatusName = _field
+	return nil
+}
+func (p *DeleteFileData) ReadField3(iprot thrift.TProtocol) error {
+	_, _, size, err := iprot.ReadMapBegin()
+	if err != nil {
+		return err
+	}
+	_field := make(map[int64]*OperateFileRes, size)
+	values := make([]OperateFileRes, size)
+	for i := 0; i < size; i++ {
+		var _key int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_key = v
+		}
+
+		_val := &values[i]
+		_val.InitDefault()
+		if err := _val.Read(iprot); err != nil {
+			return err
+		}
+
+		_field[_key] = _val
+	}
+	if err := iprot.ReadMapEnd(); err != nil {
+		return err
+	}
+	p.SuccessMap = _field
+	return nil
+}
+func (p *DeleteFileData) ReadField4(iprot thrift.TProtocol) error {
+	_, _, size, err := iprot.ReadMapBegin()
+	if err != nil {
+		return err
+	}
+	_field := make(map[int64]*OperateFileRes, size)
+	values := make([]OperateFileRes, size)
+	for i := 0; i < size; i++ {
+		var _key int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_key = v
+		}
+
+		_val := &values[i]
+		_val.InitDefault()
+		if err := _val.Read(iprot); err != nil {
+			return err
+		}
+
+		_field[_key] = _val
+	}
+	if err := iprot.ReadMapEnd(); err != nil {
+		return err
+	}
+	p.FailedMap = _field
+	return nil
+}
+
+func (p *DeleteFileData) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("DeleteFileData"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DeleteFileData) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetStatus() {
+		if err = oprot.WriteFieldBegin("status", thrift.BYTE, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteByte(*p.Status); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *DeleteFileData) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetStatusName() {
+		if err = oprot.WriteFieldBegin("status_name", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.StatusName); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *DeleteFileData) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccessMap() {
+		if err = oprot.WriteFieldBegin("success_map", thrift.MAP, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteMapBegin(thrift.I64, thrift.STRUCT, len(p.SuccessMap)); err != nil {
+			return err
+		}
+		for k, v := range p.SuccessMap {
+			if err := oprot.WriteI64(k); err != nil {
+				return err
+			}
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteMapEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *DeleteFileData) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFailedMap() {
+		if err = oprot.WriteFieldBegin("failed_map", thrift.MAP, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteMapBegin(thrift.I64, thrift.STRUCT, len(p.FailedMap)); err != nil {
+			return err
+		}
+		for k, v := range p.FailedMap {
+			if err := oprot.WriteI64(k); err != nil {
+				return err
+			}
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteMapEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *DeleteFileData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DeleteFileData(%+v)", *p)
+
+}
+
+func (p *DeleteFileData) DeepEqual(ano *DeleteFileData) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Status) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.StatusName) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.SuccessMap) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.FailedMap) {
+		return false
+	}
+	return true
+}
+
+func (p *DeleteFileData) Field1DeepEqual(src *int8) bool {
+
+	if p.Status == src {
+		return true
+	} else if p.Status == nil || src == nil {
+		return false
+	}
+	if *p.Status != *src {
+		return false
+	}
+	return true
+}
+func (p *DeleteFileData) Field2DeepEqual(src *string) bool {
+
+	if p.StatusName == src {
+		return true
+	} else if p.StatusName == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.StatusName, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *DeleteFileData) Field3DeepEqual(src map[int64]*OperateFileRes) bool {
+
+	if len(p.SuccessMap) != len(src) {
+		return false
+	}
+	for k, v := range p.SuccessMap {
+		_src := src[k]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+func (p *DeleteFileData) Field4DeepEqual(src map[int64]*OperateFileRes) bool {
+
+	if len(p.FailedMap) != len(src) {
+		return false
+	}
+	for k, v := range p.FailedMap {
+		_src := src[k]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+
 type DeleteFileResponse struct {
-	BaseResp *base.BaseResp `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	Data     *DeleteFileData `thrift:"data,1,optional" frugal:"1,optional,DeleteFileData" json:"data,omitempty"`
+	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
 }
 
 func NewDeleteFileResponse() *DeleteFileResponse {
@@ -3235,6 +3791,15 @@ func NewDeleteFileResponse() *DeleteFileResponse {
 }
 
 func (p *DeleteFileResponse) InitDefault() {
+}
+
+var DeleteFileResponse_Data_DEFAULT *DeleteFileData
+
+func (p *DeleteFileResponse) GetData() (v *DeleteFileData) {
+	if !p.IsSetData() {
+		return DeleteFileResponse_Data_DEFAULT
+	}
+	return p.Data
 }
 
 var DeleteFileResponse_BaseResp_DEFAULT *base.BaseResp
@@ -3245,12 +3810,20 @@ func (p *DeleteFileResponse) GetBaseResp() (v *base.BaseResp) {
 	}
 	return p.BaseResp
 }
+func (p *DeleteFileResponse) SetData(val *DeleteFileData) {
+	p.Data = val
+}
 func (p *DeleteFileResponse) SetBaseResp(val *base.BaseResp) {
 	p.BaseResp = val
 }
 
 var fieldIDToName_DeleteFileResponse = map[int16]string{
+	1:   "data",
 	255: "base_resp",
+}
+
+func (p *DeleteFileResponse) IsSetData() bool {
+	return p.Data != nil
 }
 
 func (p *DeleteFileResponse) IsSetBaseResp() bool {
@@ -3276,6 +3849,14 @@ func (p *DeleteFileResponse) Read(iprot thrift.TProtocol) (err error) {
 		}
 
 		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		case 255:
 			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField255(iprot); err != nil {
@@ -3313,6 +3894,14 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *DeleteFileResponse) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewDeleteFileData()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Data = _field
+	return nil
+}
 func (p *DeleteFileResponse) ReadField255(iprot thrift.TProtocol) error {
 	_field := base.NewBaseResp()
 	if err := _field.Read(iprot); err != nil {
@@ -3328,6 +3917,10 @@ func (p *DeleteFileResponse) Write(oprot thrift.TProtocol) (err error) {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
 		if err = p.writeField255(oprot); err != nil {
 			fieldId = 255
 			goto WriteFieldError
@@ -3348,6 +3941,25 @@ WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DeleteFileResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetData() {
+		if err = oprot.WriteFieldBegin("data", thrift.STRUCT, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Data.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *DeleteFileResponse) writeField255(oprot thrift.TProtocol) (err error) {
@@ -3383,12 +3995,22 @@ func (p *DeleteFileResponse) DeepEqual(ano *DeleteFileResponse) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
+	if !p.Field1DeepEqual(ano.Data) {
+		return false
+	}
 	if !p.Field255DeepEqual(ano.BaseResp) {
 		return false
 	}
 	return true
 }
 
+func (p *DeleteFileResponse) Field1DeepEqual(src *DeleteFileData) bool {
+
+	if !p.Data.DeepEqual(src) {
+		return false
+	}
+	return true
+}
 func (p *DeleteFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
 
 	if !p.BaseResp.DeepEqual(src) {

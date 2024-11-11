@@ -7,24 +7,28 @@ package enum
  * @Description:
  */
 
-type UploadFileStatus string
+type OperateFileStatus = int8
 
 const (
-	UploadFileStatusSuccess             UploadFileStatus = "Success"
-	UploadFileStatusFailed              UploadFileStatus = "Failed"
-	UploadFileStatusPartiallySuccessful UploadFileStatus = "PartiallySuccessful"
+	OperateFileStatusSuccess             OperateFileStatus = 1
+	OperateFileStatusFailed              OperateFileStatus = 2
+	OperateFileStatusPartiallySuccessful OperateFileStatus = 3
 )
+
+var OperateFileStatusMap = map[int8]string{
+	OperateFileStatusSuccess:             "文件操作成功",
+	OperateFileStatusFailed:              "文件操作失败",
+	OperateFileStatusPartiallySuccessful: "文件操作部分成功",
+}
 
 type FileMetaStatus = int8
 
 const (
-	FileMetaStatusUnknown FileMetaStatus = 0
 	FileMetaStatusEnable  FileMetaStatus = 1
 	FileMetaStatusDeleted FileMetaStatus = 2
 )
 
 var FileMetaStatusNameMap = map[FileMetaStatus]string{
-	FileMetaStatusUnknown: "未知",
 	FileMetaStatusEnable:  "生效中",
 	FileMetaStatusDeleted: "已删除",
 }

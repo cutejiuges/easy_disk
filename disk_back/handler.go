@@ -38,6 +38,5 @@ func (s *DiskBackServiceImpl) EditFileInfo(ctx context.Context, req *disk_common
 
 // DeleteFile implements the DiskBackServiceImpl interface.
 func (s *DiskBackServiceImpl) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (resp *disk_back.DeleteFileResponse, err error) {
-	// TODO: Your code here...
-	return
+	return file_handler.NewDeleteFileHandler(ctx, req).Handle()
 }

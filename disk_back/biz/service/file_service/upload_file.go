@@ -3,6 +3,7 @@ package file_service
 import (
 	"context"
 	"fmt"
+	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/biz/cache"
 	"github.com/cutejiuges/disk_back/biz/dao/file_meta_dao"
@@ -32,17 +33,17 @@ func ProcessUploadFile(ctx context.Context, req *disk_back.UploadFileRequest) (*
 
 	//异步写文件
 	wg := sync.WaitGroup{}
-	successMap, failedMap := localutil.NewSafeMap[string, *disk_back.SaveFileRes](), localutil.NewSafeMap[string, *disk_back.SaveFileRes]()
+	successMap, failedMap := localutil.NewSafeMap[string, *disk_back.OperateFileRes](), localutil.NewSafeMap[string, *disk_back.OperateFileRes]()
 	wg.Add(len(req.GetFiles()))
 	for _, file := range req.GetFiles() {
 		go func(f *disk_back.UploadFileMeta) {
 			defer wg.Done()
 			//检查文件是否正在上传，获取文件锁失败说明在上传中
 			sha1Key := localutil.GetSha1Key(f.GetFileData())
-			fileLock := cache.NewDistributedLock(localutil.GetFileLockKey(sha1Key))
+			fileLock := cache.NewDistributedLock(cache.UploadFileLockKey(sha1Key))
 			if ok := fileLock.TryLock(); !ok {
 				//文件正在上传中
-				failedMap.Put(f.GetFileName(), &disk_back.SaveFileRes{
+				failedMap.Put(f.GetFileName(), &disk_back.OperateFileRes{
 					Id:       0,
 					FileName: f.GetFileName(),
 					Msg:      "文件正在上传中",
@@ -53,9 +54,9 @@ func ProcessUploadFile(ctx context.Context, req *disk_back.UploadFileRequest) (*
 			defer fileLock.Unlock()
 
 			//无正在上传中的文件，再校验是否已上传
-			if simpleFile, exits := isExistFile(ctx, sha1Key); exits {
+			if simpleFile, exits := isExistFileByKey(ctx, sha1Key); exits {
 				//如果已经上传过了，用已存在的文件信息返回
-				successMap.Put(f.GetFileName(), &disk_back.SaveFileRes{
+				successMap.Put(f.GetFileName(), &disk_back.OperateFileRes{
 					Id:       simpleFile.ID,
 					FileName: simpleFile.Name,
 					Msg:      simpleFile.Msg,
@@ -67,7 +68,7 @@ func ProcessUploadFile(ctx context.Context, req *disk_back.UploadFileRequest) (*
 			path := fmt.Sprintf("%s%s", prefix, f.GetFileName())
 			simpleFile, err := saveFileInfo(ctx, path, f.GetFileName(), f.GetFileData())
 			if err != nil {
-				failedMap.Put(f.GetFileName(), &disk_back.SaveFileRes{
+				failedMap.Put(f.GetFileName(), &disk_back.OperateFileRes{
 					Id:       simpleFile.ID,
 					FileName: simpleFile.Name,
 					Msg:      simpleFile.Msg + err.Error(),
@@ -76,7 +77,7 @@ func ProcessUploadFile(ctx context.Context, req *disk_back.UploadFileRequest) (*
 			}
 
 			//写成功
-			successMap.Put(f.GetFileName(), &disk_back.SaveFileRes{
+			successMap.Put(f.GetFileName(), &disk_back.OperateFileRes{
 				Id:       simpleFile.ID,
 				FileName: simpleFile.Name,
 				Msg:      simpleFile.Msg,
@@ -88,7 +89,9 @@ func ProcessUploadFile(ctx context.Context, req *disk_back.UploadFileRequest) (*
 
 	data.SetFailedRes(failedMap.GetData())
 	data.SetSuccessRes(successMap.GetData())
-	data.SetStatus(judgeUploadStatus(successMap.GetData(), failedMap.GetData()))
+	status := judgeOperateStatus(successMap, failedMap)
+	data.SetStatus(thrift.Int8Ptr(status))
+	data.SetStatusName(thrift.StringPtr(enum.OperateFileStatusMap[status]))
 	return data, nil
 }
 
@@ -101,7 +104,7 @@ func writeFile(ctx context.Context, path, fileName string, fileData []byte) erro
 	return nil
 }
 
-func isExistFile(ctx context.Context, sha1Key string) (bo.SimpleFile, bool) {
+func isExistFileByKey(ctx context.Context, sha1Key string) (bo.SimpleFile, bool) {
 	simpleFile := bo.SimpleFile{}
 	// 查询文件是否上传过
 	f, err := file_meta_dao.QuerySingleFileMeta(ctx, &param.QueryFileMetaParam{
@@ -143,6 +146,12 @@ func saveFileInfo(ctx context.Context, path, fileName string, fileData []byte) (
 	}
 	klog.CtxInfof(ctx, "file_service.saveFileInfo create FileMeta: %v", fileMeta)
 	qry := query.Use(mysql.DB()).Begin()
+	defer func() {
+		if e := recover(); e != nil {
+			klog.CtxErrorf(ctx, "file_service uploadFile paniced: %v", e)
+			_ = qry.Rollback()
+		}
+	}()
 	err = file_meta_dao.CreateFile(ctx, qry.Query, fileMeta)
 	if err != nil {
 		klog.CtxErrorf(ctx, "file_service.saveFileInfo -> CreateFile failed, error: %v", err)
@@ -164,13 +173,13 @@ func saveFileInfo(ctx context.Context, path, fileName string, fileData []byte) (
 	return simpleFile, nil
 }
 
-func judgeUploadStatus(success, failed map[string]*disk_back.SaveFileRes) string {
-	res := string(enum.UploadFileStatusPartiallySuccessful)
-	if len(success) == 0 {
-		res = string(enum.UploadFileStatusFailed)
+func judgeOperateStatus[K comparable, V any](success, failed *localutil.SafeMap[K, V]) int8 {
+	res := enum.OperateFileStatusPartiallySuccessful
+	if success.Len() == 0 {
+		res = enum.OperateFileStatusFailed
 	}
-	if len(failed) == 0 {
-		res = string(enum.UploadFileStatusSuccess)
+	if failed.Len() == 0 {
+		res = enum.OperateFileStatusSuccess
 	}
 	return res
 }
