@@ -18,7 +18,3 @@ func GetSha1Key(content []byte) string {
 	bs := h.Sum(nil)
 	return fmt.Sprintf("%x", bs)
 }
-
-func GetFileLockKey(key string) string {
-	return fmt.Sprintf("{%s}:%s", "fileSha1Key", key)
-}

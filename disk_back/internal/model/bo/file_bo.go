@@ -9,6 +9,7 @@ package bo
 
 type SimpleFile struct {
 	ID   int64  //文件id
+	Addr string //文件存储地址
 	Name string //文件名
 	Msg  string //补充说明信息
 }

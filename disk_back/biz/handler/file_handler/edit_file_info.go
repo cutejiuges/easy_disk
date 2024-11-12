@@ -20,7 +20,7 @@ type EditFileInfoHandler struct {
 	ctx  context.Context
 	req  *disk_common.EditFileInfoRequest
 	resp *disk_back.EditFileInfoResponse
-	data *disk_back.SaveFileRes
+	data *disk_back.OperateFileRes
 	err  error
 }
 

@@ -19,7 +19,7 @@ import (
 
 func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (*model.FileMeta, error) {
 	q := query.Use(mysql.DB()).FileMeta
-	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusUnknown))
+	dao := q.WithContext(ctx)
 	if param.ID != 0 {
 		dao = dao.Where(q.ID.Eq(param.ID))
 	}
@@ -32,7 +32,7 @@ func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (
 
 func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
 	q := query.Use(mysql.DB()).FileMeta
-	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusUnknown))
+	dao := q.WithContext(ctx)
 	if len(param.IdList) > 0 {
 		dao.Where(q.ID.In(param.IdList...))
 	}

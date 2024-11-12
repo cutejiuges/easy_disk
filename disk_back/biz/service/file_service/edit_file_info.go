@@ -20,8 +20,8 @@ import (
  * @Description: 编辑文件信息
  */
 
-func ProcessEditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (*disk_back.SaveFileRes, error) {
-	data := disk_back.NewSaveFileRes()
+func ProcessEditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (*disk_back.OperateFileRes, error) {
+	data := disk_back.NewOperateFileRes()
 
 	//查询文件信息
 	meta, err := file_meta_dao.QuerySingleFileMeta(ctx, &param.QueryFileMetaParam{

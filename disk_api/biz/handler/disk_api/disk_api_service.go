@@ -99,7 +99,6 @@ func DeleteFile(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(disk_common.CommonResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	resp, err := file_service.ProcessDeleteFile(ctx, &req)
+	localutils.Wrapper(c, resp, err)
 }

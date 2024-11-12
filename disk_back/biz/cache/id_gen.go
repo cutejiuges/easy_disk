@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"fmt"
 	"github.com/cutejiuges/disk_back/internal/infra/redis"
 )
 
@@ -20,4 +21,12 @@ func GetCurUniqID(ctx context.Context) (int64, error) {
 
 func GetNextUniqID(ctx context.Context) (int64, error) {
 	return redis.DB().Incr(ctx, globalUniqID).Result()
+}
+
+func UploadFileLockKey(key string) string {
+	return fmt.Sprintf("{%s}:%s", "uploadFileSha1Key", key)
+}
+
+func DeleteFileLockKey(id int64) string {
+	return fmt.Sprintf("{%s}:%d", "deleteFileId", id)
 }

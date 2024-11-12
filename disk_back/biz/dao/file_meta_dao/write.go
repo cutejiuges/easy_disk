@@ -47,7 +47,7 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 
 func EditFileInfo(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
 	meta := q.FileMeta
-	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusUnknown), meta.Status.Neq(enum.FileMetaStatusDeleted))
+	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusDeleted))
 	if param.ID > 0 {
 		dao = dao.Where(meta.ID.Eq(param.ID))
 	}
@@ -55,5 +55,21 @@ func EditFileInfo(ctx context.Context, q *query.Query, param *param.EditFileMeta
 		dao = dao.Where(meta.FileKey.Eq(param.FileKey))
 	}
 	_, err := dao.UpdateSimple(meta.FileName.Value(param.FileName), meta.FileAddr.Value(param.FileAddr))
+	return err
+}
+
+func DeleteFile(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
+	meta := q.FileMeta
+	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusDeleted))
+	if param.ID > 0 {
+		dao = dao.Where(meta.ID.Eq(param.ID))
+	}
+	if param.FileKey != "" {
+		dao = dao.Where(meta.FileKey.Eq(param.FileKey))
+	}
+	if len(param.IdList) > 0 {
+		dao = dao.Where(meta.ID.In(param.IdList...))
+	}
+	_, err := dao.UpdateSimple(meta.Status.Value(enum.FileMetaStatusDeleted))
 	return err
 }
