@@ -7,7 +7,7 @@ import (
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util/localutil"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
 )
 
 /**
@@ -32,7 +32,7 @@ func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (
 
 func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
 	q := query.Use(mysql.DB()).FileMeta
-	dao := q.WithContext(ctx)
+	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusDeleted))
 	if len(param.IdList) > 0 {
 		dao.Where(q.ID.In(param.IdList...))
 	}
@@ -45,8 +45,8 @@ func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]
 		dao.Where(statusCond)
 	}
 	if param.MinCreateTime != "" && param.MaxCreateTime != "" {
-		minTime, _ := localutil.ParseTime(param.MinCreateTime, string(enum.TimeLayoutCompleteMinus))
-		maxTime, _ := localutil.ParseTime(param.MaxCreateTime, string(enum.TimeLayoutCompleteMinus))
+		minTime, _ := util.ParseTime(param.MinCreateTime, string(enum.TimeLayoutCompleteMinus))
+		maxTime, _ := util.ParseTime(param.MaxCreateTime, string(enum.TimeLayoutCompleteMinus))
 		dao.Where(q.CreateAt.Gte(minTime), q.CreateAt.Lte(maxTime))
 	}
 	if param.MinFileSize > 0 && param.MaxFileSize > 0 {

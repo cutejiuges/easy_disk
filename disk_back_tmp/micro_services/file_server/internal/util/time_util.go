@@ -1,4 +1,4 @@
-package localutil
+package util
 
 import (
 	"time"

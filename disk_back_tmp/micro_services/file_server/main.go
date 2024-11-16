@@ -10,7 +10,7 @@ import (
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/conf"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util/localutil"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
 	"github.com/cutejiuges/disk_back/middleware"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	consul "github.com/kitex-contrib/registry-consul"
@@ -61,7 +61,7 @@ func kitexInit() (opts []server.Option) {
 	klog.SetLevel(conf.LogLevel())
 	asyncWriter := &zapcore.BufferedWriteSyncer{
 		WS: zapcore.AddSync(&lumberjack.Logger{
-			Filename:   conf.GetConf().Kitex.LogFileName + localutil.FormatTime(time.Now(), string(enum.TimeLayoutDateYYMMDD)),
+			Filename:   conf.GetConf().Kitex.LogFileName + util.FormatTime(time.Now(), string(enum.TimeLayoutDateYYMMDD)),
 			MaxSize:    conf.GetConf().Kitex.LogMaxSize,
 			MaxBackups: conf.GetConf().Kitex.LogMaxBackup,
 			MaxAge:     conf.GetConf().Kitex.LogMaxAge,

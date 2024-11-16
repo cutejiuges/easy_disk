@@ -1,7 +1,7 @@
-package localutil
+package util
 
 import (
-	"crypto/sha1"
+	"crypto/sha256"
 	"fmt"
 )
 
@@ -12,8 +12,8 @@ import (
  * @Description:
  */
 
-func GetSha1Key(content []byte) string {
-	h := sha1.New()
+func GetSha256Key(content []byte) string {
+	h := sha256.New()
 	h.Write(content)
 	bs := h.Sum(nil)
 	return fmt.Sprintf("%x", bs)

@@ -1,4 +1,4 @@
-package localutil
+package util
 
 import (
 	"github.com/bytedance/sonic"
@@ -8,7 +8,7 @@ import (
 /**
  * @Author: cutejiuge cutejiuge@163.com
  * @Date: 2024/10/2 下午11:30
- * @FilePath: localutil
+ * @FilePath: util
  * @Description:
  */
 

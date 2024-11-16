@@ -1,4 +1,4 @@
-package errutil
+package errno
 
 /**
  * @Author: cutejiuge cutejiuge@163.com
