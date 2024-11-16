@@ -1,0 +1,20 @@
+kitex:
+  service: "cutejiuges.server.file"
+  address: "192.168.0.106:20000"
+  log_level: info
+  log_file_name: "log/disk_back.log"
+  log_max_size: 10
+  log_max_age: 3
+  log_max_backups: 50
+
+registry:
+  registry_address: "192.168.0.106:8500"
+
+mysql:
+  dsn: "root:root@tcp(192.168.0.106:3306)/easy_disk?charset=utf8mb4&parseTime=True&loc=Local"
+
+redis:
+  address: "127.0.0.1:6379"
+  username: ""
+  password: "root"
+  db: 1
