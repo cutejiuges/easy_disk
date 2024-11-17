@@ -6,8 +6,8 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_common"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
 	disk_back_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
 /**
@@ -17,7 +17,7 @@ import (
  * @Description:
  */
 
-func ProcessDeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (*disk_back.DeleteFileResponse, error) {
+func ProcessDeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (*file_server.DeleteFileResponse, error) {
 	var rpcReq disk_back_common.DeleteFileRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {

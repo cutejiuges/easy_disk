@@ -6,8 +6,8 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_common"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
 	disk_back_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
 /**
@@ -17,7 +17,7 @@ import (
  * @Description: 修改文件信息,目前仅支持修改远端的文件名
  */
 
-func ProcessEditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (*disk_back.EditFileInfoResponse, error) {
+func ProcessEditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (*file_server.EditFileInfoResponse, error) {
 	var rpcReq disk_back_common.EditFileInfoRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {

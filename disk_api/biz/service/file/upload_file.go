@@ -7,7 +7,7 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_api"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"golang.org/x/net/context"
 	"io"
 	"mime/multipart"
@@ -20,15 +20,15 @@ import (
  * @Description:
  */
 
-func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api.UploadFileRequest) (*disk_back.UploadFileResponse, error) {
-	var rpcReq disk_back.UploadFileRequest
+func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api.UploadFileRequest) (*file_server.UploadFileResponse, error) {
+	var rpcReq file_server.UploadFileRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "ProcessUploadFile convert req error: %v", err)
 		return nil, err
 	}
 
-	var fileList []*disk_back.UploadFileMeta
+	var fileList []*file_server.UploadFileMeta
 	form, _ := c.MultipartForm()
 	fileHeaders := form.File["file"]
 	for _, fileHeader := range fileHeaders {
@@ -42,7 +42,7 @@ func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api
 			buf := bytes.Buffer{}
 			_, _ = io.Copy(&buf, file)
 
-			fileList = append(fileList, &disk_back.UploadFileMeta{
+			fileList = append(fileList, &file_server.UploadFileMeta{
 				FileName: f.Filename,
 				FileData: buf.Bytes(),
 			})

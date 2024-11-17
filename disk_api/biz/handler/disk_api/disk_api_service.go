@@ -8,25 +8,9 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	disk_api "github.com/cutejiuges/disk_api/biz/model/disk_api"
 	disk_common "github.com/cutejiuges/disk_api/biz/model/disk_common"
-	"github.com/cutejiuges/disk_api/biz/service"
 	file_service "github.com/cutejiuges/disk_api/biz/service/file"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 )
-
-// Ping .
-// @router /ping [GET]
-func Ping(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req disk_common.PingRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp, err := service.ProcessPing(ctx, &req)
-	localutils.Wrapper(c, resp, err)
-}
 
 // UploadFile .
 // @router /file/uploadFile [POST]
