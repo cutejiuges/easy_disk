@@ -6,8 +6,8 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_common"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
 	disk_back_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
 /**
@@ -17,7 +17,7 @@ import (
  * @Description: 查询文件信息
  */
 
-func ProcessQueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (*disk_back.QueryFileInfoResponse, error) {
+func ProcessQueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (*file_server.QueryFileInfoResponse, error) {
 	var rpcReq disk_back_common.QueryFileInfoRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {

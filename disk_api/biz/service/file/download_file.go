@@ -6,8 +6,8 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_common"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
 	disk_back_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
 /**
@@ -17,7 +17,7 @@ import (
  * @Description: 下载文件
  */
 
-func ProcessDownloadFile(ctx context.Context, request *disk_common.DownloadFileRequest) (*disk_back.DownloadFileResponse, error) {
+func ProcessDownloadFile(ctx context.Context, request *disk_common.DownloadFileRequest) (*file_server.DownloadFileResponse, error) {
 	var rpcReq disk_back_common.DownloadFileRequest
 	err := localutils.Converter(request, &rpcReq)
 	if err != nil {

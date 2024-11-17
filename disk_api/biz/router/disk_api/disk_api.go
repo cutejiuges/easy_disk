@@ -17,7 +17,6 @@ import (
 func Register(r *server.Hertz) {
 
 	root := r.Group("/", rootMw()...)
-	root.GET("/pingMsg", append(_pingMw(), disk_api.Ping)...)
 	{
 		_file := root.Group("/file", _fileMw()...)
 		_file.POST("/deleteFile", append(_deletefileMw(), disk_api.DeleteFile)...)

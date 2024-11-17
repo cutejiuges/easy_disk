@@ -8,5 +8,5 @@ package rpc
  */
 
 func InitRpcClient() {
-	initDiskBackClient()
+	initFileServerClient()
 }
