@@ -4,6 +4,7 @@ import (
 	"context"
 	disk_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	file_server "github.com/cutejiuges/disk_back/kitex_gen/file_server"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/handler"
 )
 
 // FileServiceImpl implements the last service interface defined in the IDL.
@@ -11,14 +12,12 @@ type FileServiceImpl struct{}
 
 // UploadFile implements the FileServiceImpl interface.
 func (s *FileServiceImpl) UploadFile(ctx context.Context, req *file_server.UploadFileRequest) (resp *file_server.UploadFileResponse, err error) {
-	// TODO: Your code here...
-	return
+	return handler.NewUploadFileHandler(ctx, req).Handle()
 }
 
 // QueryFileInfo implements the FileServiceImpl interface.
 func (s *FileServiceImpl) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (resp *file_server.QueryFileInfoResponse, err error) {
-	// TODO: Your code here...
-	return
+	return handler.NewQueryFileInfoHandler(ctx, req).Handle()
 }
 
 // DownloadFile implements the FileServiceImpl interface.
