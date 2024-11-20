@@ -14,10 +14,10 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
-	"UploadFile": kitex.NewMethodInfo(
-		uploadFileHandler,
-		newFileServiceUploadFileArgs,
-		newFileServiceUploadFileResult,
+	"UploadFileBatch": kitex.NewMethodInfo(
+		uploadFileBatchHandler,
+		newFileServiceUploadFileBatchArgs,
+		newFileServiceUploadFileBatchResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -115,22 +115,22 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
-func uploadFileHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*file_server.FileServiceUploadFileArgs)
-	realResult := result.(*file_server.FileServiceUploadFileResult)
-	success, err := handler.(file_server.FileService).UploadFile(ctx, realArg.Req)
+func uploadFileBatchHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*file_server.FileServiceUploadFileBatchArgs)
+	realResult := result.(*file_server.FileServiceUploadFileBatchResult)
+	success, err := handler.(file_server.FileService).UploadFileBatch(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newFileServiceUploadFileArgs() interface{} {
-	return file_server.NewFileServiceUploadFileArgs()
+func newFileServiceUploadFileBatchArgs() interface{} {
+	return file_server.NewFileServiceUploadFileBatchArgs()
 }
 
-func newFileServiceUploadFileResult() interface{} {
-	return file_server.NewFileServiceUploadFileResult()
+func newFileServiceUploadFileBatchResult() interface{} {
+	return file_server.NewFileServiceUploadFileBatchResult()
 }
 
 func queryFileInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -215,11 +215,11 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) UploadFile(ctx context.Context, req *file_server.UploadFileRequest) (r *file_server.UploadFileResponse, err error) {
-	var _args file_server.FileServiceUploadFileArgs
+func (p *kClient) UploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest) (r *file_server.UploadFileResponse, err error) {
+	var _args file_server.FileServiceUploadFileBatchArgs
 	_args.Req = req
-	var _result file_server.FileServiceUploadFileResult
-	if err = p.c.Call(ctx, "UploadFile", &_args, &_result); err != nil {
+	var _result file_server.FileServiceUploadFileBatchResult
+	if err = p.c.Call(ctx, "UploadFileBatch", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
