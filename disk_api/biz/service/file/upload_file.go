@@ -20,11 +20,11 @@ import (
  * @Description:
  */
 
-func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api.UploadFileRequest) (*file_server.UploadFileResponse, error) {
+func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *disk_api.UploadFileRequest) (*file_server.UploadFileResponse, error) {
 	var rpcReq file_server.UploadFileRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {
-		hlog.CtxErrorf(ctx, "ProcessUploadFile convert req error: %v", err)
+		hlog.CtxErrorf(ctx, "ProcessUploadFileBatch convert req error: %v", err)
 		return nil, err
 	}
 
@@ -43,7 +43,7 @@ func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api
 			_, _ = io.Copy(&buf, file)
 
 			fileList = append(fileList, &file_server.UploadFileMeta{
-				FileName: f.Filename,
+				FileName: localutils.GetSha256Key(buf.Bytes()),
 				FileData: buf.Bytes(),
 			})
 			return nil
@@ -56,9 +56,9 @@ func ProcessUploadFile(ctx context.Context, c *app.RequestContext, req *disk_api
 	}
 	rpcReq.SetFiles(fileList)
 
-	rpcResp, err := rpc.GetDiskBackClient().UploadFile(ctx, &rpcReq)
+	rpcResp, err := rpc.GetDiskBackClient().UploadFileBatch(ctx, &rpcReq)
 	if err != nil {
-		hlog.CtxErrorf(ctx, "ProcessUploadFile -> rpc UploadFile error: %v", err)
+		hlog.CtxErrorf(ctx, "ProcessUploadFileBatch -> rpc UploadFile error: %v", err)
 		return nil, err
 	}
 	return rpcResp, nil

@@ -12,21 +12,6 @@ import (
 	"github.com/cutejiuges/disk_api/infra/localutils"
 )
 
-// UploadFile .
-// @router /file/uploadFile [POST]
-func UploadFile(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req disk_api.UploadFileRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp, err := file_service.ProcessUploadFile(ctx, c, &req)
-	localutils.Wrapper(c, resp, err)
-}
-
 // QueryFileInfo .
 // @router file/queryFileInfo [POST]
 func QueryFileInfo(ctx context.Context, c *app.RequestContext) {
@@ -84,5 +69,20 @@ func DeleteFile(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp, err := file_service.ProcessDeleteFile(ctx, &req)
+	localutils.Wrapper(c, resp, err)
+}
+
+// UploadFileBatch .
+// @router /file/uploadFileBatch [POST]
+func UploadFileBatch(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req disk_api.UploadFileRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp, err := file_service.ProcessUploadFileBatch(ctx, c, &req)
 	localutils.Wrapper(c, resp, err)
 }

@@ -3141,7 +3141,7 @@ func (p *DeleteFileResponse) field255Length() int {
 	return l
 }
 
-func (p *FileServiceUploadFileArgs) FastRead(buf []byte) (int, error) {
+func (p *FileServiceUploadFileBatchArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -3203,7 +3203,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileBatchArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -3212,7 +3212,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileArgs) FastReadField1(buf []byte) (int, error) {
+func (p *FileServiceUploadFileBatchArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := NewUploadFileRequest()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -3225,13 +3225,13 @@ func (p *FileServiceUploadFileArgs) FastReadField1(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *FileServiceUploadFileArgs) FastWrite(buf []byte) int {
+func (p *FileServiceUploadFileBatchArgs) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *FileServiceUploadFileArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *FileServiceUploadFileBatchArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "UploadFile_args")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "UploadFileBatch_args")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -3240,9 +3240,9 @@ func (p *FileServiceUploadFileArgs) FastWriteNocopy(buf []byte, binaryWriter bth
 	return offset
 }
 
-func (p *FileServiceUploadFileArgs) BLength() int {
+func (p *FileServiceUploadFileBatchArgs) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("UploadFile_args")
+	l += bthrift.Binary.StructBeginLength("UploadFileBatch_args")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -3251,7 +3251,7 @@ func (p *FileServiceUploadFileArgs) BLength() int {
 	return l
 }
 
-func (p *FileServiceUploadFileArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *FileServiceUploadFileBatchArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -3259,7 +3259,7 @@ func (p *FileServiceUploadFileArgs) fastWriteField1(buf []byte, binaryWriter bth
 	return offset
 }
 
-func (p *FileServiceUploadFileArgs) field1Length() int {
+func (p *FileServiceUploadFileBatchArgs) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
 	l += p.Req.BLength()
@@ -3267,7 +3267,7 @@ func (p *FileServiceUploadFileArgs) field1Length() int {
 	return l
 }
 
-func (p *FileServiceUploadFileResult) FastRead(buf []byte) (int, error) {
+func (p *FileServiceUploadFileBatchResult) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -3329,7 +3329,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileBatchResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -3338,7 +3338,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileResult) FastReadField0(buf []byte) (int, error) {
+func (p *FileServiceUploadFileBatchResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 	_field := NewUploadFileResponse()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -3351,13 +3351,13 @@ func (p *FileServiceUploadFileResult) FastReadField0(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *FileServiceUploadFileResult) FastWrite(buf []byte) int {
+func (p *FileServiceUploadFileBatchResult) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *FileServiceUploadFileResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *FileServiceUploadFileBatchResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "UploadFile_result")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "UploadFileBatch_result")
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], binaryWriter)
 	}
@@ -3366,9 +3366,9 @@ func (p *FileServiceUploadFileResult) FastWriteNocopy(buf []byte, binaryWriter b
 	return offset
 }
 
-func (p *FileServiceUploadFileResult) BLength() int {
+func (p *FileServiceUploadFileBatchResult) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("UploadFile_result")
+	l += bthrift.Binary.StructBeginLength("UploadFileBatch_result")
 	if p != nil {
 		l += p.field0Length()
 	}
@@ -3377,7 +3377,7 @@ func (p *FileServiceUploadFileResult) BLength() int {
 	return l
 }
 
-func (p *FileServiceUploadFileResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *FileServiceUploadFileBatchResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.STRUCT, 0)
@@ -3387,7 +3387,7 @@ func (p *FileServiceUploadFileResult) fastWriteField0(buf []byte, binaryWriter b
 	return offset
 }
 
-func (p *FileServiceUploadFileResult) field0Length() int {
+func (p *FileServiceUploadFileBatchResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += bthrift.Binary.FieldBeginLength("success", thrift.STRUCT, 0)
@@ -4421,11 +4421,11 @@ func (p *FileServiceDeleteFileResult) field0Length() int {
 	return l
 }
 
-func (p *FileServiceUploadFileArgs) GetFirstArgument() interface{} {
+func (p *FileServiceUploadFileBatchArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *FileServiceUploadFileResult) GetResult() interface{} {
+func (p *FileServiceUploadFileBatchResult) GetResult() interface{} {
 	return p.Success
 }
 

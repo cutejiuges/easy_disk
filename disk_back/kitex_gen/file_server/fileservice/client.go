@@ -12,7 +12,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	UploadFile(ctx context.Context, req *file_server.UploadFileRequest, callOptions ...callopt.Option) (r *file_server.UploadFileResponse, err error)
+	UploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest, callOptions ...callopt.Option) (r *file_server.UploadFileResponse, err error)
 	QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error)
 	DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest, callOptions ...callopt.Option) (r *file_server.DownloadFileResponse, err error)
 	EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest, callOptions ...callopt.Option) (r *file_server.EditFileInfoResponse, err error)
@@ -48,9 +48,9 @@ type kFileServiceClient struct {
 	*kClient
 }
 
-func (p *kFileServiceClient) UploadFile(ctx context.Context, req *file_server.UploadFileRequest, callOptions ...callopt.Option) (r *file_server.UploadFileResponse, err error) {
+func (p *kFileServiceClient) UploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest, callOptions ...callopt.Option) (r *file_server.UploadFileResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.UploadFile(ctx, req)
+	return p.kClient.UploadFileBatch(ctx, req)
 }
 
 func (p *kFileServiceClient) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error) {

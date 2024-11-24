@@ -4020,7 +4020,7 @@ func (p *DeleteFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
 }
 
 type FileService interface {
-	UploadFile(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
+	UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
 
 	QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (r *QueryFileInfoResponse, err error)
 
@@ -4031,38 +4031,38 @@ type FileService interface {
 	DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (r *DeleteFileResponse, err error)
 }
 
-type FileServiceUploadFileArgs struct {
+type FileServiceUploadFileBatchArgs struct {
 	Req *UploadFileRequest `thrift:"req,1" frugal:"1,default,UploadFileRequest" json:"req"`
 }
 
-func NewFileServiceUploadFileArgs() *FileServiceUploadFileArgs {
-	return &FileServiceUploadFileArgs{}
+func NewFileServiceUploadFileBatchArgs() *FileServiceUploadFileBatchArgs {
+	return &FileServiceUploadFileBatchArgs{}
 }
 
-func (p *FileServiceUploadFileArgs) InitDefault() {
+func (p *FileServiceUploadFileBatchArgs) InitDefault() {
 }
 
-var FileServiceUploadFileArgs_Req_DEFAULT *UploadFileRequest
+var FileServiceUploadFileBatchArgs_Req_DEFAULT *UploadFileRequest
 
-func (p *FileServiceUploadFileArgs) GetReq() (v *UploadFileRequest) {
+func (p *FileServiceUploadFileBatchArgs) GetReq() (v *UploadFileRequest) {
 	if !p.IsSetReq() {
-		return FileServiceUploadFileArgs_Req_DEFAULT
+		return FileServiceUploadFileBatchArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *FileServiceUploadFileArgs) SetReq(val *UploadFileRequest) {
+func (p *FileServiceUploadFileBatchArgs) SetReq(val *UploadFileRequest) {
 	p.Req = val
 }
 
-var fieldIDToName_FileServiceUploadFileArgs = map[int16]string{
+var fieldIDToName_FileServiceUploadFileBatchArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *FileServiceUploadFileArgs) IsSetReq() bool {
+func (p *FileServiceUploadFileBatchArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *FileServiceUploadFileArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4108,7 +4108,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileBatchArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4118,7 +4118,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *FileServiceUploadFileBatchArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewUploadFileRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4127,9 +4127,9 @@ func (p *FileServiceUploadFileArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *FileServiceUploadFileArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFile_args"); err != nil {
+	if err = oprot.WriteStructBegin("UploadFileBatch_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4155,7 +4155,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4172,15 +4172,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileArgs) String() string {
+func (p *FileServiceUploadFileBatchArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("FileServiceUploadFileArgs(%+v)", *p)
+	return fmt.Sprintf("FileServiceUploadFileBatchArgs(%+v)", *p)
 
 }
 
-func (p *FileServiceUploadFileArgs) DeepEqual(ano *FileServiceUploadFileArgs) bool {
+func (p *FileServiceUploadFileBatchArgs) DeepEqual(ano *FileServiceUploadFileBatchArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4192,7 +4192,7 @@ func (p *FileServiceUploadFileArgs) DeepEqual(ano *FileServiceUploadFileArgs) bo
 	return true
 }
 
-func (p *FileServiceUploadFileArgs) Field1DeepEqual(src *UploadFileRequest) bool {
+func (p *FileServiceUploadFileBatchArgs) Field1DeepEqual(src *UploadFileRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -4200,38 +4200,38 @@ func (p *FileServiceUploadFileArgs) Field1DeepEqual(src *UploadFileRequest) bool
 	return true
 }
 
-type FileServiceUploadFileResult struct {
+type FileServiceUploadFileBatchResult struct {
 	Success *UploadFileResponse `thrift:"success,0,optional" frugal:"0,optional,UploadFileResponse" json:"success,omitempty"`
 }
 
-func NewFileServiceUploadFileResult() *FileServiceUploadFileResult {
-	return &FileServiceUploadFileResult{}
+func NewFileServiceUploadFileBatchResult() *FileServiceUploadFileBatchResult {
+	return &FileServiceUploadFileBatchResult{}
 }
 
-func (p *FileServiceUploadFileResult) InitDefault() {
+func (p *FileServiceUploadFileBatchResult) InitDefault() {
 }
 
-var FileServiceUploadFileResult_Success_DEFAULT *UploadFileResponse
+var FileServiceUploadFileBatchResult_Success_DEFAULT *UploadFileResponse
 
-func (p *FileServiceUploadFileResult) GetSuccess() (v *UploadFileResponse) {
+func (p *FileServiceUploadFileBatchResult) GetSuccess() (v *UploadFileResponse) {
 	if !p.IsSetSuccess() {
-		return FileServiceUploadFileResult_Success_DEFAULT
+		return FileServiceUploadFileBatchResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *FileServiceUploadFileResult) SetSuccess(x interface{}) {
+func (p *FileServiceUploadFileBatchResult) SetSuccess(x interface{}) {
 	p.Success = x.(*UploadFileResponse)
 }
 
-var fieldIDToName_FileServiceUploadFileResult = map[int16]string{
+var fieldIDToName_FileServiceUploadFileBatchResult = map[int16]string{
 	0: "success",
 }
 
-func (p *FileServiceUploadFileResult) IsSetSuccess() bool {
+func (p *FileServiceUploadFileBatchResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *FileServiceUploadFileResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4277,7 +4277,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FileServiceUploadFileBatchResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4287,7 +4287,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *FileServiceUploadFileBatchResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewUploadFileResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4296,9 +4296,9 @@ func (p *FileServiceUploadFileResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *FileServiceUploadFileResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFile_result"); err != nil {
+	if err = oprot.WriteStructBegin("UploadFileBatch_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4324,7 +4324,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *FileServiceUploadFileBatchResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4343,15 +4343,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *FileServiceUploadFileResult) String() string {
+func (p *FileServiceUploadFileBatchResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("FileServiceUploadFileResult(%+v)", *p)
+	return fmt.Sprintf("FileServiceUploadFileBatchResult(%+v)", *p)
 
 }
 
-func (p *FileServiceUploadFileResult) DeepEqual(ano *FileServiceUploadFileResult) bool {
+func (p *FileServiceUploadFileBatchResult) DeepEqual(ano *FileServiceUploadFileBatchResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4363,7 +4363,7 @@ func (p *FileServiceUploadFileResult) DeepEqual(ano *FileServiceUploadFileResult
 	return true
 }
 
-func (p *FileServiceUploadFileResult) Field0DeepEqual(src *UploadFileResponse) bool {
+func (p *FileServiceUploadFileBatchResult) Field0DeepEqual(src *UploadFileResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

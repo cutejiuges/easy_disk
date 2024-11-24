@@ -10,11 +10,6 @@ import (
 // FileServiceImpl implements the last service interface defined in the IDL.
 type FileServiceImpl struct{}
 
-// UploadFile implements the FileServiceImpl interface.
-func (s *FileServiceImpl) UploadFile(ctx context.Context, req *file_server.UploadFileRequest) (resp *file_server.UploadFileResponse, err error) {
-	return handler.NewUploadFileHandler(ctx, req).Handle()
-}
-
 // QueryFileInfo implements the FileServiceImpl interface.
 func (s *FileServiceImpl) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (resp *file_server.QueryFileInfoResponse, err error) {
 	return handler.NewQueryFileInfoHandler(ctx, req).Handle()
@@ -36,4 +31,9 @@ func (s *FileServiceImpl) EditFileInfo(ctx context.Context, req *disk_common.Edi
 func (s *FileServiceImpl) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (resp *file_server.DeleteFileResponse, err error) {
 	// TODO: Your code here...
 	return
+}
+
+// UploadFileBatch implements the FileServiceImpl interface.
+func (s *FileServiceImpl) UploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest) (resp *file_server.UploadFileResponse, err error) {
+	return handler.NewUploadFileBatchHandler(ctx, req).Handle()
 }
