@@ -55,3 +55,8 @@ func _editfileinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _uploadfilebatchMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

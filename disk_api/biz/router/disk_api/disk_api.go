@@ -23,6 +23,6 @@ func Register(r *server.Hertz) {
 		_file.GET("/downloadFile", append(_downloadfileMw(), disk_api.DownloadFile)...)
 		_file.POST("/editFileInfo", append(_editfileinfoMw(), disk_api.EditFileInfo)...)
 		_file.POST("/queryFileInfo", append(_queryfileinfoMw(), disk_api.QueryFileInfo)...)
-		_file.POST("/uploadFile", append(_uploadfileMw(), disk_api.UploadFile)...)
+		_file.POST("/uploadFileBatch", append(_uploadfilebatchMw(), disk_api.UploadFileBatch)...)
 	}
 }

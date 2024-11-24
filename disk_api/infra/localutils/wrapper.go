@@ -3,7 +3,7 @@ package localutils
 import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_back"
+	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"net/url"
 )
 
@@ -28,8 +28,8 @@ func Wrapper(c *app.RequestContext, data any, err error) {
 		return
 	}
 	switch data.(type) {
-	case *disk_back.DownloadFileResponse:
-		file := data.(*disk_back.DownloadFileResponse).Data
+	case *file_server.DownloadFileResponse:
+		file := data.(*file_server.DownloadFileResponse).Data
 		c.Response.Header.Set("Content-Disposition", "attachment; filename="+url.QueryEscape(file.GetFileName()))
 		c.Response.Header.Set("Content-Type", "application/octet-stream")
 		c.Response.SetBodyRaw(file.Content)

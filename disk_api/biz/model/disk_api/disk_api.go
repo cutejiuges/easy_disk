@@ -307,7 +307,7 @@ func (p *UploadFileResponse) String() string {
 }
 
 type DiskApiService interface {
-	UploadFile(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
+	UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
 
 	QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (r *disk_common.CommonResponse, err error)
 
@@ -344,11 +344,11 @@ func (p *DiskApiServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *DiskApiServiceClient) UploadFile(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error) {
-	var _args DiskApiServiceUploadFileArgs
+func (p *DiskApiServiceClient) UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error) {
+	var _args DiskApiServiceUploadFileBatchArgs
 	_args.Req = req
-	var _result DiskApiServiceUploadFileResult
-	if err = p.Client_().Call(ctx, "UploadFile", &_args, &_result); err != nil {
+	var _result DiskApiServiceUploadFileBatchResult
+	if err = p.Client_().Call(ctx, "UploadFileBatch", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -410,7 +410,7 @@ func (p *DiskApiServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFun
 
 func NewDiskApiServiceProcessor(handler DiskApiService) *DiskApiServiceProcessor {
 	self := &DiskApiServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("UploadFile", &diskApiServiceProcessorUploadFile{handler: handler})
+	self.AddToProcessorMap("UploadFileBatch", &diskApiServiceProcessorUploadFileBatch{handler: handler})
 	self.AddToProcessorMap("QueryFileInfo", &diskApiServiceProcessorQueryFileInfo{handler: handler})
 	self.AddToProcessorMap("DownloadFile", &diskApiServiceProcessorDownloadFile{handler: handler})
 	self.AddToProcessorMap("EditFileInfo", &diskApiServiceProcessorEditFileInfo{handler: handler})
@@ -435,16 +435,16 @@ func (p *DiskApiServiceProcessor) Process(ctx context.Context, iprot, oprot thri
 	return false, x
 }
 
-type diskApiServiceProcessorUploadFile struct {
+type diskApiServiceProcessorUploadFileBatch struct {
 	handler DiskApiService
 }
 
-func (p *diskApiServiceProcessorUploadFile) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DiskApiServiceUploadFileArgs{}
+func (p *diskApiServiceProcessorUploadFileBatch) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DiskApiServiceUploadFileBatchArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("UploadFile", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("UploadFileBatch", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -453,11 +453,11 @@ func (p *diskApiServiceProcessorUploadFile) Process(ctx context.Context, seqId i
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DiskApiServiceUploadFileResult{}
+	result := DiskApiServiceUploadFileBatchResult{}
 	var retval *UploadFileResponse
-	if retval, err2 = p.handler.UploadFile(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UploadFile: "+err2.Error())
-		oprot.WriteMessageBegin("UploadFile", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.UploadFileBatch(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UploadFileBatch: "+err2.Error())
+		oprot.WriteMessageBegin("UploadFileBatch", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -465,7 +465,7 @@ func (p *diskApiServiceProcessorUploadFile) Process(ctx context.Context, seqId i
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("UploadFile", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("UploadFileBatch", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -675,35 +675,35 @@ func (p *diskApiServiceProcessorDeleteFile) Process(ctx context.Context, seqId i
 	return true, err
 }
 
-type DiskApiServiceUploadFileArgs struct {
+type DiskApiServiceUploadFileBatchArgs struct {
 	Req *UploadFileRequest `thrift:"req,1"`
 }
 
-func NewDiskApiServiceUploadFileArgs() *DiskApiServiceUploadFileArgs {
-	return &DiskApiServiceUploadFileArgs{}
+func NewDiskApiServiceUploadFileBatchArgs() *DiskApiServiceUploadFileBatchArgs {
+	return &DiskApiServiceUploadFileBatchArgs{}
 }
 
-func (p *DiskApiServiceUploadFileArgs) InitDefault() {
+func (p *DiskApiServiceUploadFileBatchArgs) InitDefault() {
 }
 
-var DiskApiServiceUploadFileArgs_Req_DEFAULT *UploadFileRequest
+var DiskApiServiceUploadFileBatchArgs_Req_DEFAULT *UploadFileRequest
 
-func (p *DiskApiServiceUploadFileArgs) GetReq() (v *UploadFileRequest) {
+func (p *DiskApiServiceUploadFileBatchArgs) GetReq() (v *UploadFileRequest) {
 	if !p.IsSetReq() {
-		return DiskApiServiceUploadFileArgs_Req_DEFAULT
+		return DiskApiServiceUploadFileBatchArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DiskApiServiceUploadFileArgs = map[int16]string{
+var fieldIDToName_DiskApiServiceUploadFileBatchArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DiskApiServiceUploadFileArgs) IsSetReq() bool {
+func (p *DiskApiServiceUploadFileBatchArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DiskApiServiceUploadFileArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -749,7 +749,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUploadFileArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUploadFileBatchArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -759,7 +759,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DiskApiServiceUploadFileBatchArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewUploadFileRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -768,9 +768,9 @@ func (p *DiskApiServiceUploadFileArgs) ReadField1(iprot thrift.TProtocol) error 
 	return nil
 }
 
-func (p *DiskApiServiceUploadFileArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFile_args"); err != nil {
+	if err = oprot.WriteStructBegin("UploadFileBatch_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -796,7 +796,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -813,43 +813,43 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileArgs) String() string {
+func (p *DiskApiServiceUploadFileBatchArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DiskApiServiceUploadFileArgs(%+v)", *p)
+	return fmt.Sprintf("DiskApiServiceUploadFileBatchArgs(%+v)", *p)
 
 }
 
-type DiskApiServiceUploadFileResult struct {
+type DiskApiServiceUploadFileBatchResult struct {
 	Success *UploadFileResponse `thrift:"success,0,optional"`
 }
 
-func NewDiskApiServiceUploadFileResult() *DiskApiServiceUploadFileResult {
-	return &DiskApiServiceUploadFileResult{}
+func NewDiskApiServiceUploadFileBatchResult() *DiskApiServiceUploadFileBatchResult {
+	return &DiskApiServiceUploadFileBatchResult{}
 }
 
-func (p *DiskApiServiceUploadFileResult) InitDefault() {
+func (p *DiskApiServiceUploadFileBatchResult) InitDefault() {
 }
 
-var DiskApiServiceUploadFileResult_Success_DEFAULT *UploadFileResponse
+var DiskApiServiceUploadFileBatchResult_Success_DEFAULT *UploadFileResponse
 
-func (p *DiskApiServiceUploadFileResult) GetSuccess() (v *UploadFileResponse) {
+func (p *DiskApiServiceUploadFileBatchResult) GetSuccess() (v *UploadFileResponse) {
 	if !p.IsSetSuccess() {
-		return DiskApiServiceUploadFileResult_Success_DEFAULT
+		return DiskApiServiceUploadFileBatchResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DiskApiServiceUploadFileResult = map[int16]string{
+var fieldIDToName_DiskApiServiceUploadFileBatchResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DiskApiServiceUploadFileResult) IsSetSuccess() bool {
+func (p *DiskApiServiceUploadFileBatchResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DiskApiServiceUploadFileResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -895,7 +895,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUploadFileResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUploadFileBatchResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -905,7 +905,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DiskApiServiceUploadFileBatchResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewUploadFileResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -914,9 +914,9 @@ func (p *DiskApiServiceUploadFileResult) ReadField0(iprot thrift.TProtocol) erro
 	return nil
 }
 
-func (p *DiskApiServiceUploadFileResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFile_result"); err != nil {
+	if err = oprot.WriteStructBegin("UploadFileBatch_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -942,7 +942,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DiskApiServiceUploadFileBatchResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -961,11 +961,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DiskApiServiceUploadFileResult) String() string {
+func (p *DiskApiServiceUploadFileBatchResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DiskApiServiceUploadFileResult(%+v)", *p)
+	return fmt.Sprintf("DiskApiServiceUploadFileBatchResult(%+v)", *p)
 
 }
 

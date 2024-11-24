@@ -2,16 +2,21 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/cache"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/bo"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
 	"os"
+	"sync"
 )
 
 /**
@@ -23,7 +28,62 @@ import (
 
 func ProcessUploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest) (*file_server.UploadFileData, error) {
 	data := file_server.NewUploadFileData()
-	// 先查询文件是否已经上传过，抽取文件的sha256进行校验
+	//处理文件上传，使用文件总数的1/5个协程执行文件上传，但最多只开10个协程
+	wg := sync.WaitGroup{}
+	success, failed := util.NewSafeMap[string, *file_server.OperateFileRes](), util.NewSafeMap[string, *file_server.OperateFileRes]()
+	processNum := min((len(req.GetFiles())+enum.NumberOfGoroutineProcessed-1)/enum.NumberOfGoroutineProcessed, enum.MaxNumberOfGoroutines)
+	groupLength := len(req.GetFiles()) / processNum
+	for i := 0; i < processNum; i++ {
+		wg.Add(1)
+		go func(processId int) {
+			defer wg.Done()
+			//计算当前协程要处理的分片起止位置
+			startIdx, endIdx := processId*groupLength, (processId+1)*groupLength
+			if processId == processNum-1 {
+				endIdx = len(req.GetFiles())
+			}
+
+			//处理文件
+			for j := startIdx; j < endIdx; j++ {
+				func(idx int) {
+					f := req.GetFiles()[idx]
+					// 1. 非正在上传，校验是否已经上传过
+					fileKey := util.GetSha256Key(f.GetFileData())
+					if simpleFile, exits := fileExistInDB(ctx, fileKey); exits {
+						//已经上传过，直接返回历史信息
+						success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg})
+						return
+					}
+
+					// 2. 获取全局锁，取锁成功进入上传流程，取锁失败说明在上传中
+					fileLock := cache.NewDistributedLock(cache.UploadFileLockKey(fileKey))
+					if ok := fileLock.TryLock(); !ok {
+						//文件正在上传
+						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: 0, FileName: f.GetFileName(), Msg: "文件正在上传中"})
+						return
+					}
+					//记得释放锁
+					defer fileLock.Unlock()
+
+					// 3. 没有上传过，执行上传动作
+					path := fmt.Sprintf("%s%s", enum.LocationOfUploadFiles, f.GetFileName())
+					simpleFile, err := saveFileInfo(ctx, path, f.GetFileData())
+					if err != nil {
+						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg + err.Error()})
+						return
+					}
+					success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg})
+					return
+				}(j)
+			}
+		}(i)
+	}
+	wg.Wait()
+	status := judgeOperateStatus(success, failed)
+	data.Status = thrift.Int8Ptr(status)
+	data.StatusName = thrift.StringPtr(enum.OperateFileStatusMap[status])
+	data.SetSuccessRes(success.GetData())
+	data.SetFailedRes(failed.GetData())
 	return data, nil
 }
 
@@ -54,28 +114,60 @@ func fileExistInDB(ctx context.Context, fileKey string) (bo.SimpleFile, bool) {
 	}
 	simpleFile.ID = f.ID
 	simpleFile.Msg = "文件已上传过"
+	simpleFile.Name = f.FileName
 	return simpleFile, true
 }
 
 // 执行文件保存动作
-func saveFileInfo(ctx context.Context, path string, content []byte) (bo.SimpleFile, error) {
-	simpleFile := bo.SimpleFile{ID: 0, Msg: "文件上传失败"}
+func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile bo.SimpleFile, err error) {
+	simpleFile = bo.SimpleFile{ID: 0, Msg: "文件上传失败"}
 	//对未上传的文件执行文件写入
 	id, err := cache.GetNextUniqID(ctx)
 	if err != nil {
-		klog.CtxErrorf(ctx, "service.saveFileInfo -> cache.GetNextUniqID error: %v", err)
 		return simpleFile, err
 	}
-	//先写入mysql，再进行本地存储
+	//构建写入sql的fileMeta
 	uniqKey := util.GetSha256Key(content)
 	fileMeta := &model.FileMeta{
 		ID:       id,
 		FileKey:  uniqKey,
-		FileName: uniqKey,
+		FileName: uniqKey, //以uniqKey作为文件名
 		FileAddr: path,
 		FileSize: int64(len(content)),
 		Status:   enum.FileMetaStatusEnable,
 	}
 	klog.CtxInfof(ctx, "service.saveFileInfo create fileMeta: %v", fileMeta)
+	//写数据库，开启事务
+	qry := query.Use(mysql.DB()).Begin()
+	defer func() {
+		if e := recover(); e != nil || err != nil {
+			_ = qry.Rollback()
+		}
+	}()
+	//先写入mysql，如果写数据库失败，回滚后直接返回
+	if err = dao.CreateFile(ctx, qry.Query, fileMeta); err != nil {
+		klog.CtxErrorf(ctx, "service.saveFileInfo -> dao.CreateFile error: %v", err)
+		return simpleFile, err
+	}
+	//再写入本地存储，如果写文件失败，也可以把数据库信息回滚掉，确保信息是干净的
+	if err = writeFileEntity(path+uniqKey, content); err != nil {
+		klog.CtxErrorf(ctx, "service.saveFileInfo -> service.writeFileEntity error: %v", err)
+		return simpleFile, err
+	}
+	_ = qry.Commit()
+	simpleFile.ID = id
+	simpleFile.Msg = "文件上传成功"
+	simpleFile.Name = uniqKey
 	return simpleFile, nil
+}
+
+func judgeOperateStatus[K comparable, V any](success, failed *util.SafeMap[K, V]) int8 {
+	res := enum.OperateFileStatusPartiallySuccessful
+	if success.Len() == 0 {
+		res = enum.OperateFileStatusFailed
+	}
+	if failed.Len() == 0 {
+		res = enum.OperateFileStatusSuccess
+	}
+	return res
 }
