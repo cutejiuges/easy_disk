@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"github.com/cutejiuges/disk_back/errno"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
@@ -23,6 +24,7 @@ func CreateFile(ctx context.Context, q *query.Query, fileParam *model.FileMeta) 
 		FileName: fileParam.FileName,
 		FileSize: fileParam.FileSize,
 		FileAddr: fileParam.FileAddr,
+		RefNum:   fileParam.RefNum,
 		Status:   fileParam.Status,
 	}
 	return dao.Create(fileMeta)
@@ -38,6 +40,7 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 			FileName: file.FileName,
 			FileSize: file.FileSize,
 			FileAddr: file.FileAddr,
+			RefNum:   file.RefNum,
 			Status:   file.Status,
 		}
 		fileMetaList = append(fileMetaList, meta)
@@ -71,5 +74,19 @@ func DeleteFile(ctx context.Context, q *query.Query, param *param.EditFileMetaPa
 		dao = dao.Where(meta.ID.In(param.IdList...))
 	}
 	_, err := dao.UpdateSimple(meta.Status.Value(enum.FileMetaStatusDeleted))
+	return err
+}
+
+func ModifyFileRef(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
+	if len(param.IdList) <= 0 {
+		return &errno.BizError{
+			Code: errno.ErrCodeDbUnknownError,
+			Msg:  "检索条件不正确，id为必传参数",
+		}
+	}
+	meta := q.FileMeta
+	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusDeleted))
+	dao = dao.Where(meta.ID.In(param.IdList...))
+	_, err := dao.UpdateSimple(meta.RefNum.Add(param.RefDealt))
 	return err
 }

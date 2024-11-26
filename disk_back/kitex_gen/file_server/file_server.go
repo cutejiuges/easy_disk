@@ -514,9 +514,9 @@ func (p *UploadFileRequest) Field255DeepEqual(src *base.Base) bool {
 }
 
 type OperateFileRes struct {
-	Id       int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
-	FileName string `thrift:"file_name,2,required" frugal:"2,required,string" json:"file_name"`
-	Msg      string `thrift:"msg,3,required" frugal:"3,required,string" json:"msg"`
+	Id      int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
+	FileKey string `thrift:"file_key,2,required" frugal:"2,required,string" json:"file_key"`
+	Msg     string `thrift:"msg,3,required" frugal:"3,required,string" json:"msg"`
 }
 
 func NewOperateFileRes() *OperateFileRes {
@@ -530,8 +530,8 @@ func (p *OperateFileRes) GetId() (v int64) {
 	return p.Id
 }
 
-func (p *OperateFileRes) GetFileName() (v string) {
-	return p.FileName
+func (p *OperateFileRes) GetFileKey() (v string) {
+	return p.FileKey
 }
 
 func (p *OperateFileRes) GetMsg() (v string) {
@@ -540,8 +540,8 @@ func (p *OperateFileRes) GetMsg() (v string) {
 func (p *OperateFileRes) SetId(val int64) {
 	p.Id = val
 }
-func (p *OperateFileRes) SetFileName(val string) {
-	p.FileName = val
+func (p *OperateFileRes) SetFileKey(val string) {
+	p.FileKey = val
 }
 func (p *OperateFileRes) SetMsg(val string) {
 	p.Msg = val
@@ -549,7 +549,7 @@ func (p *OperateFileRes) SetMsg(val string) {
 
 var fieldIDToName_OperateFileRes = map[int16]string{
 	1: "id",
-	2: "file_name",
+	2: "file_key",
 	3: "msg",
 }
 
@@ -558,7 +558,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetId bool = false
-	var issetFileName bool = false
+	var issetFileKey bool = false
 	var issetMsg bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -589,7 +589,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetFileName = true
+				issetFileKey = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -620,7 +620,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFileName {
+	if !issetFileKey {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -666,7 +666,7 @@ func (p *OperateFileRes) ReadField2(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.FileName = _field
+	p.FileKey = _field
 	return nil
 }
 func (p *OperateFileRes) ReadField3(iprot thrift.TProtocol) error {
@@ -735,10 +735,10 @@ WriteFieldEndError:
 }
 
 func (p *OperateFileRes) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("file_name", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("file_key", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.FileName); err != nil {
+	if err := oprot.WriteString(p.FileKey); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -785,7 +785,7 @@ func (p *OperateFileRes) DeepEqual(ano *OperateFileRes) bool {
 	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.FileName) {
+	if !p.Field2DeepEqual(ano.FileKey) {
 		return false
 	}
 	if !p.Field3DeepEqual(ano.Msg) {
@@ -803,7 +803,7 @@ func (p *OperateFileRes) Field1DeepEqual(src int64) bool {
 }
 func (p *OperateFileRes) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.FileName, src) != 0 {
+	if strings.Compare(p.FileKey, src) != 0 {
 		return false
 	}
 	return true

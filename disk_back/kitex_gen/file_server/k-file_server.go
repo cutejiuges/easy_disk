@@ -442,7 +442,7 @@ func (p *OperateFileRes) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetId bool = false
-	var issetFileName bool = false
+	var issetFileKey bool = false
 	var issetMsg bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
@@ -482,7 +482,7 @@ func (p *OperateFileRes) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetFileName = true
+				issetFileKey = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -530,7 +530,7 @@ func (p *OperateFileRes) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetFileName {
+	if !issetFileKey {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -584,7 +584,7 @@ func (p *OperateFileRes) FastReadField2(buf []byte) (int, error) {
 		_field = v
 
 	}
-	p.FileName = _field
+	p.FileKey = _field
 	return offset, nil
 }
 
@@ -645,8 +645,8 @@ func (p *OperateFileRes) fastWriteField1(buf []byte, binaryWriter bthrift.Binary
 
 func (p *OperateFileRes) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "file_name", thrift.STRING, 2)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.FileName)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "file_key", thrift.STRING, 2)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.FileKey)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
@@ -669,8 +669,8 @@ func (p *OperateFileRes) field1Length() int {
 
 func (p *OperateFileRes) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("file_name", thrift.STRING, 2)
-	l += bthrift.Binary.StringLengthNocopy(p.FileName)
+	l += bthrift.Binary.FieldBeginLength("file_key", thrift.STRING, 2)
+	l += bthrift.Binary.StringLengthNocopy(p.FileKey)
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
