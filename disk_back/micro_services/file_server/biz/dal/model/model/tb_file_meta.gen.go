@@ -17,9 +17,10 @@ type FileMeta struct {
 	FileName string    `gorm:"column:file_name;type:varchar(255);not null;comment:文件名" json:"file_name"`                        // 文件名
 	FileSize int64     `gorm:"column:file_size;type:bigint;not null;comment:文件大小，单位字节" json:"file_size"`                        // 文件大小，单位字节
 	FileAddr string    `gorm:"column:file_addr;type:varchar(255);not null;comment:文件地址" json:"file_addr"`                       // 文件地址
+	RefNum   int64     `gorm:"column:ref_num;type:int;not null;default:1;comment:文件引用次数" json:"ref_num"`                        // 文件引用次数
+	Status   int8      `gorm:"column:status;type:tinyint;not null;comment:文件状态 0-未知 1-生效中 2-已删除" json:"status"`                 // 文件状态 0-未知 1-生效中 2-已删除
 	CreateAt time.Time `gorm:"column:create_at;type:datetime;not null;default:CURRENT_TIMESTAMP;comment:创建时间" json:"create_at"` // 创建时间
 	UpdateAt time.Time `gorm:"column:update_at;type:datetime;not null;default:CURRENT_TIMESTAMP;comment:更新时间" json:"update_at"` // 更新时间
-	Status   int8      `gorm:"column:status;type:tinyint;not null;comment:文件状态 0-未知 1-生效中 2-已删除" json:"status"`                 // 文件状态 0-未知 1-生效中 2-已删除
 }
 
 // TableName FileMeta's table name

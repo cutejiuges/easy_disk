@@ -47,32 +47,37 @@ func ProcessUploadFileBatch(ctx context.Context, req *file_server.UploadFileRequ
 			for j := startIdx; j < endIdx; j++ {
 				func(idx int) {
 					f := req.GetFiles()[idx]
-					// 1. 非正在上传，校验是否已经上传过
 					fileKey := util.GetSha256Key(f.GetFileData())
-					if simpleFile, exits := fileExistInDB(ctx, fileKey); exits {
-						//已经上传过，直接返回历史信息
-						success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg})
-						return
-					}
-
-					// 2. 获取全局锁，取锁成功进入上传流程，取锁失败说明在上传中
+					// 1. 获取全局锁，取锁成功进入上传流程，取锁失败说明在上传中
 					fileLock := cache.NewDistributedLock(cache.UploadFileLockKey(fileKey))
 					if ok := fileLock.TryLock(); !ok {
 						//文件正在上传
-						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: 0, FileName: f.GetFileName(), Msg: "文件正在上传中"})
+						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: 0, FileKey: fileKey, Msg: "文件正在上传中"})
 						return
 					}
 					//记得释放锁
 					defer fileLock.Unlock()
 
+					// 2. 非正在上传，校验是否已经上传过
+					if simpleFile, exits := fileExistInDB(ctx, fileKey); exits {
+						//已经上传过，增加文件引用数量，直接返回历史信息
+						err := addFileRefNum(ctx, []int64{simpleFile.ID})
+						if err != nil {
+							failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileKey: fileKey, Msg: err.Error()})
+							return
+						}
+						success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileKey: simpleFile.Key, Msg: simpleFile.Msg})
+						return
+					}
+
 					// 3. 没有上传过，执行上传动作
 					path := fmt.Sprintf("%s%s", enum.LocationOfUploadFiles, f.GetFileName())
 					simpleFile, err := saveFileInfo(ctx, path, f.GetFileData())
 					if err != nil {
-						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg + err.Error()})
+						failed.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileKey: fileKey, Msg: simpleFile.Msg + err.Error()})
 						return
 					}
-					success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileName: simpleFile.Name, Msg: simpleFile.Msg})
+					success.Put(f.GetFileName(), &file_server.OperateFileRes{Id: simpleFile.ID, FileKey: simpleFile.Key, Msg: simpleFile.Msg})
 					return
 				}(j)
 			}
@@ -114,7 +119,7 @@ func fileExistInDB(ctx context.Context, fileKey string) (bo.SimpleFile, bool) {
 	}
 	simpleFile.ID = f.ID
 	simpleFile.Msg = "文件已上传过"
-	simpleFile.Name = f.FileName
+	simpleFile.Key = f.FileKey
 	return simpleFile, true
 }
 
@@ -157,8 +162,16 @@ func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile 
 	_ = qry.Commit()
 	simpleFile.ID = id
 	simpleFile.Msg = "文件上传成功"
-	simpleFile.Name = uniqKey
+	simpleFile.Key = uniqKey
 	return simpleFile, nil
+}
+
+func addFileRefNum(ctx context.Context, fileIds []int64) error {
+	qry := query.Use(mysql.DB())
+	return dao.ModifyFileRef(ctx, qry, &param.EditFileMetaParam{
+		IdList:   fileIds,
+		RefDealt: int64(1),
+	})
 }
 
 func judgeOperateStatus[K comparable, V any](success, failed *util.SafeMap[K, V]) int8 {

@@ -29,5 +29,7 @@ type EditFileMetaParam struct {
 	IdList   []int64
 	FileName string
 	FileAddr string
+	RefNum   int64
+	RefDealt int64
 	Status   int8
 }
