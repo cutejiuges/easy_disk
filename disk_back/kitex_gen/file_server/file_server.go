@@ -13,7 +13,7 @@ import (
 )
 
 type UploadFileMeta struct {
-	FileName string `thrift:"file_name,1,required" frugal:"1,required,string" json:"file_name"`
+	FileKey  string `thrift:"file_key,1,required" frugal:"1,required,string" json:"file_key"`
 	FileData []byte `thrift:"file_data,2,required" frugal:"2,required,binary" json:"file_data"`
 }
 
@@ -24,22 +24,22 @@ func NewUploadFileMeta() *UploadFileMeta {
 func (p *UploadFileMeta) InitDefault() {
 }
 
-func (p *UploadFileMeta) GetFileName() (v string) {
-	return p.FileName
+func (p *UploadFileMeta) GetFileKey() (v string) {
+	return p.FileKey
 }
 
 func (p *UploadFileMeta) GetFileData() (v []byte) {
 	return p.FileData
 }
-func (p *UploadFileMeta) SetFileName(val string) {
-	p.FileName = val
+func (p *UploadFileMeta) SetFileKey(val string) {
+	p.FileKey = val
 }
 func (p *UploadFileMeta) SetFileData(val []byte) {
 	p.FileData = val
 }
 
 var fieldIDToName_UploadFileMeta = map[int16]string{
-	1: "file_name",
+	1: "file_key",
 	2: "file_data",
 }
 
@@ -47,7 +47,7 @@ func (p *UploadFileMeta) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetFileName bool = false
+	var issetFileKey bool = false
 	var issetFileData bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -69,7 +69,7 @@ func (p *UploadFileMeta) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetFileName = true
+				issetFileKey = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -95,7 +95,7 @@ func (p *UploadFileMeta) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetFileName {
+	if !issetFileKey {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -130,7 +130,7 @@ func (p *UploadFileMeta) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.FileName = _field
+	p.FileKey = _field
 	return nil
 }
 func (p *UploadFileMeta) ReadField2(iprot thrift.TProtocol) error {
@@ -178,10 +178,10 @@ WriteStructEndError:
 }
 
 func (p *UploadFileMeta) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("file_name", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("file_key", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.FileName); err != nil {
+	if err := oprot.WriteString(p.FileKey); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -225,7 +225,7 @@ func (p *UploadFileMeta) DeepEqual(ano *UploadFileMeta) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.FileName) {
+	if !p.Field1DeepEqual(ano.FileKey) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.FileData) {
@@ -236,7 +236,7 @@ func (p *UploadFileMeta) DeepEqual(ano *UploadFileMeta) bool {
 
 func (p *UploadFileMeta) Field1DeepEqual(src string) bool {
 
-	if strings.Compare(p.FileName, src) != 0 {
+	if strings.Compare(p.FileKey, src) != 0 {
 		return false
 	}
 	return true

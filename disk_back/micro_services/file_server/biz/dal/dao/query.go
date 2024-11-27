@@ -30,14 +30,11 @@ func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (
 	return dao.First()
 }
 
-func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
+func QueryFileMetaListByPage(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
 	q := query.Use(mysql.DB()).FileMeta
 	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusDeleted))
 	if len(param.IdList) > 0 {
 		dao.Where(q.ID.In(param.IdList...))
-	}
-	if len(param.FileName) > 0 {
-		dao.Where(q.FileName.Like(param.FileName))
 	}
 	if len(param.Status) > 0 {
 		statusDao := q.WithContext(ctx)
@@ -54,4 +51,18 @@ func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]
 	}
 
 	return dao.FindByPage((param.Page-1)*param.Size, param.Size)
+}
+
+func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, error) {
+	q := query.Use(mysql.DB()).FileMeta
+	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusDeleted))
+	if len(param.IdList) > 0 {
+		dao.Where(q.ID.In(param.IdList...))
+	}
+	if len(param.Status) > 0 {
+		statusDao := q.WithContext(ctx)
+		statusCond := statusDao.Where(q.Status.In(param.Status...))
+		dao.Where(statusCond)
+	}
+	return dao.Find()
 }

@@ -12,7 +12,6 @@ type QueryFileMetaParam struct {
 	ID            int64
 	FileKey       string
 	IdList        []int64
-	FileName      string
 	MinFileSize   int64
 	MaxFileSize   int64
 	MinCreateTime string
@@ -27,7 +26,6 @@ type EditFileMetaParam struct {
 	ID       int64
 	FileKey  string
 	IdList   []int64
-	FileName string
 	FileAddr string
 	RefNum   int64
 	RefDealt int64

@@ -29,8 +29,7 @@ func (s *FileServiceImpl) EditFileInfo(ctx context.Context, req *disk_common.Edi
 
 // DeleteFile implements the FileServiceImpl interface.
 func (s *FileServiceImpl) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (resp *file_server.DeleteFileResponse, err error) {
-	// TODO: Your code here...
-	return
+	return handler.NewDeleteFileHandler(ctx, req).Handle()
 }
 
 // UploadFileBatch implements the FileServiceImpl interface.

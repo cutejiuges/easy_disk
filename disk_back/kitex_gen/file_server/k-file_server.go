@@ -36,7 +36,7 @@ func (p *UploadFileMeta) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetFileName bool = false
+	var issetFileKey bool = false
 	var issetFileData bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
@@ -61,7 +61,7 @@ func (p *UploadFileMeta) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetFileName = true
+				issetFileKey = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -104,7 +104,7 @@ func (p *UploadFileMeta) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetFileName {
+	if !issetFileKey {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -142,7 +142,7 @@ func (p *UploadFileMeta) FastReadField1(buf []byte) (int, error) {
 		_field = v
 
 	}
-	p.FileName = _field
+	p.FileKey = _field
 	return offset, nil
 }
 
@@ -193,8 +193,8 @@ func (p *UploadFileMeta) BLength() int {
 
 func (p *UploadFileMeta) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "file_name", thrift.STRING, 1)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.FileName)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "file_key", thrift.STRING, 1)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.FileKey)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
@@ -209,8 +209,8 @@ func (p *UploadFileMeta) fastWriteField2(buf []byte, binaryWriter bthrift.Binary
 
 func (p *UploadFileMeta) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("file_name", thrift.STRING, 1)
-	l += bthrift.Binary.StringLengthNocopy(p.FileName)
+	l += bthrift.Binary.FieldBeginLength("file_key", thrift.STRING, 1)
+	l += bthrift.Binary.StringLengthNocopy(p.FileKey)
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }

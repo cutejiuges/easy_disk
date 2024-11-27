@@ -21,7 +21,6 @@ func CreateFile(ctx context.Context, q *query.Query, fileParam *model.FileMeta) 
 	fileMeta := &model.FileMeta{
 		ID:       fileParam.ID,
 		FileKey:  fileParam.FileKey,
-		FileName: fileParam.FileName,
 		FileSize: fileParam.FileSize,
 		FileAddr: fileParam.FileAddr,
 		RefNum:   fileParam.RefNum,
@@ -37,7 +36,6 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 		meta := &model.FileMeta{
 			ID:       file.ID,
 			FileKey:  file.FileKey,
-			FileName: file.FileName,
 			FileSize: file.FileSize,
 			FileAddr: file.FileAddr,
 			RefNum:   file.RefNum,
@@ -46,19 +44,6 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 		fileMetaList = append(fileMetaList, meta)
 	}
 	return dao.CreateInBatches(fileMetaList, batchSize)
-}
-
-func EditFileInfo(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
-	meta := q.FileMeta
-	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusDeleted))
-	if param.ID > 0 {
-		dao = dao.Where(meta.ID.Eq(param.ID))
-	}
-	if param.FileKey != "" {
-		dao = dao.Where(meta.FileKey.Eq(param.FileKey))
-	}
-	_, err := dao.UpdateSimple(meta.FileName.Value(param.FileName), meta.FileAddr.Value(param.FileAddr))
-	return err
 }
 
 func DeleteFile(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {

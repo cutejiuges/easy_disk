@@ -14,7 +14,6 @@ const TableNameFileMeta = "tb_file_meta"
 type FileMeta struct {
 	ID       int64     `gorm:"column:id;type:int unsigned;primaryKey;comment:文件的唯一id" json:"id"`                                // 文件的唯一id
 	FileKey  string    `gorm:"column:file_key;type:varchar(100);not null;comment:文件hash" json:"file_key"`                       // 文件hash
-	FileName string    `gorm:"column:file_name;type:varchar(255);not null;comment:文件名" json:"file_name"`                        // 文件名
 	FileSize int64     `gorm:"column:file_size;type:bigint;not null;comment:文件大小，单位字节" json:"file_size"`                        // 文件大小，单位字节
 	FileAddr string    `gorm:"column:file_addr;type:varchar(255);not null;comment:文件地址" json:"file_addr"`                       // 文件地址
 	RefNum   int64     `gorm:"column:ref_num;type:int;not null;default:1;comment:文件引用次数" json:"ref_num"`                        // 文件引用次数

@@ -43,7 +43,7 @@ func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *dis
 			_, _ = io.Copy(&buf, file)
 
 			fileList = append(fileList, &file_server.UploadFileMeta{
-				FileName: localutils.GetSha256Key(buf.Bytes()),
+				FileKey:  localutils.GetSha256Key(buf.Bytes()),
 				FileData: buf.Bytes(),
 			})
 			return nil
