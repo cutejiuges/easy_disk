@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
@@ -20,7 +19,7 @@ import (
  * @Description:
  */
 
-func ProcessQueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) ([]*file_server.QueryFileInfoData, int64, error) {
+func ProcessQueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) ([]*file_server.QueryFileInfoData, int64, error) {
 	data := make([]*file_server.QueryFileInfoData, 0)
 	fileParam := &param.QueryFileMetaParam{
 		IdList: req.GetID(),

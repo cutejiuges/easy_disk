@@ -7,38 +7,38 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cutejiuges/disk_api/biz/model/base"
-	"github.com/cutejiuges/disk_api/biz/model/disk_common"
+	"github.com/cutejiuges/disk_api/biz/model/file_server"
 )
 
-type UploadFileRequest struct {
+type BlankRequest struct {
 	Base *base.Base `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
-func NewUploadFileRequest() *UploadFileRequest {
-	return &UploadFileRequest{}
+func NewBlankRequest() *BlankRequest {
+	return &BlankRequest{}
 }
 
-func (p *UploadFileRequest) InitDefault() {
+func (p *BlankRequest) InitDefault() {
 }
 
-var UploadFileRequest_Base_DEFAULT *base.Base
+var BlankRequest_Base_DEFAULT *base.Base
 
-func (p *UploadFileRequest) GetBase() (v *base.Base) {
+func (p *BlankRequest) GetBase() (v *base.Base) {
 	if !p.IsSetBase() {
-		return UploadFileRequest_Base_DEFAULT
+		return BlankRequest_Base_DEFAULT
 	}
 	return p.Base
 }
 
-var fieldIDToName_UploadFileRequest = map[int16]string{
+var fieldIDToName_BlankRequest = map[int16]string{
 	255: "base",
 }
 
-func (p *UploadFileRequest) IsSetBase() bool {
+func (p *BlankRequest) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *UploadFileRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *BlankRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -84,7 +84,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UploadFileRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BlankRequest[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -94,7 +94,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *UploadFileRequest) ReadField255(iprot thrift.TProtocol) error {
+func (p *BlankRequest) ReadField255(iprot thrift.TProtocol) error {
 	_field := base.NewBase()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -103,9 +103,9 @@ func (p *UploadFileRequest) ReadField255(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *UploadFileRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *BlankRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFileRequest"); err != nil {
+	if err = oprot.WriteStructBegin("BlankRequest"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -131,7 +131,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *UploadFileRequest) writeField255(oprot thrift.TProtocol) (err error) {
+func (p *BlankRequest) writeField255(oprot thrift.TProtocol) (err error) {
 	if p.IsSetBase() {
 		if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 255); err != nil {
 			goto WriteFieldBeginError
@@ -150,172 +150,22 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
 }
 
-func (p *UploadFileRequest) String() string {
+func (p *BlankRequest) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UploadFileRequest(%+v)", *p)
-
-}
-
-type UploadFileResponse struct {
-	BaseResp *base.BaseResp `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
-}
-
-func NewUploadFileResponse() *UploadFileResponse {
-	return &UploadFileResponse{}
-}
-
-func (p *UploadFileResponse) InitDefault() {
-}
-
-var UploadFileResponse_BaseResp_DEFAULT *base.BaseResp
-
-func (p *UploadFileResponse) GetBaseResp() (v *base.BaseResp) {
-	if !p.IsSetBaseResp() {
-		return UploadFileResponse_BaseResp_DEFAULT
-	}
-	return p.BaseResp
-}
-
-var fieldIDToName_UploadFileResponse = map[int16]string{
-	255: "base_resp",
-}
-
-func (p *UploadFileResponse) IsSetBaseResp() bool {
-	return p.BaseResp != nil
-}
-
-func (p *UploadFileResponse) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 255:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField255(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UploadFileResponse[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *UploadFileResponse) ReadField255(iprot thrift.TProtocol) error {
-	_field := base.NewBaseResp()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.BaseResp = _field
-	return nil
-}
-
-func (p *UploadFileResponse) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("UploadFileResponse"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField255(oprot); err != nil {
-			fieldId = 255
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *UploadFileResponse) writeField255(oprot thrift.TProtocol) (err error) {
-	if p.IsSetBaseResp() {
-		if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 255); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.BaseResp.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 255 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
-}
-
-func (p *UploadFileResponse) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("UploadFileResponse(%+v)", *p)
+	return fmt.Sprintf("BlankRequest(%+v)", *p)
 
 }
 
 type DiskApiService interface {
-	UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
+	UploadFileBatch(ctx context.Context, req *BlankRequest) (r *file_server.UploadFileResponse, err error)
 
-	QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (r *disk_common.CommonResponse, err error)
+	QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) (r *file_server.QueryFileInfoResponse, err error)
 
-	DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest) (r *disk_common.CommonResponse, err error)
+	DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest) (r *file_server.DownloadFileResponse, err error)
 
-	EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (r *disk_common.CommonResponse, err error)
-
-	DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (r *disk_common.CommonResponse, err error)
+	DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error)
 }
 
 type DiskApiServiceClient struct {
@@ -344,7 +194,7 @@ func (p *DiskApiServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *DiskApiServiceClient) UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error) {
+func (p *DiskApiServiceClient) UploadFileBatch(ctx context.Context, req *BlankRequest) (r *file_server.UploadFileResponse, err error) {
 	var _args DiskApiServiceUploadFileBatchArgs
 	_args.Req = req
 	var _result DiskApiServiceUploadFileBatchResult
@@ -353,7 +203,7 @@ func (p *DiskApiServiceClient) UploadFileBatch(ctx context.Context, req *UploadF
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DiskApiServiceClient) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (r *disk_common.CommonResponse, err error) {
+func (p *DiskApiServiceClient) QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) (r *file_server.QueryFileInfoResponse, err error) {
 	var _args DiskApiServiceQueryFileInfoArgs
 	_args.Req = req
 	var _result DiskApiServiceQueryFileInfoResult
@@ -362,7 +212,7 @@ func (p *DiskApiServiceClient) QueryFileInfo(ctx context.Context, req *disk_comm
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DiskApiServiceClient) DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest) (r *disk_common.CommonResponse, err error) {
+func (p *DiskApiServiceClient) DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest) (r *file_server.DownloadFileResponse, err error) {
 	var _args DiskApiServiceDownloadFileArgs
 	_args.Req = req
 	var _result DiskApiServiceDownloadFileResult
@@ -371,16 +221,7 @@ func (p *DiskApiServiceClient) DownloadFile(ctx context.Context, req *disk_commo
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DiskApiServiceClient) EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (r *disk_common.CommonResponse, err error) {
-	var _args DiskApiServiceEditFileInfoArgs
-	_args.Req = req
-	var _result DiskApiServiceEditFileInfoResult
-	if err = p.Client_().Call(ctx, "EditFileInfo", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-func (p *DiskApiServiceClient) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (r *disk_common.CommonResponse, err error) {
+func (p *DiskApiServiceClient) DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error) {
 	var _args DiskApiServiceDeleteFileArgs
 	_args.Req = req
 	var _result DiskApiServiceDeleteFileResult
@@ -413,7 +254,6 @@ func NewDiskApiServiceProcessor(handler DiskApiService) *DiskApiServiceProcessor
 	self.AddToProcessorMap("UploadFileBatch", &diskApiServiceProcessorUploadFileBatch{handler: handler})
 	self.AddToProcessorMap("QueryFileInfo", &diskApiServiceProcessorQueryFileInfo{handler: handler})
 	self.AddToProcessorMap("DownloadFile", &diskApiServiceProcessorDownloadFile{handler: handler})
-	self.AddToProcessorMap("EditFileInfo", &diskApiServiceProcessorEditFileInfo{handler: handler})
 	self.AddToProcessorMap("DeleteFile", &diskApiServiceProcessorDeleteFile{handler: handler})
 	return self
 }
@@ -454,7 +294,7 @@ func (p *diskApiServiceProcessorUploadFileBatch) Process(ctx context.Context, se
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DiskApiServiceUploadFileBatchResult{}
-	var retval *UploadFileResponse
+	var retval *file_server.UploadFileResponse
 	if retval, err2 = p.handler.UploadFileBatch(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UploadFileBatch: "+err2.Error())
 		oprot.WriteMessageBegin("UploadFileBatch", thrift.EXCEPTION, seqId)
@@ -502,7 +342,7 @@ func (p *diskApiServiceProcessorQueryFileInfo) Process(ctx context.Context, seqI
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DiskApiServiceQueryFileInfoResult{}
-	var retval *disk_common.CommonResponse
+	var retval *file_server.QueryFileInfoResponse
 	if retval, err2 = p.handler.QueryFileInfo(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryFileInfo: "+err2.Error())
 		oprot.WriteMessageBegin("QueryFileInfo", thrift.EXCEPTION, seqId)
@@ -550,7 +390,7 @@ func (p *diskApiServiceProcessorDownloadFile) Process(ctx context.Context, seqId
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DiskApiServiceDownloadFileResult{}
-	var retval *disk_common.CommonResponse
+	var retval *file_server.DownloadFileResponse
 	if retval, err2 = p.handler.DownloadFile(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DownloadFile: "+err2.Error())
 		oprot.WriteMessageBegin("DownloadFile", thrift.EXCEPTION, seqId)
@@ -562,54 +402,6 @@ func (p *diskApiServiceProcessorDownloadFile) Process(ctx context.Context, seqId
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("DownloadFile", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
-}
-
-type diskApiServiceProcessorEditFileInfo struct {
-	handler DiskApiService
-}
-
-func (p *diskApiServiceProcessorEditFileInfo) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DiskApiServiceEditFileInfoArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("EditFileInfo", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := DiskApiServiceEditFileInfoResult{}
-	var retval *disk_common.CommonResponse
-	if retval, err2 = p.handler.EditFileInfo(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing EditFileInfo: "+err2.Error())
-		oprot.WriteMessageBegin("EditFileInfo", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("EditFileInfo", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -646,7 +438,7 @@ func (p *diskApiServiceProcessorDeleteFile) Process(ctx context.Context, seqId i
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DiskApiServiceDeleteFileResult{}
-	var retval *disk_common.CommonResponse
+	var retval *file_server.DeleteFileResponse
 	if retval, err2 = p.handler.DeleteFile(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteFile: "+err2.Error())
 		oprot.WriteMessageBegin("DeleteFile", thrift.EXCEPTION, seqId)
@@ -676,7 +468,7 @@ func (p *diskApiServiceProcessorDeleteFile) Process(ctx context.Context, seqId i
 }
 
 type DiskApiServiceUploadFileBatchArgs struct {
-	Req *UploadFileRequest `thrift:"req,1"`
+	Req *BlankRequest `thrift:"req,1"`
 }
 
 func NewDiskApiServiceUploadFileBatchArgs() *DiskApiServiceUploadFileBatchArgs {
@@ -686,9 +478,9 @@ func NewDiskApiServiceUploadFileBatchArgs() *DiskApiServiceUploadFileBatchArgs {
 func (p *DiskApiServiceUploadFileBatchArgs) InitDefault() {
 }
 
-var DiskApiServiceUploadFileBatchArgs_Req_DEFAULT *UploadFileRequest
+var DiskApiServiceUploadFileBatchArgs_Req_DEFAULT *BlankRequest
 
-func (p *DiskApiServiceUploadFileBatchArgs) GetReq() (v *UploadFileRequest) {
+func (p *DiskApiServiceUploadFileBatchArgs) GetReq() (v *BlankRequest) {
 	if !p.IsSetReq() {
 		return DiskApiServiceUploadFileBatchArgs_Req_DEFAULT
 	}
@@ -760,7 +552,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceUploadFileBatchArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewUploadFileRequest()
+	_field := NewBlankRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -822,7 +614,7 @@ func (p *DiskApiServiceUploadFileBatchArgs) String() string {
 }
 
 type DiskApiServiceUploadFileBatchResult struct {
-	Success *UploadFileResponse `thrift:"success,0,optional"`
+	Success *file_server.UploadFileResponse `thrift:"success,0,optional"`
 }
 
 func NewDiskApiServiceUploadFileBatchResult() *DiskApiServiceUploadFileBatchResult {
@@ -832,9 +624,9 @@ func NewDiskApiServiceUploadFileBatchResult() *DiskApiServiceUploadFileBatchResu
 func (p *DiskApiServiceUploadFileBatchResult) InitDefault() {
 }
 
-var DiskApiServiceUploadFileBatchResult_Success_DEFAULT *UploadFileResponse
+var DiskApiServiceUploadFileBatchResult_Success_DEFAULT *file_server.UploadFileResponse
 
-func (p *DiskApiServiceUploadFileBatchResult) GetSuccess() (v *UploadFileResponse) {
+func (p *DiskApiServiceUploadFileBatchResult) GetSuccess() (v *file_server.UploadFileResponse) {
 	if !p.IsSetSuccess() {
 		return DiskApiServiceUploadFileBatchResult_Success_DEFAULT
 	}
@@ -906,7 +698,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceUploadFileBatchResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := NewUploadFileResponse()
+	_field := file_server.NewUploadFileResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -970,7 +762,7 @@ func (p *DiskApiServiceUploadFileBatchResult) String() string {
 }
 
 type DiskApiServiceQueryFileInfoArgs struct {
-	Req *disk_common.QueryFileInfoRequest `thrift:"req,1"`
+	Req *file_server.QueryFileInfoRequest `thrift:"req,1"`
 }
 
 func NewDiskApiServiceQueryFileInfoArgs() *DiskApiServiceQueryFileInfoArgs {
@@ -980,9 +772,9 @@ func NewDiskApiServiceQueryFileInfoArgs() *DiskApiServiceQueryFileInfoArgs {
 func (p *DiskApiServiceQueryFileInfoArgs) InitDefault() {
 }
 
-var DiskApiServiceQueryFileInfoArgs_Req_DEFAULT *disk_common.QueryFileInfoRequest
+var DiskApiServiceQueryFileInfoArgs_Req_DEFAULT *file_server.QueryFileInfoRequest
 
-func (p *DiskApiServiceQueryFileInfoArgs) GetReq() (v *disk_common.QueryFileInfoRequest) {
+func (p *DiskApiServiceQueryFileInfoArgs) GetReq() (v *file_server.QueryFileInfoRequest) {
 	if !p.IsSetReq() {
 		return DiskApiServiceQueryFileInfoArgs_Req_DEFAULT
 	}
@@ -1054,7 +846,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceQueryFileInfoArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := disk_common.NewQueryFileInfoRequest()
+	_field := file_server.NewQueryFileInfoRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1116,7 +908,7 @@ func (p *DiskApiServiceQueryFileInfoArgs) String() string {
 }
 
 type DiskApiServiceQueryFileInfoResult struct {
-	Success *disk_common.CommonResponse `thrift:"success,0,optional"`
+	Success *file_server.QueryFileInfoResponse `thrift:"success,0,optional"`
 }
 
 func NewDiskApiServiceQueryFileInfoResult() *DiskApiServiceQueryFileInfoResult {
@@ -1126,9 +918,9 @@ func NewDiskApiServiceQueryFileInfoResult() *DiskApiServiceQueryFileInfoResult {
 func (p *DiskApiServiceQueryFileInfoResult) InitDefault() {
 }
 
-var DiskApiServiceQueryFileInfoResult_Success_DEFAULT *disk_common.CommonResponse
+var DiskApiServiceQueryFileInfoResult_Success_DEFAULT *file_server.QueryFileInfoResponse
 
-func (p *DiskApiServiceQueryFileInfoResult) GetSuccess() (v *disk_common.CommonResponse) {
+func (p *DiskApiServiceQueryFileInfoResult) GetSuccess() (v *file_server.QueryFileInfoResponse) {
 	if !p.IsSetSuccess() {
 		return DiskApiServiceQueryFileInfoResult_Success_DEFAULT
 	}
@@ -1200,7 +992,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceQueryFileInfoResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := disk_common.NewCommonResponse()
+	_field := file_server.NewQueryFileInfoResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1264,7 +1056,7 @@ func (p *DiskApiServiceQueryFileInfoResult) String() string {
 }
 
 type DiskApiServiceDownloadFileArgs struct {
-	Req *disk_common.DownloadFileRequest `thrift:"req,1"`
+	Req *file_server.DownloadFileRequest `thrift:"req,1"`
 }
 
 func NewDiskApiServiceDownloadFileArgs() *DiskApiServiceDownloadFileArgs {
@@ -1274,9 +1066,9 @@ func NewDiskApiServiceDownloadFileArgs() *DiskApiServiceDownloadFileArgs {
 func (p *DiskApiServiceDownloadFileArgs) InitDefault() {
 }
 
-var DiskApiServiceDownloadFileArgs_Req_DEFAULT *disk_common.DownloadFileRequest
+var DiskApiServiceDownloadFileArgs_Req_DEFAULT *file_server.DownloadFileRequest
 
-func (p *DiskApiServiceDownloadFileArgs) GetReq() (v *disk_common.DownloadFileRequest) {
+func (p *DiskApiServiceDownloadFileArgs) GetReq() (v *file_server.DownloadFileRequest) {
 	if !p.IsSetReq() {
 		return DiskApiServiceDownloadFileArgs_Req_DEFAULT
 	}
@@ -1348,7 +1140,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceDownloadFileArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := disk_common.NewDownloadFileRequest()
+	_field := file_server.NewDownloadFileRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1410,7 +1202,7 @@ func (p *DiskApiServiceDownloadFileArgs) String() string {
 }
 
 type DiskApiServiceDownloadFileResult struct {
-	Success *disk_common.CommonResponse `thrift:"success,0,optional"`
+	Success *file_server.DownloadFileResponse `thrift:"success,0,optional"`
 }
 
 func NewDiskApiServiceDownloadFileResult() *DiskApiServiceDownloadFileResult {
@@ -1420,9 +1212,9 @@ func NewDiskApiServiceDownloadFileResult() *DiskApiServiceDownloadFileResult {
 func (p *DiskApiServiceDownloadFileResult) InitDefault() {
 }
 
-var DiskApiServiceDownloadFileResult_Success_DEFAULT *disk_common.CommonResponse
+var DiskApiServiceDownloadFileResult_Success_DEFAULT *file_server.DownloadFileResponse
 
-func (p *DiskApiServiceDownloadFileResult) GetSuccess() (v *disk_common.CommonResponse) {
+func (p *DiskApiServiceDownloadFileResult) GetSuccess() (v *file_server.DownloadFileResponse) {
 	if !p.IsSetSuccess() {
 		return DiskApiServiceDownloadFileResult_Success_DEFAULT
 	}
@@ -1494,7 +1286,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceDownloadFileResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := disk_common.NewCommonResponse()
+	_field := file_server.NewDownloadFileResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1557,302 +1349,8 @@ func (p *DiskApiServiceDownloadFileResult) String() string {
 
 }
 
-type DiskApiServiceEditFileInfoArgs struct {
-	Req *disk_common.EditFileInfoRequest `thrift:"req,1"`
-}
-
-func NewDiskApiServiceEditFileInfoArgs() *DiskApiServiceEditFileInfoArgs {
-	return &DiskApiServiceEditFileInfoArgs{}
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) InitDefault() {
-}
-
-var DiskApiServiceEditFileInfoArgs_Req_DEFAULT *disk_common.EditFileInfoRequest
-
-func (p *DiskApiServiceEditFileInfoArgs) GetReq() (v *disk_common.EditFileInfoRequest) {
-	if !p.IsSetReq() {
-		return DiskApiServiceEditFileInfoArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-var fieldIDToName_DiskApiServiceEditFileInfoArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceEditFileInfoArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := disk_common.NewEditFileInfoRequest()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.Req = _field
-	return nil
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("EditFileInfo_args"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("DiskApiServiceEditFileInfoArgs(%+v)", *p)
-
-}
-
-type DiskApiServiceEditFileInfoResult struct {
-	Success *disk_common.CommonResponse `thrift:"success,0,optional"`
-}
-
-func NewDiskApiServiceEditFileInfoResult() *DiskApiServiceEditFileInfoResult {
-	return &DiskApiServiceEditFileInfoResult{}
-}
-
-func (p *DiskApiServiceEditFileInfoResult) InitDefault() {
-}
-
-var DiskApiServiceEditFileInfoResult_Success_DEFAULT *disk_common.CommonResponse
-
-func (p *DiskApiServiceEditFileInfoResult) GetSuccess() (v *disk_common.CommonResponse) {
-	if !p.IsSetSuccess() {
-		return DiskApiServiceEditFileInfoResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-var fieldIDToName_DiskApiServiceEditFileInfoResult = map[int16]string{
-	0: "success",
-}
-
-func (p *DiskApiServiceEditFileInfoResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *DiskApiServiceEditFileInfoResult) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceEditFileInfoResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := disk_common.NewCommonResponse()
-	if err := _field.Read(iprot); err != nil {
-		return err
-	}
-	p.Success = _field
-	return nil
-}
-
-func (p *DiskApiServiceEditFileInfoResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("EditFileInfo_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Success.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *DiskApiServiceEditFileInfoResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("DiskApiServiceEditFileInfoResult(%+v)", *p)
-
-}
-
 type DiskApiServiceDeleteFileArgs struct {
-	Req *disk_common.DeleteFileRequest `thrift:"req,1"`
+	Req *file_server.DeleteFileRequest `thrift:"req,1"`
 }
 
 func NewDiskApiServiceDeleteFileArgs() *DiskApiServiceDeleteFileArgs {
@@ -1862,9 +1360,9 @@ func NewDiskApiServiceDeleteFileArgs() *DiskApiServiceDeleteFileArgs {
 func (p *DiskApiServiceDeleteFileArgs) InitDefault() {
 }
 
-var DiskApiServiceDeleteFileArgs_Req_DEFAULT *disk_common.DeleteFileRequest
+var DiskApiServiceDeleteFileArgs_Req_DEFAULT *file_server.DeleteFileRequest
 
-func (p *DiskApiServiceDeleteFileArgs) GetReq() (v *disk_common.DeleteFileRequest) {
+func (p *DiskApiServiceDeleteFileArgs) GetReq() (v *file_server.DeleteFileRequest) {
 	if !p.IsSetReq() {
 		return DiskApiServiceDeleteFileArgs_Req_DEFAULT
 	}
@@ -1936,7 +1434,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceDeleteFileArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := disk_common.NewDeleteFileRequest()
+	_field := file_server.NewDeleteFileRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -1998,7 +1496,7 @@ func (p *DiskApiServiceDeleteFileArgs) String() string {
 }
 
 type DiskApiServiceDeleteFileResult struct {
-	Success *disk_common.CommonResponse `thrift:"success,0,optional"`
+	Success *file_server.DeleteFileResponse `thrift:"success,0,optional"`
 }
 
 func NewDiskApiServiceDeleteFileResult() *DiskApiServiceDeleteFileResult {
@@ -2008,9 +1506,9 @@ func NewDiskApiServiceDeleteFileResult() *DiskApiServiceDeleteFileResult {
 func (p *DiskApiServiceDeleteFileResult) InitDefault() {
 }
 
-var DiskApiServiceDeleteFileResult_Success_DEFAULT *disk_common.CommonResponse
+var DiskApiServiceDeleteFileResult_Success_DEFAULT *file_server.DeleteFileResponse
 
-func (p *DiskApiServiceDeleteFileResult) GetSuccess() (v *disk_common.CommonResponse) {
+func (p *DiskApiServiceDeleteFileResult) GetSuccess() (v *file_server.DeleteFileResponse) {
 	if !p.IsSetSuccess() {
 		return DiskApiServiceDeleteFileResult_Success_DEFAULT
 	}
@@ -2082,7 +1580,7 @@ ReadStructEndError:
 }
 
 func (p *DiskApiServiceDeleteFileResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := disk_common.NewCommonResponse()
+	_field := file_server.NewDeleteFileResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}

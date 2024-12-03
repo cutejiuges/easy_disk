@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/errno"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/service"
 )
@@ -18,13 +17,13 @@ import (
 
 type DeleteFileHandler struct {
 	ctx  context.Context
-	req  *disk_common.DeleteFileRequest
+	req  *file_server.DeleteFileRequest
 	data *file_server.DeleteFileData
 	resp *file_server.DeleteFileResponse
 	err  error
 }
 
-func NewDeleteFileHandler(ctx context.Context, req *disk_common.DeleteFileRequest) *DeleteFileHandler {
+func NewDeleteFileHandler(ctx context.Context, req *file_server.DeleteFileRequest) *DeleteFileHandler {
 	return &DeleteFileHandler{
 		ctx:  ctx,
 		req:  req,

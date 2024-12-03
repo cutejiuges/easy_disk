@@ -46,17 +46,20 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 	return dao.CreateInBatches(fileMetaList, batchSize)
 }
 
-func DeleteFile(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
+func DeleteFile(ctx context.Context, q *query.Query, params *param.EditFileMetaParam) error {
+	if params.ID <= 0 && params.FileKey == "" && len(params.IdList) <= 0 {
+		return nil
+	}
 	meta := q.FileMeta
 	dao := q.WithContext(ctx).FileMeta.Where(meta.Status.Neq(enum.FileMetaStatusDeleted))
-	if param.ID > 0 {
-		dao = dao.Where(meta.ID.Eq(param.ID))
+	if params.ID > 0 {
+		dao = dao.Where(meta.ID.Eq(params.ID))
 	}
-	if param.FileKey != "" {
-		dao = dao.Where(meta.FileKey.Eq(param.FileKey))
+	if params.FileKey != "" {
+		dao = dao.Where(meta.FileKey.Eq(params.FileKey))
 	}
-	if len(param.IdList) > 0 {
-		dao = dao.Where(meta.ID.In(param.IdList...))
+	if len(params.IdList) > 0 {
+		dao = dao.Where(meta.ID.In(params.IdList...))
 	}
 	_, err := dao.UpdateSimple(meta.Status.Value(enum.FileMetaStatusDeleted))
 	return err

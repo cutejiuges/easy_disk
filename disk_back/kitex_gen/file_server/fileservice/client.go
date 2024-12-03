@@ -6,17 +6,15 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	disk_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	file_server "github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	UploadFileBatch(ctx context.Context, req *file_server.UploadFileRequest, callOptions ...callopt.Option) (r *file_server.UploadFileResponse, err error)
-	QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error)
-	DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest, callOptions ...callopt.Option) (r *file_server.DownloadFileResponse, err error)
-	EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest, callOptions ...callopt.Option) (r *file_server.EditFileInfoResponse, err error)
-	DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest, callOptions ...callopt.Option) (r *file_server.DeleteFileResponse, err error)
+	QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error)
+	DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest, callOptions ...callopt.Option) (r *file_server.DownloadFileResponse, err error)
+	DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest, callOptions ...callopt.Option) (r *file_server.DeleteFileResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -53,22 +51,17 @@ func (p *kFileServiceClient) UploadFileBatch(ctx context.Context, req *file_serv
 	return p.kClient.UploadFileBatch(ctx, req)
 }
 
-func (p *kFileServiceClient) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error) {
+func (p *kFileServiceClient) QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest, callOptions ...callopt.Option) (r *file_server.QueryFileInfoResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.QueryFileInfo(ctx, req)
 }
 
-func (p *kFileServiceClient) DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest, callOptions ...callopt.Option) (r *file_server.DownloadFileResponse, err error) {
+func (p *kFileServiceClient) DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest, callOptions ...callopt.Option) (r *file_server.DownloadFileResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DownloadFile(ctx, req)
 }
 
-func (p *kFileServiceClient) EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest, callOptions ...callopt.Option) (r *file_server.EditFileInfoResponse, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.EditFileInfo(ctx, req)
-}
-
-func (p *kFileServiceClient) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest, callOptions ...callopt.Option) (r *file_server.DeleteFileResponse, err error) {
+func (p *kFileServiceClient) DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest, callOptions ...callopt.Option) (r *file_server.DeleteFileResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteFile(ctx, req)
 }

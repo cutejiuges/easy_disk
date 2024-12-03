@@ -21,7 +21,6 @@ func Register(r *server.Hertz) {
 		_file := root.Group("/file", _fileMw()...)
 		_file.POST("/deleteFile", append(_deletefileMw(), disk_api.DeleteFile)...)
 		_file.GET("/downloadFile", append(_downloadfileMw(), disk_api.DownloadFile)...)
-		_file.POST("/editFileInfo", append(_editfileinfoMw(), disk_api.EditFileInfo)...)
 		_file.POST("/queryFileInfo", append(_queryfileinfoMw(), disk_api.QueryFileInfo)...)
 		_file.POST("/uploadFileBatch", append(_uploadfilebatchMw(), disk_api.UploadFileBatch)...)
 	}

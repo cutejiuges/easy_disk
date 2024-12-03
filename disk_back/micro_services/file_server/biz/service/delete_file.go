@@ -5,7 +5,6 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/errno"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
@@ -24,7 +23,7 @@ import (
  * @Description: 执行文件删除操作
  */
 
-func ProcessDeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (*file_server.DeleteFileData, error) {
+func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (*file_server.DeleteFileData, error) {
 	data := file_server.NewDeleteFileData()
 	//1. 根据id查询所有待删除的文件信息
 	fileList, err := dao.QueryFileMetaList(ctx, &param.QueryFileMetaParam{IdList: req.GetId()})
@@ -69,7 +68,8 @@ func ProcessDeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) 
 		wg.Add(1)
 		go func(s string) {
 			defer wg.Done()
-			_ = os.Remove(s)
+			err := os.Remove(s)
+			klog.CtxWarnf(ctx, "remove file error: %v", err)
 		}(path)
 	}
 	qry := query.Use(mysql.DB())

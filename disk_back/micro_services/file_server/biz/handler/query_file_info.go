@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/errno"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/service"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
@@ -21,14 +20,14 @@ import (
 
 type QueryFileInfoHandler struct {
 	ctx      context.Context
-	req      *disk_common.QueryFileInfoRequest
+	req      *file_server.QueryFileInfoRequest
 	resp     *file_server.QueryFileInfoResponse
 	dataList []*file_server.QueryFileInfoData
 	total    int64
 	err      error
 }
 
-func NewQueryFileInfoHandler(ctx context.Context, req *disk_common.QueryFileInfoRequest) *QueryFileInfoHandler {
+func NewQueryFileInfoHandler(ctx context.Context, req *file_server.QueryFileInfoRequest) *QueryFileInfoHandler {
 	return &QueryFileInfoHandler{
 		ctx:  ctx,
 		req:  req,
