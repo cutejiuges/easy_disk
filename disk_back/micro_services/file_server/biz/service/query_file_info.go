@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
@@ -20,14 +19,13 @@ import (
  * @Description:
  */
 
-func ProcessQueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) ([]*file_server.QueryFileInfoData, int64, error) {
+func ProcessQueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) ([]*file_server.QueryFileInfoData, int64, error) {
 	data := make([]*file_server.QueryFileInfoData, 0)
 	fileParam := &param.QueryFileMetaParam{
-		IdList:   req.GetID(),
-		FileName: req.GetFileName(),
-		Status:   req.GetStatus(),
-		Page:     int(req.GetPage()),
-		Size:     int(req.GetSize()),
+		IdList: req.GetID(),
+		Status: req.GetStatus(),
+		Page:   int(req.GetPage()),
+		Size:   int(req.GetSize()),
 	}
 	if len(req.GetUploadTimeInterval()) > 0 {
 		fileParam.MinCreateTime = req.GetUploadTimeInterval()[0]
@@ -37,17 +35,16 @@ func ProcessQueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoReq
 		fileParam.MinFileSize = req.GetFileSizeInterval()[0]
 		fileParam.MaxFileSize = req.GetFileSizeInterval()[1]
 	}
-	klog.CtxInfof(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaList, param: %v", fileParam)
-	list, total, err := dao.QueryFileMetaList(ctx, fileParam)
+	klog.CtxInfof(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaListByPage, param: %v", fileParam)
+	list, total, err := dao.QueryFileMetaListByPage(ctx, fileParam)
 	if err != nil {
-		klog.CtxErrorf(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaList error: %v", err)
+		klog.CtxErrorf(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaListByPage error: %v", err)
 		return data, total, err
 	}
-	klog.CtxInfof(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaList, resp: %v, total: %d", list, total)
+	klog.CtxInfof(ctx, "file_service.ProcessQueryFileInfo -> file_meta_dao.QueryFileMetaListByPage, resp: %v, total: %d", list, total)
 	for _, meta := range list {
 		info := &file_server.QueryFileInfoData{
 			ID:             meta.ID,
-			FileName:       meta.FileName,
 			FileAddress:    meta.FileAddr,
 			FileSize:       meta.FileSize,
 			FileSizeString: thrift.StringPtr(FormatByteCount(meta.FileSize, int(enum.FileSizeUnitIEC))),

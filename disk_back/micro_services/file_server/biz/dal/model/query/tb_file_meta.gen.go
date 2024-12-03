@@ -29,7 +29,6 @@ func newFileMeta(db *gorm.DB, opts ...gen.DOOption) fileMeta {
 	_fileMeta.ALL = field.NewAsterisk(tableName)
 	_fileMeta.ID = field.NewInt64(tableName, "id")
 	_fileMeta.FileKey = field.NewString(tableName, "file_key")
-	_fileMeta.FileName = field.NewString(tableName, "file_name")
 	_fileMeta.FileSize = field.NewInt64(tableName, "file_size")
 	_fileMeta.FileAddr = field.NewString(tableName, "file_addr")
 	_fileMeta.RefNum = field.NewInt64(tableName, "ref_num")
@@ -49,7 +48,6 @@ type fileMeta struct {
 	ALL      field.Asterisk
 	ID       field.Int64  // 文件的唯一id
 	FileKey  field.String // 文件hash
-	FileName field.String // 文件名
 	FileSize field.Int64  // 文件大小，单位字节
 	FileAddr field.String // 文件地址
 	RefNum   field.Int64  // 文件引用次数
@@ -74,7 +72,6 @@ func (f *fileMeta) updateTableName(table string) *fileMeta {
 	f.ALL = field.NewAsterisk(table)
 	f.ID = field.NewInt64(table, "id")
 	f.FileKey = field.NewString(table, "file_key")
-	f.FileName = field.NewString(table, "file_name")
 	f.FileSize = field.NewInt64(table, "file_size")
 	f.FileAddr = field.NewString(table, "file_addr")
 	f.RefNum = field.NewInt64(table, "ref_num")
@@ -105,10 +102,9 @@ func (f *fileMeta) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (f *fileMeta) fillFieldMap() {
-	f.fieldMap = make(map[string]field.Expr, 9)
+	f.fieldMap = make(map[string]field.Expr, 8)
 	f.fieldMap["id"] = f.ID
 	f.fieldMap["file_key"] = f.FileKey
-	f.fieldMap["file_name"] = f.FileName
 	f.fieldMap["file_size"] = f.FileSize
 	f.fieldMap["file_addr"] = f.FileAddr
 	f.fieldMap["ref_num"] = f.RefNum

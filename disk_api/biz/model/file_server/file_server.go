@@ -3,17 +3,18 @@
 package file_server
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/cutejiuges/disk_back/kitex_gen/base"
-	"strings"
+	"github.com/cutejiuges/disk_api/biz/model/base"
 )
 
+// 定义文件上传能力
 type UploadFileMeta struct {
-	FileKey  string `thrift:"file_key,1,required" frugal:"1,required,string" json:"file_key"`
-	FileData []byte `thrift:"file_data,2,required" frugal:"2,required,binary" json:"file_data"`
+	//文件标志
+	FileKey string `thrift:"file_key,1,required" form:"file_key,required" json:"file_key,required" query:"file_key,required"`
+	//文件流
+	FileData []byte `thrift:"file_data,2,required" form:"file_data,required" json:"file_data,required" query:"file_data,required"`
 }
 
 func NewUploadFileMeta() *UploadFileMeta {
@@ -29,12 +30,6 @@ func (p *UploadFileMeta) GetFileKey() (v string) {
 
 func (p *UploadFileMeta) GetFileData() (v []byte) {
 	return p.FileData
-}
-func (p *UploadFileMeta) SetFileKey(val string) {
-	p.FileKey = val
-}
-func (p *UploadFileMeta) SetFileData(val []byte) {
-	p.FileData = val
 }
 
 var fieldIDToName_UploadFileMeta = map[int16]string{
@@ -218,39 +213,9 @@ func (p *UploadFileMeta) String() string {
 
 }
 
-func (p *UploadFileMeta) DeepEqual(ano *UploadFileMeta) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.FileKey) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.FileData) {
-		return false
-	}
-	return true
-}
-
-func (p *UploadFileMeta) Field1DeepEqual(src string) bool {
-
-	if strings.Compare(p.FileKey, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UploadFileMeta) Field2DeepEqual(src []byte) bool {
-
-	if bytes.Compare(p.FileData, src) != 0 {
-		return false
-	}
-	return true
-}
-
 type UploadFileRequest struct {
-	Files []*UploadFileMeta `thrift:"files,1,required" frugal:"1,required,list<UploadFileMeta>" json:"files"`
-	Base  *base.Base        `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	Files []*UploadFileMeta `thrift:"files,1,required" form:"files,required" json:"files,required" query:"files,required"`
+	Base  *base.Base        `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewUploadFileRequest() *UploadFileRequest {
@@ -271,12 +236,6 @@ func (p *UploadFileRequest) GetBase() (v *base.Base) {
 		return UploadFileRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *UploadFileRequest) SetFiles(val []*UploadFileMeta) {
-	p.Files = val
-}
-func (p *UploadFileRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_UploadFileRequest = map[int16]string{
@@ -476,46 +435,13 @@ func (p *UploadFileRequest) String() string {
 
 }
 
-func (p *UploadFileRequest) DeepEqual(ano *UploadFileRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Files) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *UploadFileRequest) Field1DeepEqual(src []*UploadFileMeta) bool {
-
-	if len(p.Files) != len(src) {
-		return false
-	}
-	for i, v := range p.Files {
-		_src := src[i]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-func (p *UploadFileRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type OperateFileRes struct {
-	Id      int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
-	FileKey string `thrift:"file_key,2,required" frugal:"2,required,string" json:"file_key"`
-	Msg     string `thrift:"msg,3,required" frugal:"3,required,string" json:"msg"`
+	//文件id
+	ID int64 `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
+	//文件的key
+	FileKey string `thrift:"file_key,2,required" form:"file_key,required" json:"file_key,required" query:"file_key,required"`
+	//补充说明消息
+	Msg string `thrift:"msg,3,required" form:"msg,required" json:"msg,required" query:"msg,required"`
 }
 
 func NewOperateFileRes() *OperateFileRes {
@@ -525,8 +451,8 @@ func NewOperateFileRes() *OperateFileRes {
 func (p *OperateFileRes) InitDefault() {
 }
 
-func (p *OperateFileRes) GetId() (v int64) {
-	return p.Id
+func (p *OperateFileRes) GetID() (v int64) {
+	return p.ID
 }
 
 func (p *OperateFileRes) GetFileKey() (v string) {
@@ -535,15 +461,6 @@ func (p *OperateFileRes) GetFileKey() (v string) {
 
 func (p *OperateFileRes) GetMsg() (v string) {
 	return p.Msg
-}
-func (p *OperateFileRes) SetId(val int64) {
-	p.Id = val
-}
-func (p *OperateFileRes) SetFileKey(val string) {
-	p.FileKey = val
-}
-func (p *OperateFileRes) SetMsg(val string) {
-	p.Msg = val
 }
 
 var fieldIDToName_OperateFileRes = map[int16]string{
@@ -556,7 +473,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetId bool = false
+	var issetID bool = false
 	var issetFileKey bool = false
 	var issetMsg bool = false
 
@@ -579,7 +496,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetId = true
+				issetID = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -614,7 +531,7 @@ func (p *OperateFileRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetId {
+	if !issetID {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -654,7 +571,7 @@ func (p *OperateFileRes) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Id = _field
+	p.ID = _field
 	return nil
 }
 func (p *OperateFileRes) ReadField2(iprot thrift.TProtocol) error {
@@ -720,7 +637,7 @@ func (p *OperateFileRes) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.Id); err != nil {
+	if err := oprot.WriteI64(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -775,51 +692,13 @@ func (p *OperateFileRes) String() string {
 
 }
 
-func (p *OperateFileRes) DeepEqual(ano *OperateFileRes) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Id) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.FileKey) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.Msg) {
-		return false
-	}
-	return true
-}
-
-func (p *OperateFileRes) Field1DeepEqual(src int64) bool {
-
-	if p.Id != src {
-		return false
-	}
-	return true
-}
-func (p *OperateFileRes) Field2DeepEqual(src string) bool {
-
-	if strings.Compare(p.FileKey, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *OperateFileRes) Field3DeepEqual(src string) bool {
-
-	if strings.Compare(p.Msg, src) != 0 {
-		return false
-	}
-	return true
-}
-
 type UploadFileData struct {
-	Status     *int8                      `thrift:"status,1,optional" frugal:"1,optional,byte" json:"status,omitempty"`
-	StatusName *string                    `thrift:"status_name,2,optional" frugal:"2,optional,string" json:"status_name,omitempty"`
-	SuccessRes map[string]*OperateFileRes `thrift:"success_res,3,optional" frugal:"3,optional,map<string:OperateFileRes>" json:"success_res,omitempty"`
-	FailedRes  map[string]*OperateFileRes `thrift:"failed_res,4,optional" frugal:"4,optional,map<string:OperateFileRes>" json:"failed_res,omitempty"`
+	//上传文件的状态
+	Status *int8 `thrift:"status,1,optional" form:"status" json:"status,omitempty" query:"status"`
+	//上传的状态
+	StatusName *string                    `thrift:"status_name,2,optional" form:"status_name" json:"status_name,omitempty" query:"status_name"`
+	SuccessRes map[string]*OperateFileRes `thrift:"success_res,3,optional" form:"success_res" json:"success_res,omitempty" query:"success_res"`
+	FailedRes  map[string]*OperateFileRes `thrift:"failed_res,4,optional" form:"failed_res" json:"failed_res,omitempty" query:"failed_res"`
 }
 
 func NewUploadFileData() *UploadFileData {
@@ -863,18 +742,6 @@ func (p *UploadFileData) GetFailedRes() (v map[string]*OperateFileRes) {
 		return UploadFileData_FailedRes_DEFAULT
 	}
 	return p.FailedRes
-}
-func (p *UploadFileData) SetStatus(val *int8) {
-	p.Status = val
-}
-func (p *UploadFileData) SetStatusName(val *string) {
-	p.StatusName = val
-}
-func (p *UploadFileData) SetSuccessRes(val map[string]*OperateFileRes) {
-	p.SuccessRes = val
-}
-func (p *UploadFileData) SetFailedRes(val map[string]*OperateFileRes) {
-	p.FailedRes = val
 }
 
 var fieldIDToName_UploadFileData = map[int16]string{
@@ -1207,81 +1074,9 @@ func (p *UploadFileData) String() string {
 
 }
 
-func (p *UploadFileData) DeepEqual(ano *UploadFileData) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Status) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.StatusName) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.SuccessRes) {
-		return false
-	}
-	if !p.Field4DeepEqual(ano.FailedRes) {
-		return false
-	}
-	return true
-}
-
-func (p *UploadFileData) Field1DeepEqual(src *int8) bool {
-
-	if p.Status == src {
-		return true
-	} else if p.Status == nil || src == nil {
-		return false
-	}
-	if *p.Status != *src {
-		return false
-	}
-	return true
-}
-func (p *UploadFileData) Field2DeepEqual(src *string) bool {
-
-	if p.StatusName == src {
-		return true
-	} else if p.StatusName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.StatusName, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UploadFileData) Field3DeepEqual(src map[string]*OperateFileRes) bool {
-
-	if len(p.SuccessRes) != len(src) {
-		return false
-	}
-	for k, v := range p.SuccessRes {
-		_src := src[k]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-func (p *UploadFileData) Field4DeepEqual(src map[string]*OperateFileRes) bool {
-
-	if len(p.FailedRes) != len(src) {
-		return false
-	}
-	for k, v := range p.FailedRes {
-		_src := src[k]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-
 type UploadFileResponse struct {
-	Data     *UploadFileData `thrift:"data,1,required" frugal:"1,required,UploadFileData" json:"data"`
-	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	Data     *UploadFileData `thrift:"data,1,required" form:"data,required" json:"data,required" query:"data,required"`
+	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewUploadFileResponse() *UploadFileResponse {
@@ -1307,12 +1102,6 @@ func (p *UploadFileResponse) GetBaseResp() (v *base.BaseResp) {
 		return UploadFileResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *UploadFileResponse) SetData(val *UploadFileData) {
-	p.Data = val
-}
-func (p *UploadFileResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_UploadFileResponse = map[int16]string{
@@ -1493,45 +1282,23 @@ func (p *UploadFileResponse) String() string {
 
 }
 
-func (p *UploadFileResponse) DeepEqual(ano *UploadFileResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Data) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *UploadFileResponse) Field1DeepEqual(src *UploadFileData) bool {
-
-	if !p.Data.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-func (p *UploadFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// 文件查询能力
 type QueryFileInfoRequest struct {
-	ID                 []int64    `thrift:"ID,1,optional" frugal:"1,optional,list<i64>" json:"ID,omitempty"`
-	FileName           *string    `thrift:"file_name,2,optional" frugal:"2,optional,string" json:"file_name,omitempty"`
-	UploadTimeInterval []string   `thrift:"upload_time_interval,3,optional" frugal:"3,optional,list<string>" json:"upload_time_interval,omitempty"`
-	FileSizeInterval   []int64    `thrift:"file_size_interval,4,optional" frugal:"4,optional,list<i64>" json:"file_size_interval,omitempty"`
-	Status             []int8     `thrift:"status,5,optional" frugal:"5,optional,list<byte>" json:"status,omitempty"`
-	Page               int64      `thrift:"page,6,required" frugal:"6,required,i64" json:"page"`
-	Size               int64      `thrift:"size,7,required" frugal:"7,required,i64" json:"size"`
-	Base               *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	//文件id
+	ID []int64 `thrift:"ID,1,optional" form:"ID" json:"ID,omitempty" query:"ID"`
+	//文件名
+	FileName *string `thrift:"file_name,2,optional" form:"file_name" json:"file_name,omitempty" query:"file_name"`
+	//文件上传时间区间
+	UploadTimeInterval []string `thrift:"upload_time_interval,3,optional" form:"upload_time_interval" json:"upload_time_interval,omitempty" query:"upload_time_interval"`
+	//文件大小区间
+	FileSizeInterval []int64 `thrift:"file_size_interval,4,optional" form:"file_size_interval" json:"file_size_interval,omitempty" query:"file_size_interval"`
+	//文件状态
+	Status []int8 `thrift:"status,5,optional" form:"status" json:"status,omitempty" query:"status"`
+	//页数
+	Page int64 `thrift:"page,6,required" form:"page,required" json:"page,required" query:"page,required"`
+	//每页大小
+	Size int64      `thrift:"size,7,required" form:"size,required" json:"size,required" query:"size,required"`
+	Base *base.Base `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewQueryFileInfoRequest() *QueryFileInfoRequest {
@@ -1601,30 +1368,6 @@ func (p *QueryFileInfoRequest) GetBase() (v *base.Base) {
 		return QueryFileInfoRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *QueryFileInfoRequest) SetID(val []int64) {
-	p.ID = val
-}
-func (p *QueryFileInfoRequest) SetFileName(val *string) {
-	p.FileName = val
-}
-func (p *QueryFileInfoRequest) SetUploadTimeInterval(val []string) {
-	p.UploadTimeInterval = val
-}
-func (p *QueryFileInfoRequest) SetFileSizeInterval(val []int64) {
-	p.FileSizeInterval = val
-}
-func (p *QueryFileInfoRequest) SetStatus(val []int8) {
-	p.Status = val
-}
-func (p *QueryFileInfoRequest) SetPage(val int64) {
-	p.Page = val
-}
-func (p *QueryFileInfoRequest) SetSize(val int64) {
-	p.Size = val
-}
-func (p *QueryFileInfoRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_QueryFileInfoRequest = map[int16]string{
@@ -2167,134 +1910,23 @@ func (p *QueryFileInfoRequest) String() string {
 
 }
 
-func (p *QueryFileInfoRequest) DeepEqual(ano *QueryFileInfoRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.ID) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.FileName) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.UploadTimeInterval) {
-		return false
-	}
-	if !p.Field4DeepEqual(ano.FileSizeInterval) {
-		return false
-	}
-	if !p.Field5DeepEqual(ano.Status) {
-		return false
-	}
-	if !p.Field6DeepEqual(ano.Page) {
-		return false
-	}
-	if !p.Field7DeepEqual(ano.Size) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *QueryFileInfoRequest) Field1DeepEqual(src []int64) bool {
-
-	if len(p.ID) != len(src) {
-		return false
-	}
-	for i, v := range p.ID {
-		_src := src[i]
-		if v != _src {
-			return false
-		}
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field2DeepEqual(src *string) bool {
-
-	if p.FileName == src {
-		return true
-	} else if p.FileName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.FileName, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field3DeepEqual(src []string) bool {
-
-	if len(p.UploadTimeInterval) != len(src) {
-		return false
-	}
-	for i, v := range p.UploadTimeInterval {
-		_src := src[i]
-		if strings.Compare(v, _src) != 0 {
-			return false
-		}
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field4DeepEqual(src []int64) bool {
-
-	if len(p.FileSizeInterval) != len(src) {
-		return false
-	}
-	for i, v := range p.FileSizeInterval {
-		_src := src[i]
-		if v != _src {
-			return false
-		}
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field5DeepEqual(src []int8) bool {
-
-	if len(p.Status) != len(src) {
-		return false
-	}
-	for i, v := range p.Status {
-		_src := src[i]
-		if v != _src {
-			return false
-		}
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field6DeepEqual(src int64) bool {
-
-	if p.Page != src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field7DeepEqual(src int64) bool {
-
-	if p.Size != src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type QueryFileInfoData struct {
-	ID             int64   `thrift:"ID,1,required" frugal:"1,required,i64" json:"ID"`
-	FileName       string  `thrift:"file_name,2,required" frugal:"2,required,string" json:"file_name"`
-	FileAddress    string  `thrift:"file_address,3,required" frugal:"3,required,string" json:"file_address"`
-	FileSize       int64   `thrift:"file_size,4,required" frugal:"4,required,i64" json:"file_size"`
-	FileSizeString *string `thrift:"file_size_string,5,optional" frugal:"5,optional,string" json:"file_size_string,omitempty"`
-	UploadTime     string  `thrift:"upload_time,6,required" frugal:"6,required,string" json:"upload_time"`
-	Status         int8    `thrift:"status,7,required" frugal:"7,required,i8" json:"status"`
-	StatusName     *string `thrift:"status_name,8,optional" frugal:"8,optional,string" json:"status_name,omitempty"`
+	//文件id
+	ID int64 `thrift:"ID,1,required" form:"ID,required" json:"ID,required" query:"ID,required"`
+	//文件名
+	FileName string `thrift:"file_name,2,required" form:"file_name,required" json:"file_name,required" query:"file_name,required"`
+	//文件地址
+	FileAddress string `thrift:"file_address,3,required" form:"file_address,required" json:"file_address,required" query:"file_address,required"`
+	//文件大小
+	FileSize int64 `thrift:"file_size,4,required" form:"file_size,required" json:"file_size,required" query:"file_size,required"`
+	//格式化单位的大小
+	FileSizeString *string `thrift:"file_size_string,5,optional" form:"file_size_string" json:"file_size_string,omitempty" query:"file_size_string"`
+	//上传时间
+	UploadTime string `thrift:"upload_time,6,required" form:"upload_time,required" json:"upload_time,required" query:"upload_time,required"`
+	//文件状态
+	Status int8 `thrift:"status,7,required" form:"status,required" json:"status,required" query:"status,required"`
+	//文件状态名称
+	StatusName *string `thrift:"status_name,8,optional" form:"status_name" json:"status_name,omitempty" query:"status_name"`
 }
 
 func NewQueryFileInfoData() *QueryFileInfoData {
@@ -2344,30 +1976,6 @@ func (p *QueryFileInfoData) GetStatusName() (v string) {
 		return QueryFileInfoData_StatusName_DEFAULT
 	}
 	return *p.StatusName
-}
-func (p *QueryFileInfoData) SetID(val int64) {
-	p.ID = val
-}
-func (p *QueryFileInfoData) SetFileName(val string) {
-	p.FileName = val
-}
-func (p *QueryFileInfoData) SetFileAddress(val string) {
-	p.FileAddress = val
-}
-func (p *QueryFileInfoData) SetFileSize(val int64) {
-	p.FileSize = val
-}
-func (p *QueryFileInfoData) SetFileSizeString(val *string) {
-	p.FileSizeString = val
-}
-func (p *QueryFileInfoData) SetUploadTime(val string) {
-	p.UploadTime = val
-}
-func (p *QueryFileInfoData) SetStatus(val int8) {
-	p.Status = val
-}
-func (p *QueryFileInfoData) SetStatusName(val *string) {
-	p.StatusName = val
 }
 
 var fieldIDToName_QueryFileInfoData = map[int16]string{
@@ -2837,110 +2445,11 @@ func (p *QueryFileInfoData) String() string {
 
 }
 
-func (p *QueryFileInfoData) DeepEqual(ano *QueryFileInfoData) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.ID) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.FileName) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.FileAddress) {
-		return false
-	}
-	if !p.Field4DeepEqual(ano.FileSize) {
-		return false
-	}
-	if !p.Field5DeepEqual(ano.FileSizeString) {
-		return false
-	}
-	if !p.Field6DeepEqual(ano.UploadTime) {
-		return false
-	}
-	if !p.Field7DeepEqual(ano.Status) {
-		return false
-	}
-	if !p.Field8DeepEqual(ano.StatusName) {
-		return false
-	}
-	return true
-}
-
-func (p *QueryFileInfoData) Field1DeepEqual(src int64) bool {
-
-	if p.ID != src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field2DeepEqual(src string) bool {
-
-	if strings.Compare(p.FileName, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field3DeepEqual(src string) bool {
-
-	if strings.Compare(p.FileAddress, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field4DeepEqual(src int64) bool {
-
-	if p.FileSize != src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field5DeepEqual(src *string) bool {
-
-	if p.FileSizeString == src {
-		return true
-	} else if p.FileSizeString == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.FileSizeString, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field6DeepEqual(src string) bool {
-
-	if strings.Compare(p.UploadTime, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field7DeepEqual(src int8) bool {
-
-	if p.Status != src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoData) Field8DeepEqual(src *string) bool {
-
-	if p.StatusName == src {
-		return true
-	} else if p.StatusName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.StatusName, *src) != 0 {
-		return false
-	}
-	return true
-}
-
+// resp定义如下：
 type QueryFileInfoResponse struct {
-	Data     []*QueryFileInfoData `thrift:"data,1,optional" frugal:"1,optional,list<QueryFileInfoData>" json:"data,omitempty"`
-	Total    *int64               `thrift:"total,2,optional" frugal:"2,optional,i64" json:"total,omitempty"`
-	BaseResp *base.BaseResp       `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	Data     []*QueryFileInfoData `thrift:"data,1,optional" form:"data" json:"data,omitempty" query:"data"`
+	Total    *int64               `thrift:"total,2,optional" form:"total" json:"total,omitempty" query:"total"`
+	BaseResp *base.BaseResp       `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewQueryFileInfoResponse() *QueryFileInfoResponse {
@@ -2975,15 +2484,6 @@ func (p *QueryFileInfoResponse) GetBaseResp() (v *base.BaseResp) {
 		return QueryFileInfoResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *QueryFileInfoResponse) SetData(val []*QueryFileInfoData) {
-	p.Data = val
-}
-func (p *QueryFileInfoResponse) SetTotal(val *int64) {
-	p.Total = val
-}
-func (p *QueryFileInfoResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_QueryFileInfoResponse = map[int16]string{
@@ -3228,60 +2728,12 @@ func (p *QueryFileInfoResponse) String() string {
 
 }
 
-func (p *QueryFileInfoResponse) DeepEqual(ano *QueryFileInfoResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Data) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.Total) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *QueryFileInfoResponse) Field1DeepEqual(src []*QueryFileInfoData) bool {
-
-	if len(p.Data) != len(src) {
-		return false
-	}
-	for i, v := range p.Data {
-		_src := src[i]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-func (p *QueryFileInfoResponse) Field2DeepEqual(src *int64) bool {
-
-	if p.Total == src {
-		return true
-	} else if p.Total == nil || src == nil {
-		return false
-	}
-	if *p.Total != *src {
-		return false
-	}
-	return true
-}
-func (p *QueryFileInfoResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// 文件下载能力
+// 文件下载请求
 type DownloadFileRequest struct {
-	Id   int64      `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
-	Base *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	//文件id
+	ID   int64      `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
+	Base *base.Base `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewDownloadFileRequest() *DownloadFileRequest {
@@ -3291,8 +2743,8 @@ func NewDownloadFileRequest() *DownloadFileRequest {
 func (p *DownloadFileRequest) InitDefault() {
 }
 
-func (p *DownloadFileRequest) GetId() (v int64) {
-	return p.Id
+func (p *DownloadFileRequest) GetID() (v int64) {
+	return p.ID
 }
 
 var DownloadFileRequest_Base_DEFAULT *base.Base
@@ -3302,12 +2754,6 @@ func (p *DownloadFileRequest) GetBase() (v *base.Base) {
 		return DownloadFileRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *DownloadFileRequest) SetId(val int64) {
-	p.Id = val
-}
-func (p *DownloadFileRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_DownloadFileRequest = map[int16]string{
@@ -3323,7 +2769,7 @@ func (p *DownloadFileRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetId bool = false
+	var issetID bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -3344,7 +2790,7 @@ func (p *DownloadFileRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetId = true
+				issetID = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -3369,7 +2815,7 @@ func (p *DownloadFileRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetId {
+	if !issetID {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -3399,7 +2845,7 @@ func (p *DownloadFileRequest) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Id = _field
+	p.ID = _field
 	return nil
 }
 func (p *DownloadFileRequest) ReadField255(iprot thrift.TProtocol) error {
@@ -3447,7 +2893,7 @@ func (p *DownloadFileRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.Id); err != nil {
+	if err := oprot.WriteI64(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -3487,40 +2933,14 @@ func (p *DownloadFileRequest) String() string {
 
 }
 
-func (p *DownloadFileRequest) DeepEqual(ano *DownloadFileRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Id) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *DownloadFileRequest) Field1DeepEqual(src int64) bool {
-
-	if p.Id != src {
-		return false
-	}
-	return true
-}
-func (p *DownloadFileRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// resp 定义如下
 type DownloadFileData struct {
-	Id       *int64  `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
-	FileName *string `thrift:"file_name,2,optional" frugal:"2,optional,string" json:"file_name,omitempty"`
-	Content  []byte  `thrift:"content,3,optional" frugal:"3,optional,binary" json:"content,omitempty"`
+	//文件id
+	ID *int64 `thrift:"id,1,optional" form:"id" json:"id,omitempty" query:"id"`
+	//文件名
+	FileName *string `thrift:"file_name,2,optional" form:"file_name" json:"file_name,omitempty" query:"file_name"`
+	//文件内容
+	Content []byte `thrift:"content,3,optional" form:"content" json:"content,omitempty" query:"content"`
 }
 
 func NewDownloadFileData() *DownloadFileData {
@@ -3530,13 +2950,13 @@ func NewDownloadFileData() *DownloadFileData {
 func (p *DownloadFileData) InitDefault() {
 }
 
-var DownloadFileData_Id_DEFAULT int64
+var DownloadFileData_ID_DEFAULT int64
 
-func (p *DownloadFileData) GetId() (v int64) {
-	if !p.IsSetId() {
-		return DownloadFileData_Id_DEFAULT
+func (p *DownloadFileData) GetID() (v int64) {
+	if !p.IsSetID() {
+		return DownloadFileData_ID_DEFAULT
 	}
-	return *p.Id
+	return *p.ID
 }
 
 var DownloadFileData_FileName_DEFAULT string
@@ -3556,15 +2976,6 @@ func (p *DownloadFileData) GetContent() (v []byte) {
 	}
 	return p.Content
 }
-func (p *DownloadFileData) SetId(val *int64) {
-	p.Id = val
-}
-func (p *DownloadFileData) SetFileName(val *string) {
-	p.FileName = val
-}
-func (p *DownloadFileData) SetContent(val []byte) {
-	p.Content = val
-}
 
 var fieldIDToName_DownloadFileData = map[int16]string{
 	1: "id",
@@ -3572,8 +2983,8 @@ var fieldIDToName_DownloadFileData = map[int16]string{
 	3: "content",
 }
 
-func (p *DownloadFileData) IsSetId() bool {
-	return p.Id != nil
+func (p *DownloadFileData) IsSetID() bool {
+	return p.ID != nil
 }
 
 func (p *DownloadFileData) IsSetFileName() bool {
@@ -3664,7 +3075,7 @@ func (p *DownloadFileData) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.Id = _field
+	p.ID = _field
 	return nil
 }
 func (p *DownloadFileData) ReadField2(iprot thrift.TProtocol) error {
@@ -3727,11 +3138,11 @@ WriteStructEndError:
 }
 
 func (p *DownloadFileData) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetId() {
+	if p.IsSetID() {
 		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI64(*p.Id); err != nil {
+		if err := oprot.WriteI64(*p.ID); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3791,59 +3202,9 @@ func (p *DownloadFileData) String() string {
 
 }
 
-func (p *DownloadFileData) DeepEqual(ano *DownloadFileData) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Id) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.FileName) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.Content) {
-		return false
-	}
-	return true
-}
-
-func (p *DownloadFileData) Field1DeepEqual(src *int64) bool {
-
-	if p.Id == src {
-		return true
-	} else if p.Id == nil || src == nil {
-		return false
-	}
-	if *p.Id != *src {
-		return false
-	}
-	return true
-}
-func (p *DownloadFileData) Field2DeepEqual(src *string) bool {
-
-	if p.FileName == src {
-		return true
-	} else if p.FileName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.FileName, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *DownloadFileData) Field3DeepEqual(src []byte) bool {
-
-	if bytes.Compare(p.Content, src) != 0 {
-		return false
-	}
-	return true
-}
-
 type DownloadFileResponse struct {
-	Data     *DownloadFileData `thrift:"data,1,optional" frugal:"1,optional,DownloadFileData" json:"data,omitempty"`
-	BaseResp *base.BaseResp    `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	Data     *DownloadFileData `thrift:"data,1,optional" form:"data" json:"data,omitempty" query:"data"`
+	BaseResp *base.BaseResp    `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewDownloadFileResponse() *DownloadFileResponse {
@@ -3869,12 +3230,6 @@ func (p *DownloadFileResponse) GetBaseResp() (v *base.BaseResp) {
 		return DownloadFileResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *DownloadFileResponse) SetData(val *DownloadFileData) {
-	p.Data = val
-}
-func (p *DownloadFileResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_DownloadFileResponse = map[int16]string{
@@ -4049,39 +3404,12 @@ func (p *DownloadFileResponse) String() string {
 
 }
 
-func (p *DownloadFileResponse) DeepEqual(ano *DownloadFileResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Data) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *DownloadFileResponse) Field1DeepEqual(src *DownloadFileData) bool {
-
-	if !p.Data.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-func (p *DownloadFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// 文件删除能力
+// 文件删除请求
 type DeleteFileRequest struct {
-	Id   []int64    `thrift:"id,1,required" frugal:"1,required,list<i64>" json:"id"`
-	Base *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	//文件id
+	ID   []int64    `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
+	Base *base.Base `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewDeleteFileRequest() *DeleteFileRequest {
@@ -4091,8 +3419,8 @@ func NewDeleteFileRequest() *DeleteFileRequest {
 func (p *DeleteFileRequest) InitDefault() {
 }
 
-func (p *DeleteFileRequest) GetId() (v []int64) {
-	return p.Id
+func (p *DeleteFileRequest) GetID() (v []int64) {
+	return p.ID
 }
 
 var DeleteFileRequest_Base_DEFAULT *base.Base
@@ -4102,12 +3430,6 @@ func (p *DeleteFileRequest) GetBase() (v *base.Base) {
 		return DeleteFileRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *DeleteFileRequest) SetId(val []int64) {
-	p.Id = val
-}
-func (p *DeleteFileRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_DeleteFileRequest = map[int16]string{
@@ -4123,7 +3445,7 @@ func (p *DeleteFileRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetId bool = false
+	var issetID bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -4144,7 +3466,7 @@ func (p *DeleteFileRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetId = true
+				issetID = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -4169,7 +3491,7 @@ func (p *DeleteFileRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetId {
+	if !issetID {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -4211,7 +3533,7 @@ func (p *DeleteFileRequest) ReadField1(iprot thrift.TProtocol) error {
 	if err := iprot.ReadListEnd(); err != nil {
 		return err
 	}
-	p.Id = _field
+	p.ID = _field
 	return nil
 }
 func (p *DeleteFileRequest) ReadField255(iprot thrift.TProtocol) error {
@@ -4259,10 +3581,10 @@ func (p *DeleteFileRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("id", thrift.LIST, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteListBegin(thrift.I64, len(p.Id)); err != nil {
+	if err := oprot.WriteListBegin(thrift.I64, len(p.ID)); err != nil {
 		return err
 	}
-	for _, v := range p.Id {
+	for _, v := range p.ID {
 		if err := oprot.WriteI64(v); err != nil {
 			return err
 		}
@@ -4307,47 +3629,14 @@ func (p *DeleteFileRequest) String() string {
 
 }
 
-func (p *DeleteFileRequest) DeepEqual(ano *DeleteFileRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Id) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *DeleteFileRequest) Field1DeepEqual(src []int64) bool {
-
-	if len(p.Id) != len(src) {
-		return false
-	}
-	for i, v := range p.Id {
-		_src := src[i]
-		if v != _src {
-			return false
-		}
-	}
-	return true
-}
-func (p *DeleteFileRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// resp定义如下
 type DeleteFileData struct {
-	Status     *int8                     `thrift:"status,1,optional" frugal:"1,optional,byte" json:"status,omitempty"`
-	StatusName *string                   `thrift:"status_name,2,optional" frugal:"2,optional,string" json:"status_name,omitempty"`
-	SuccessMap map[int64]*OperateFileRes `thrift:"success_map,3,optional" frugal:"3,optional,map<i64:OperateFileRes>" json:"success_map,omitempty"`
-	FailedMap  map[int64]*OperateFileRes `thrift:"failed_map,4,optional" frugal:"4,optional,map<i64:OperateFileRes>" json:"failed_map,omitempty"`
+	//删除状态
+	Status *int8 `thrift:"status,1,optional" form:"status" json:"status,omitempty" query:"status"`
+	//删除状态
+	StatusName *string                   `thrift:"status_name,2,optional" form:"status_name" json:"status_name,omitempty" query:"status_name"`
+	SuccessMap map[int64]*OperateFileRes `thrift:"success_map,3,optional" form:"success_map" json:"success_map,omitempty" query:"success_map"`
+	FailedMap  map[int64]*OperateFileRes `thrift:"failed_map,4,optional" form:"failed_map" json:"failed_map,omitempty" query:"failed_map"`
 }
 
 func NewDeleteFileData() *DeleteFileData {
@@ -4391,18 +3680,6 @@ func (p *DeleteFileData) GetFailedMap() (v map[int64]*OperateFileRes) {
 		return DeleteFileData_FailedMap_DEFAULT
 	}
 	return p.FailedMap
-}
-func (p *DeleteFileData) SetStatus(val *int8) {
-	p.Status = val
-}
-func (p *DeleteFileData) SetStatusName(val *string) {
-	p.StatusName = val
-}
-func (p *DeleteFileData) SetSuccessMap(val map[int64]*OperateFileRes) {
-	p.SuccessMap = val
-}
-func (p *DeleteFileData) SetFailedMap(val map[int64]*OperateFileRes) {
-	p.FailedMap = val
 }
 
 var fieldIDToName_DeleteFileData = map[int16]string{
@@ -4735,81 +4012,10 @@ func (p *DeleteFileData) String() string {
 
 }
 
-func (p *DeleteFileData) DeepEqual(ano *DeleteFileData) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Status) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.StatusName) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.SuccessMap) {
-		return false
-	}
-	if !p.Field4DeepEqual(ano.FailedMap) {
-		return false
-	}
-	return true
-}
-
-func (p *DeleteFileData) Field1DeepEqual(src *int8) bool {
-
-	if p.Status == src {
-		return true
-	} else if p.Status == nil || src == nil {
-		return false
-	}
-	if *p.Status != *src {
-		return false
-	}
-	return true
-}
-func (p *DeleteFileData) Field2DeepEqual(src *string) bool {
-
-	if p.StatusName == src {
-		return true
-	} else if p.StatusName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.StatusName, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *DeleteFileData) Field3DeepEqual(src map[int64]*OperateFileRes) bool {
-
-	if len(p.SuccessMap) != len(src) {
-		return false
-	}
-	for k, v := range p.SuccessMap {
-		_src := src[k]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-func (p *DeleteFileData) Field4DeepEqual(src map[int64]*OperateFileRes) bool {
-
-	if len(p.FailedMap) != len(src) {
-		return false
-	}
-	for k, v := range p.FailedMap {
-		_src := src[k]
-		if !v.DeepEqual(_src) {
-			return false
-		}
-	}
-	return true
-}
-
 type DeleteFileResponse struct {
-	Data     *DeleteFileData `thrift:"data,1,optional" frugal:"1,optional,DeleteFileData" json:"data,omitempty"`
-	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	//文件删除的结果
+	Data     *DeleteFileData `thrift:"data,1,optional" form:"data" json:"data,omitempty" query:"data"`
+	BaseResp *base.BaseResp  `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewDeleteFileResponse() *DeleteFileResponse {
@@ -4835,12 +4041,6 @@ func (p *DeleteFileResponse) GetBaseResp() (v *base.BaseResp) {
 		return DeleteFileResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *DeleteFileResponse) SetData(val *DeleteFileData) {
-	p.Data = val
-}
-func (p *DeleteFileResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_DeleteFileResponse = map[int16]string{
@@ -5015,36 +4215,6 @@ func (p *DeleteFileResponse) String() string {
 
 }
 
-func (p *DeleteFileResponse) DeepEqual(ano *DeleteFileResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Data) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *DeleteFileResponse) Field1DeepEqual(src *DeleteFileData) bool {
-
-	if !p.Data.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-func (p *DeleteFileResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileService interface {
 	UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error)
 
@@ -5055,8 +4225,307 @@ type FileService interface {
 	DeleteFile(ctx context.Context, req *DeleteFileRequest) (r *DeleteFileResponse, err error)
 }
 
+type FileServiceClient struct {
+	c thrift.TClient
+}
+
+func NewFileServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *FileServiceClient {
+	return &FileServiceClient{
+		c: thrift.NewTStandardClient(f.GetProtocol(t), f.GetProtocol(t)),
+	}
+}
+
+func NewFileServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *FileServiceClient {
+	return &FileServiceClient{
+		c: thrift.NewTStandardClient(iprot, oprot),
+	}
+}
+
+func NewFileServiceClient(c thrift.TClient) *FileServiceClient {
+	return &FileServiceClient{
+		c: c,
+	}
+}
+
+func (p *FileServiceClient) Client_() thrift.TClient {
+	return p.c
+}
+
+func (p *FileServiceClient) UploadFileBatch(ctx context.Context, req *UploadFileRequest) (r *UploadFileResponse, err error) {
+	var _args FileServiceUploadFileBatchArgs
+	_args.Req = req
+	var _result FileServiceUploadFileBatchResult
+	if err = p.Client_().Call(ctx, "UploadFileBatch", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *FileServiceClient) QueryFileInfo(ctx context.Context, req *QueryFileInfoRequest) (r *QueryFileInfoResponse, err error) {
+	var _args FileServiceQueryFileInfoArgs
+	_args.Req = req
+	var _result FileServiceQueryFileInfoResult
+	if err = p.Client_().Call(ctx, "QueryFileInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *FileServiceClient) DownloadFile(ctx context.Context, req *DownloadFileRequest) (r *DownloadFileResponse, err error) {
+	var _args FileServiceDownloadFileArgs
+	_args.Req = req
+	var _result FileServiceDownloadFileResult
+	if err = p.Client_().Call(ctx, "DownloadFile", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *FileServiceClient) DeleteFile(ctx context.Context, req *DeleteFileRequest) (r *DeleteFileResponse, err error) {
+	var _args FileServiceDeleteFileArgs
+	_args.Req = req
+	var _result FileServiceDeleteFileResult
+	if err = p.Client_().Call(ctx, "DeleteFile", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+type FileServiceProcessor struct {
+	processorMap map[string]thrift.TProcessorFunction
+	handler      FileService
+}
+
+func (p *FileServiceProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+	p.processorMap[key] = processor
+}
+
+func (p *FileServiceProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+	processor, ok = p.processorMap[key]
+	return processor, ok
+}
+
+func (p *FileServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+	return p.processorMap
+}
+
+func NewFileServiceProcessor(handler FileService) *FileServiceProcessor {
+	self := &FileServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
+	self.AddToProcessorMap("UploadFileBatch", &fileServiceProcessorUploadFileBatch{handler: handler})
+	self.AddToProcessorMap("QueryFileInfo", &fileServiceProcessorQueryFileInfo{handler: handler})
+	self.AddToProcessorMap("DownloadFile", &fileServiceProcessorDownloadFile{handler: handler})
+	self.AddToProcessorMap("DeleteFile", &fileServiceProcessorDeleteFile{handler: handler})
+	return self
+}
+func (p *FileServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	name, _, seqId, err := iprot.ReadMessageBegin()
+	if err != nil {
+		return false, err
+	}
+	if processor, ok := p.GetProcessorFunction(name); ok {
+		return processor.Process(ctx, seqId, iprot, oprot)
+	}
+	iprot.Skip(thrift.STRUCT)
+	iprot.ReadMessageEnd()
+	x := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function "+name)
+	oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
+	x.Write(oprot)
+	oprot.WriteMessageEnd()
+	oprot.Flush(ctx)
+	return false, x
+}
+
+type fileServiceProcessorUploadFileBatch struct {
+	handler FileService
+}
+
+func (p *fileServiceProcessorUploadFileBatch) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := FileServiceUploadFileBatchArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("UploadFileBatch", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := FileServiceUploadFileBatchResult{}
+	var retval *UploadFileResponse
+	if retval, err2 = p.handler.UploadFileBatch(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UploadFileBatch: "+err2.Error())
+		oprot.WriteMessageBegin("UploadFileBatch", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("UploadFileBatch", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type fileServiceProcessorQueryFileInfo struct {
+	handler FileService
+}
+
+func (p *fileServiceProcessorQueryFileInfo) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := FileServiceQueryFileInfoArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("QueryFileInfo", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := FileServiceQueryFileInfoResult{}
+	var retval *QueryFileInfoResponse
+	if retval, err2 = p.handler.QueryFileInfo(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryFileInfo: "+err2.Error())
+		oprot.WriteMessageBegin("QueryFileInfo", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("QueryFileInfo", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type fileServiceProcessorDownloadFile struct {
+	handler FileService
+}
+
+func (p *fileServiceProcessorDownloadFile) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := FileServiceDownloadFileArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("DownloadFile", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := FileServiceDownloadFileResult{}
+	var retval *DownloadFileResponse
+	if retval, err2 = p.handler.DownloadFile(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DownloadFile: "+err2.Error())
+		oprot.WriteMessageBegin("DownloadFile", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("DownloadFile", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type fileServiceProcessorDeleteFile struct {
+	handler FileService
+}
+
+func (p *fileServiceProcessorDeleteFile) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := FileServiceDeleteFileArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("DeleteFile", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := FileServiceDeleteFileResult{}
+	var retval *DeleteFileResponse
+	if retval, err2 = p.handler.DeleteFile(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteFile: "+err2.Error())
+		oprot.WriteMessageBegin("DeleteFile", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("DeleteFile", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
 type FileServiceUploadFileBatchArgs struct {
-	Req *UploadFileRequest `thrift:"req,1" frugal:"1,default,UploadFileRequest" json:"req"`
+	Req *UploadFileRequest `thrift:"req,1"`
 }
 
 func NewFileServiceUploadFileBatchArgs() *FileServiceUploadFileBatchArgs {
@@ -5073,9 +4542,6 @@ func (p *FileServiceUploadFileBatchArgs) GetReq() (v *UploadFileRequest) {
 		return FileServiceUploadFileBatchArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *FileServiceUploadFileBatchArgs) SetReq(val *UploadFileRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_FileServiceUploadFileBatchArgs = map[int16]string{
@@ -5204,28 +4670,8 @@ func (p *FileServiceUploadFileBatchArgs) String() string {
 
 }
 
-func (p *FileServiceUploadFileBatchArgs) DeepEqual(ano *FileServiceUploadFileBatchArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceUploadFileBatchArgs) Field1DeepEqual(src *UploadFileRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceUploadFileBatchResult struct {
-	Success *UploadFileResponse `thrift:"success,0,optional" frugal:"0,optional,UploadFileResponse" json:"success,omitempty"`
+	Success *UploadFileResponse `thrift:"success,0,optional"`
 }
 
 func NewFileServiceUploadFileBatchResult() *FileServiceUploadFileBatchResult {
@@ -5242,9 +4688,6 @@ func (p *FileServiceUploadFileBatchResult) GetSuccess() (v *UploadFileResponse) 
 		return FileServiceUploadFileBatchResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *FileServiceUploadFileBatchResult) SetSuccess(x interface{}) {
-	p.Success = x.(*UploadFileResponse)
 }
 
 var fieldIDToName_FileServiceUploadFileBatchResult = map[int16]string{
@@ -5375,28 +4818,8 @@ func (p *FileServiceUploadFileBatchResult) String() string {
 
 }
 
-func (p *FileServiceUploadFileBatchResult) DeepEqual(ano *FileServiceUploadFileBatchResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceUploadFileBatchResult) Field0DeepEqual(src *UploadFileResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceQueryFileInfoArgs struct {
-	Req *QueryFileInfoRequest `thrift:"req,1" frugal:"1,default,QueryFileInfoRequest" json:"req"`
+	Req *QueryFileInfoRequest `thrift:"req,1"`
 }
 
 func NewFileServiceQueryFileInfoArgs() *FileServiceQueryFileInfoArgs {
@@ -5413,9 +4836,6 @@ func (p *FileServiceQueryFileInfoArgs) GetReq() (v *QueryFileInfoRequest) {
 		return FileServiceQueryFileInfoArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *FileServiceQueryFileInfoArgs) SetReq(val *QueryFileInfoRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_FileServiceQueryFileInfoArgs = map[int16]string{
@@ -5544,28 +4964,8 @@ func (p *FileServiceQueryFileInfoArgs) String() string {
 
 }
 
-func (p *FileServiceQueryFileInfoArgs) DeepEqual(ano *FileServiceQueryFileInfoArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceQueryFileInfoArgs) Field1DeepEqual(src *QueryFileInfoRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceQueryFileInfoResult struct {
-	Success *QueryFileInfoResponse `thrift:"success,0,optional" frugal:"0,optional,QueryFileInfoResponse" json:"success,omitempty"`
+	Success *QueryFileInfoResponse `thrift:"success,0,optional"`
 }
 
 func NewFileServiceQueryFileInfoResult() *FileServiceQueryFileInfoResult {
@@ -5582,9 +4982,6 @@ func (p *FileServiceQueryFileInfoResult) GetSuccess() (v *QueryFileInfoResponse)
 		return FileServiceQueryFileInfoResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *FileServiceQueryFileInfoResult) SetSuccess(x interface{}) {
-	p.Success = x.(*QueryFileInfoResponse)
 }
 
 var fieldIDToName_FileServiceQueryFileInfoResult = map[int16]string{
@@ -5715,28 +5112,8 @@ func (p *FileServiceQueryFileInfoResult) String() string {
 
 }
 
-func (p *FileServiceQueryFileInfoResult) DeepEqual(ano *FileServiceQueryFileInfoResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceQueryFileInfoResult) Field0DeepEqual(src *QueryFileInfoResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceDownloadFileArgs struct {
-	Req *DownloadFileRequest `thrift:"req,1" frugal:"1,default,DownloadFileRequest" json:"req"`
+	Req *DownloadFileRequest `thrift:"req,1"`
 }
 
 func NewFileServiceDownloadFileArgs() *FileServiceDownloadFileArgs {
@@ -5753,9 +5130,6 @@ func (p *FileServiceDownloadFileArgs) GetReq() (v *DownloadFileRequest) {
 		return FileServiceDownloadFileArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *FileServiceDownloadFileArgs) SetReq(val *DownloadFileRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_FileServiceDownloadFileArgs = map[int16]string{
@@ -5884,28 +5258,8 @@ func (p *FileServiceDownloadFileArgs) String() string {
 
 }
 
-func (p *FileServiceDownloadFileArgs) DeepEqual(ano *FileServiceDownloadFileArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceDownloadFileArgs) Field1DeepEqual(src *DownloadFileRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceDownloadFileResult struct {
-	Success *DownloadFileResponse `thrift:"success,0,optional" frugal:"0,optional,DownloadFileResponse" json:"success,omitempty"`
+	Success *DownloadFileResponse `thrift:"success,0,optional"`
 }
 
 func NewFileServiceDownloadFileResult() *FileServiceDownloadFileResult {
@@ -5922,9 +5276,6 @@ func (p *FileServiceDownloadFileResult) GetSuccess() (v *DownloadFileResponse) {
 		return FileServiceDownloadFileResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *FileServiceDownloadFileResult) SetSuccess(x interface{}) {
-	p.Success = x.(*DownloadFileResponse)
 }
 
 var fieldIDToName_FileServiceDownloadFileResult = map[int16]string{
@@ -6055,28 +5406,8 @@ func (p *FileServiceDownloadFileResult) String() string {
 
 }
 
-func (p *FileServiceDownloadFileResult) DeepEqual(ano *FileServiceDownloadFileResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceDownloadFileResult) Field0DeepEqual(src *DownloadFileResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceDeleteFileArgs struct {
-	Req *DeleteFileRequest `thrift:"req,1" frugal:"1,default,DeleteFileRequest" json:"req"`
+	Req *DeleteFileRequest `thrift:"req,1"`
 }
 
 func NewFileServiceDeleteFileArgs() *FileServiceDeleteFileArgs {
@@ -6093,9 +5424,6 @@ func (p *FileServiceDeleteFileArgs) GetReq() (v *DeleteFileRequest) {
 		return FileServiceDeleteFileArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *FileServiceDeleteFileArgs) SetReq(val *DeleteFileRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_FileServiceDeleteFileArgs = map[int16]string{
@@ -6224,28 +5552,8 @@ func (p *FileServiceDeleteFileArgs) String() string {
 
 }
 
-func (p *FileServiceDeleteFileArgs) DeepEqual(ano *FileServiceDeleteFileArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceDeleteFileArgs) Field1DeepEqual(src *DeleteFileRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type FileServiceDeleteFileResult struct {
-	Success *DeleteFileResponse `thrift:"success,0,optional" frugal:"0,optional,DeleteFileResponse" json:"success,omitempty"`
+	Success *DeleteFileResponse `thrift:"success,0,optional"`
 }
 
 func NewFileServiceDeleteFileResult() *FileServiceDeleteFileResult {
@@ -6262,9 +5570,6 @@ func (p *FileServiceDeleteFileResult) GetSuccess() (v *DeleteFileResponse) {
 		return FileServiceDeleteFileResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *FileServiceDeleteFileResult) SetSuccess(x interface{}) {
-	p.Success = x.(*DeleteFileResponse)
 }
 
 var fieldIDToName_FileServiceDeleteFileResult = map[int16]string{
@@ -6393,24 +5698,4 @@ func (p *FileServiceDeleteFileResult) String() string {
 	}
 	return fmt.Sprintf("FileServiceDeleteFileResult(%+v)", *p)
 
-}
-
-func (p *FileServiceDeleteFileResult) DeepEqual(ano *FileServiceDeleteFileResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *FileServiceDeleteFileResult) Field0DeepEqual(src *DeleteFileResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
 }

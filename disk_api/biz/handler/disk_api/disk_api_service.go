@@ -7,7 +7,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	disk_api "github.com/cutejiuges/disk_api/biz/model/disk_api"
-	disk_common "github.com/cutejiuges/disk_api/biz/model/disk_common"
+	file_server "github.com/cutejiuges/disk_api/biz/model/file_server"
 	file_service "github.com/cutejiuges/disk_api/biz/service/file"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 )
@@ -16,7 +16,7 @@ import (
 // @router file/queryFileInfo [POST]
 func QueryFileInfo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req disk_common.QueryFileInfoRequest
+	var req file_server.QueryFileInfoRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -31,7 +31,7 @@ func QueryFileInfo(ctx context.Context, c *app.RequestContext) {
 // @router file/downloadFile [GET]
 func DownloadFile(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req disk_common.DownloadFileRequest
+	var req file_server.DownloadFileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -42,26 +42,11 @@ func DownloadFile(ctx context.Context, c *app.RequestContext) {
 	localutils.Wrapper(c, resp, err)
 }
 
-// EditFileInfo .
-// @router file/editFileInfo [POST]
-func EditFileInfo(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req disk_common.EditFileInfoRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp, err := file_service.ProcessEditFileInfo(ctx, &req)
-	localutils.Wrapper(c, resp, err)
-}
-
 // DeleteFile .
 // @router file/deleteFile [POST]
 func DeleteFile(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req disk_common.DeleteFileRequest
+	var req file_server.DeleteFileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -76,7 +61,7 @@ func DeleteFile(ctx context.Context, c *app.RequestContext) {
 // @router /file/uploadFileBatch [POST]
 func UploadFileBatch(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req disk_api.UploadFileRequest
+	var req disk_api.BlankRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())

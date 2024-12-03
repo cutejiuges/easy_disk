@@ -7,7 +7,7 @@ import (
 	"github.com/cutejiuges/disk_api/biz/model/disk_api"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 	"github.com/cutejiuges/disk_api/rpc"
-	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
+	file_back "github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"golang.org/x/net/context"
 	"io"
 	"mime/multipart"
@@ -20,15 +20,15 @@ import (
  * @Description:
  */
 
-func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *disk_api.UploadFileRequest) (*file_server.UploadFileResponse, error) {
-	var rpcReq file_server.UploadFileRequest
+func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *disk_api.BlankRequest) (*file_back.UploadFileResponse, error) {
+	var rpcReq file_back.UploadFileRequest
 	err := localutils.Converter(req, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "ProcessUploadFileBatch convert req error: %v", err)
 		return nil, err
 	}
 
-	var fileList []*file_server.UploadFileMeta
+	var fileList []*file_back.UploadFileMeta
 	form, _ := c.MultipartForm()
 	fileHeaders := form.File["file"]
 	for _, fileHeader := range fileHeaders {
@@ -42,8 +42,8 @@ func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *dis
 			buf := bytes.Buffer{}
 			_, _ = io.Copy(&buf, file)
 
-			fileList = append(fileList, &file_server.UploadFileMeta{
-				FileName: localutils.GetSha256Key(buf.Bytes()),
+			fileList = append(fileList, &file_back.UploadFileMeta{
+				FileKey:  localutils.GetSha256Key(buf.Bytes()),
 				FileData: buf.Bytes(),
 			})
 			return nil

@@ -7,7 +7,6 @@ import (
 	"errors"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
-	disk_common "github.com/cutejiuges/disk_back/kitex_gen/disk_common"
 	file_server "github.com/cutejiuges/disk_back/kitex_gen/file_server"
 )
 
@@ -32,13 +31,6 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		downloadFileHandler,
 		newFileServiceDownloadFileArgs,
 		newFileServiceDownloadFileResult,
-		false,
-		kitex.WithStreamingMode(kitex.StreamingNone),
-	),
-	"EditFileInfo": kitex.NewMethodInfo(
-		editFileInfoHandler,
-		newFileServiceEditFileInfoArgs,
-		newFileServiceEditFileInfoResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -169,24 +161,6 @@ func newFileServiceDownloadFileResult() interface{} {
 	return file_server.NewFileServiceDownloadFileResult()
 }
 
-func editFileInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*file_server.FileServiceEditFileInfoArgs)
-	realResult := result.(*file_server.FileServiceEditFileInfoResult)
-	success, err := handler.(file_server.FileService).EditFileInfo(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newFileServiceEditFileInfoArgs() interface{} {
-	return file_server.NewFileServiceEditFileInfoArgs()
-}
-
-func newFileServiceEditFileInfoResult() interface{} {
-	return file_server.NewFileServiceEditFileInfoResult()
-}
-
 func deleteFileHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*file_server.FileServiceDeleteFileArgs)
 	realResult := result.(*file_server.FileServiceDeleteFileResult)
@@ -225,7 +199,7 @@ func (p *kClient) UploadFileBatch(ctx context.Context, req *file_server.UploadFi
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileInfoRequest) (r *file_server.QueryFileInfoResponse, err error) {
+func (p *kClient) QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) (r *file_server.QueryFileInfoResponse, err error) {
 	var _args file_server.FileServiceQueryFileInfoArgs
 	_args.Req = req
 	var _result file_server.FileServiceQueryFileInfoResult
@@ -235,7 +209,7 @@ func (p *kClient) QueryFileInfo(ctx context.Context, req *disk_common.QueryFileI
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DownloadFile(ctx context.Context, req *disk_common.DownloadFileRequest) (r *file_server.DownloadFileResponse, err error) {
+func (p *kClient) DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest) (r *file_server.DownloadFileResponse, err error) {
 	var _args file_server.FileServiceDownloadFileArgs
 	_args.Req = req
 	var _result file_server.FileServiceDownloadFileResult
@@ -245,17 +219,7 @@ func (p *kClient) DownloadFile(ctx context.Context, req *disk_common.DownloadFil
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) EditFileInfo(ctx context.Context, req *disk_common.EditFileInfoRequest) (r *file_server.EditFileInfoResponse, err error) {
-	var _args file_server.FileServiceEditFileInfoArgs
-	_args.Req = req
-	var _result file_server.FileServiceEditFileInfoResult
-	if err = p.c.Call(ctx, "EditFileInfo", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) DeleteFile(ctx context.Context, req *disk_common.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error) {
+func (p *kClient) DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error) {
 	var _args file_server.FileServiceDeleteFileArgs
 	_args.Req = req
 	var _result file_server.FileServiceDeleteFileResult
