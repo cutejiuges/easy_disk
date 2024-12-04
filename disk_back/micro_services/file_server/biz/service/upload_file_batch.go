@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cutejiuges/disk_back/internal/enum"
+	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/cache"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/bo"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/bo"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
 	"os"
 	"sync"
 )
@@ -97,6 +97,7 @@ func writeFileEntity(path string, content []byte) error {
 	//先判断文件是否存在，如果存在不用写入，如果不存在执行写入
 	_, err := os.Stat(path)
 	if !os.IsNotExist(err) { //已经存在
+		klog.Warnf("service.writeFileEntity warning: %v", err)
 		return nil
 	}
 	err = os.WriteFile(path, content, 0644)
@@ -154,7 +155,7 @@ func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile 
 		return simpleFile, err
 	}
 	//再写入本地存储，如果写文件失败，也可以把数据库信息回滚掉，确保信息是干净的
-	if err = writeFileEntity(path+uniqKey, content); err != nil {
+	if err = writeFileEntity(path, content); err != nil {
 		klog.CtxErrorf(ctx, "service.saveFileInfo -> service.writeFileEntity error: %v", err)
 		return simpleFile, err
 	}

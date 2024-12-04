@@ -7,10 +7,10 @@ import (
 	"github.com/cloudwego/kitex/server"
 	"github.com/cutejiuges/disk_back/internal/enum"
 	"github.com/cutejiuges/disk_back/internal/util"
-	file_server "github.com/cutejiuges/disk_back/kitex_gen/file_server/fileservice"
+	user_server "github.com/cutejiuges/disk_back/kitex_gen/user_server/userservice"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/cache/redis"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/conf"
+	"github.com/cutejiuges/disk_back/micro_services/user_server/conf"
 	"github.com/cutejiuges/disk_back/middleware"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	consul "github.com/kitex-contrib/registry-consul"
@@ -24,7 +24,7 @@ import (
 
 func main() {
 	opts := kitexInit()
-	svr := file_server.NewServer(new(FileServiceImpl), opts...)
+	svr := user_server.NewServer(new(UserServiceImpl), opts...)
 
 	err := svr.Run()
 	if err != nil {

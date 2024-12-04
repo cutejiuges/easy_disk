@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cutejiuges/disk_back/errno"
+	"github.com/cutejiuges/disk_back/internal/enum"
+	"github.com/cutejiuges/disk_back/internal/errno"
+	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/service"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
 )
 
 /**
