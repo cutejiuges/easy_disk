@@ -13,14 +13,14 @@ import (
  * @Description: 生成全局唯一id
  */
 
-const globalUniqID = "globalUniqID"
+const globalFileID = "globalFileID"
 
 func GetCurUniqID(ctx context.Context) (int64, error) {
-	return redis.DB().Get(ctx, globalUniqID).Int64()
+	return redis.DB().Get(ctx, globalFileID).Int64()
 }
 
 func GetNextUniqID(ctx context.Context) (int64, error) {
-	return redis.DB().Incr(ctx, globalUniqID).Result()
+	return redis.DB().Incr(ctx, globalFileID).Result()
 }
 
 func UploadFileLockKey(key string) string {

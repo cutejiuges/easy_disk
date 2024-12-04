@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cutejiuges/disk_back/errno"
+	errno2 "github.com/cutejiuges/disk_back/internal/errno"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/service"
 )
@@ -33,9 +33,9 @@ func NewDeleteFileHandler(ctx context.Context, req *file_server.DeleteFileReques
 
 func (h *DeleteFileHandler) checkParam() error {
 	if len(h.req.GetId()) <= 0 {
-		return &errno.BizError{
-			Code: errno.ErrCodeParamIllegal,
-			Msg:  errno.ErrMsgMap[errno.ErrCodeParamIllegal] + ", 无有效文件id",
+		return &errno2.BizError{
+			Code: errno2.ErrCodeParamIllegal,
+			Msg:  errno2.ErrMsgMap[errno2.ErrCodeParamIllegal] + ", 无有效文件id",
 		}
 	}
 	return nil
@@ -55,11 +55,11 @@ func (h *DeleteFileHandler) processBusiness() error {
 }
 
 func (h *DeleteFileHandler) packResp() {
-	h.resp.SetBaseResp(errno.NewBaseRespWithOK())
+	h.resp.SetBaseResp(errno2.NewBaseRespWithOK())
 	h.resp.SetData(h.data)
 	if h.err != nil {
 		klog.CtxErrorf(h.ctx, "UploadFileHandler exec error: %v", h.err)
-		h.resp.SetBaseResp(errno.NewBaseResp(h.err))
+		h.resp.SetBaseResp(errno2.NewBaseResp(h.err))
 		h.err = nil
 	}
 }

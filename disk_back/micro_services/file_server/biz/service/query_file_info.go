@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cutejiuges/disk_back/internal/enum"
+	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
 )
 
 /**

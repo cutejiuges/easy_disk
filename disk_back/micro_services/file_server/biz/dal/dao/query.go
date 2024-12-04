@@ -2,12 +2,12 @@ package dao
 
 import (
 	"context"
+	"github.com/cutejiuges/disk_back/internal/enum"
+	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/util"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
 )
 
 /**

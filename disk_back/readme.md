@@ -5,6 +5,8 @@
 ```shell
 # 文件服务相关：
 kitex -module github.com/cutejiuges/disk_back ../../idl/cloud_disk/back/file_server.thrift
+# 用户服务相关:
+kitex -module github.com/cutejiuges/disk_back ../../idl/cloud_disk/back/user_server.thrift
 ```
 
 ## file_server
@@ -14,5 +16,15 @@ kitex -module github.com/cutejiuges/disk_back ../../idl/cloud_disk/back/file_ser
 ```shell
 cd micro_services/file_server
 kitex -module github.com/cutejiuges/disk_back -service cutejiuge.disk.file -use github.com/cutejiuges/disk_back/kitex_gen/ ../../../../idl/cloud_disk/back/file_server.thrift
+cd ../..
+```
+
+## user_server
+`user_server`中实现了用户相关的主要操作，包括用户的注册、登陆验证、信息修改、帐号注销等能力
+
+需要生成用户微服务的相关代码，可以参考:
+```shell
+cd micro_services/user_server
+kitex -module github.com/cutejiuges/disk_back -service cutejiuge.disk.user -use github.com/cutejiuges/disk_back/kitex_gen/ ../../../../idl/cloud_disk/back/user_server.thrift
 cd ../..
 ```

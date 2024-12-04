@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/endpoint"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"strings"
 	"time"
 )
 
@@ -28,7 +29,12 @@ func LogMW(next endpoint.Endpoint) endpoint.Endpoint {
 		_ = reqEncoder.Encode(req)
 
 		startTime := time.Now()
-		klog.CtxInfof(ctx, "_request_in_trace_id_%d method = %v, req = %v", info.Invocation().SeqID(), info.To().Method(), reqBuf.String())
+		method := info.To().Method()
+		if strings.Contains(method, "UploadFile") {
+			klog.CtxInfof(ctx, "_request_in_trace_id_%d method = %v", info.Invocation().SeqID(), info.To().Method())
+		} else {
+			klog.CtxInfof(ctx, "_request_in_trace_id_%d method = %v, req = %v", info.Invocation().SeqID(), info.To().Method(), reqBuf.String())
+		}
 		_ = next(ctx, req, resp)
 
 		respBuf := bytes.NewBuffer([]byte{})

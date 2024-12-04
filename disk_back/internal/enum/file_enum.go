@@ -43,5 +43,5 @@ const (
 const (
 	NumberOfGoroutineProcessed = 5  //每个协程处理的文件数量，一组文件需要的协程数为文件数 / NumberOfGoroutineProcessed
 	MaxNumberOfGoroutines      = 10 //但是批量处理文件最大允许开启的协程数量
-	LocationOfUploadFiles      = "uploads/"
+	LocationOfUploadFiles      = "/home/wujie/myFiles/GoCode/easy_disk/disk_back/uploads/"
 )

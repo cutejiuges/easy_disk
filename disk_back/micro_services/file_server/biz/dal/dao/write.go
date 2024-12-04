@@ -2,11 +2,11 @@ package dao
 
 import (
 	"context"
-	"github.com/cutejiuges/disk_back/errno"
+	"github.com/cutejiuges/disk_back/internal/enum"
+	errno2 "github.com/cutejiuges/disk_back/internal/errno"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/enum"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/internal/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
 )
 
 /**
@@ -67,8 +67,8 @@ func DeleteFile(ctx context.Context, q *query.Query, params *param.EditFileMetaP
 
 func ModifyFileRef(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
 	if len(param.IdList) <= 0 {
-		return &errno.BizError{
-			Code: errno.ErrCodeDbUnknownError,
+		return &errno2.BizError{
+			Code: errno2.ErrCodeDbUnknownError,
 			Msg:  "检索条件不正确，id为必传参数",
 		}
 	}
