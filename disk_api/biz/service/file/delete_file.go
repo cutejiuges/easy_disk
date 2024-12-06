@@ -23,7 +23,7 @@ func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) 
 		hlog.CtxErrorf(ctx, "converter req error: %v", err)
 		return nil, err
 	}
-	resp, err := rpc.GetDiskBackClient().DeleteFile(ctx, &rpcReq)
+	resp, err := rpc.GetFileServerClient().DeleteFile(ctx, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "file_service.DeleteFile -> rpc.DeleteFile error: %v", err)
 		return nil, err

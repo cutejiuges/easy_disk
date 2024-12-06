@@ -13,6 +13,13 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
+	"GetEmailVerifyCode": kitex.NewMethodInfo(
+		getEmailVerifyCodeHandler,
+		newUserServiceGetEmailVerifyCodeArgs,
+		newUserServiceGetEmailVerifyCodeResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 	"UserSignUp": kitex.NewMethodInfo(
 		userSignUpHandler,
 		newUserServiceUserSignUpArgs,
@@ -86,6 +93,24 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
+func getEmailVerifyCodeHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user_server.UserServiceGetEmailVerifyCodeArgs)
+	realResult := result.(*user_server.UserServiceGetEmailVerifyCodeResult)
+	success, err := handler.(user_server.UserService).GetEmailVerifyCode(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetEmailVerifyCodeArgs() interface{} {
+	return user_server.NewUserServiceGetEmailVerifyCodeArgs()
+}
+
+func newUserServiceGetEmailVerifyCodeResult() interface{} {
+	return user_server.NewUserServiceGetEmailVerifyCodeResult()
+}
+
 func userSignUpHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*user_server.UserServiceUserSignUpArgs)
 	realResult := result.(*user_server.UserServiceUserSignUpResult)
@@ -112,6 +137,16 @@ func newServiceClient(c client.Client) *kClient {
 	return &kClient{
 		c: c,
 	}
+}
+
+func (p *kClient) GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest) (r *user_server.GetEmailVerifyCodeResponse, err error) {
+	var _args user_server.UserServiceGetEmailVerifyCodeArgs
+	_args.Req = req
+	var _result user_server.UserServiceGetEmailVerifyCodeResult
+	if err = p.c.Call(ctx, "GetEmailVerifyCode", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
 }
 
 func (p *kClient) UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest) (r *user_server.UserSignUpResponse, err error) {

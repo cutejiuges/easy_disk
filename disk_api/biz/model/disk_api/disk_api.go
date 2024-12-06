@@ -8,6 +8,7 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cutejiuges/disk_api/biz/model/base"
 	"github.com/cutejiuges/disk_api/biz/model/file_server"
+	"github.com/cutejiuges/disk_api/biz/model/user_server"
 )
 
 type BlankRequest struct {
@@ -159,6 +160,7 @@ func (p *BlankRequest) String() string {
 }
 
 type DiskApiService interface {
+	//文件服务
 	UploadFileBatch(ctx context.Context, req *BlankRequest) (r *file_server.UploadFileResponse, err error)
 
 	QueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) (r *file_server.QueryFileInfoResponse, err error)
@@ -166,6 +168,8 @@ type DiskApiService interface {
 	DownloadFile(ctx context.Context, req *file_server.DownloadFileRequest) (r *file_server.DownloadFileResponse, err error)
 
 	DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error)
+	//用户服务
+	GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest) (r *user_server.GetEmailVerifyCodeResponse, err error)
 }
 
 type DiskApiServiceClient struct {
@@ -230,6 +234,15 @@ func (p *DiskApiServiceClient) DeleteFile(ctx context.Context, req *file_server.
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *DiskApiServiceClient) GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest) (r *user_server.GetEmailVerifyCodeResponse, err error) {
+	var _args DiskApiServiceGetEmailVerifyCodeArgs
+	_args.Req = req
+	var _result DiskApiServiceGetEmailVerifyCodeResult
+	if err = p.Client_().Call(ctx, "GetEmailVerifyCode", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type DiskApiServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -255,6 +268,7 @@ func NewDiskApiServiceProcessor(handler DiskApiService) *DiskApiServiceProcessor
 	self.AddToProcessorMap("QueryFileInfo", &diskApiServiceProcessorQueryFileInfo{handler: handler})
 	self.AddToProcessorMap("DownloadFile", &diskApiServiceProcessorDownloadFile{handler: handler})
 	self.AddToProcessorMap("DeleteFile", &diskApiServiceProcessorDeleteFile{handler: handler})
+	self.AddToProcessorMap("GetEmailVerifyCode", &diskApiServiceProcessorGetEmailVerifyCode{handler: handler})
 	return self
 }
 func (p *DiskApiServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -450,6 +464,54 @@ func (p *diskApiServiceProcessorDeleteFile) Process(ctx context.Context, seqId i
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("DeleteFile", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type diskApiServiceProcessorGetEmailVerifyCode struct {
+	handler DiskApiService
+}
+
+func (p *diskApiServiceProcessorGetEmailVerifyCode) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DiskApiServiceGetEmailVerifyCodeArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := DiskApiServiceGetEmailVerifyCodeResult{}
+	var retval *user_server.GetEmailVerifyCodeResponse
+	if retval, err2 = p.handler.GetEmailVerifyCode(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetEmailVerifyCode: "+err2.Error())
+		oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1640,5 +1702,299 @@ func (p *DiskApiServiceDeleteFileResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("DiskApiServiceDeleteFileResult(%+v)", *p)
+
+}
+
+type DiskApiServiceGetEmailVerifyCodeArgs struct {
+	Req *user_server.GetEmailVerifyCodeRequest `thrift:"req,1"`
+}
+
+func NewDiskApiServiceGetEmailVerifyCodeArgs() *DiskApiServiceGetEmailVerifyCodeArgs {
+	return &DiskApiServiceGetEmailVerifyCodeArgs{}
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) InitDefault() {
+}
+
+var DiskApiServiceGetEmailVerifyCodeArgs_Req_DEFAULT *user_server.GetEmailVerifyCodeRequest
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) GetReq() (v *user_server.GetEmailVerifyCodeRequest) {
+	if !p.IsSetReq() {
+		return DiskApiServiceGetEmailVerifyCodeArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_DiskApiServiceGetEmailVerifyCodeArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceGetEmailVerifyCodeArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := user_server.NewGetEmailVerifyCodeRequest()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetEmailVerifyCode_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DiskApiServiceGetEmailVerifyCodeArgs(%+v)", *p)
+
+}
+
+type DiskApiServiceGetEmailVerifyCodeResult struct {
+	Success *user_server.GetEmailVerifyCodeResponse `thrift:"success,0,optional"`
+}
+
+func NewDiskApiServiceGetEmailVerifyCodeResult() *DiskApiServiceGetEmailVerifyCodeResult {
+	return &DiskApiServiceGetEmailVerifyCodeResult{}
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) InitDefault() {
+}
+
+var DiskApiServiceGetEmailVerifyCodeResult_Success_DEFAULT *user_server.GetEmailVerifyCodeResponse
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) GetSuccess() (v *user_server.GetEmailVerifyCodeResponse) {
+	if !p.IsSetSuccess() {
+		return DiskApiServiceGetEmailVerifyCodeResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_DiskApiServiceGetEmailVerifyCodeResult = map[int16]string{
+	0: "success",
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceGetEmailVerifyCodeResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := user_server.NewGetEmailVerifyCodeResponse()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetEmailVerifyCode_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *DiskApiServiceGetEmailVerifyCodeResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DiskApiServiceGetEmailVerifyCodeResult(%+v)", *p)
 
 }

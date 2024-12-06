@@ -6,13 +6,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/cutejiuges/disk_back/kitex_gen/base"
-	"strings"
+	"github.com/cutejiuges/disk_api/biz/model/base"
 )
 
+// 用户获取邮箱验证码
 type GetEmailVerifyCodeRequest struct {
-	Email string     `thrift:"email,1,required" frugal:"1,required,string" json:"email"`
-	Base  *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	Email string     `thrift:"email,1,required" form:"email,required" json:"email,required" query:"email,required"`
+	Base  *base.Base `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewGetEmailVerifyCodeRequest() *GetEmailVerifyCodeRequest {
@@ -33,12 +33,6 @@ func (p *GetEmailVerifyCodeRequest) GetBase() (v *base.Base) {
 		return GetEmailVerifyCodeRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *GetEmailVerifyCodeRequest) SetEmail(val string) {
-	p.Email = val
-}
-func (p *GetEmailVerifyCodeRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_GetEmailVerifyCodeRequest = map[int16]string{
@@ -218,38 +212,8 @@ func (p *GetEmailVerifyCodeRequest) String() string {
 
 }
 
-func (p *GetEmailVerifyCodeRequest) DeepEqual(ano *GetEmailVerifyCodeRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Email) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *GetEmailVerifyCodeRequest) Field1DeepEqual(src string) bool {
-
-	if strings.Compare(p.Email, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *GetEmailVerifyCodeRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type GetEmailVerifyCodeResponse struct {
-	BaseResp *base.BaseResp `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	BaseResp *base.BaseResp `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewGetEmailVerifyCodeResponse() *GetEmailVerifyCodeResponse {
@@ -266,9 +230,6 @@ func (p *GetEmailVerifyCodeResponse) GetBaseResp() (v *base.BaseResp) {
 		return GetEmailVerifyCodeResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *GetEmailVerifyCodeResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_GetEmailVerifyCodeResponse = map[int16]string{
@@ -399,32 +360,13 @@ func (p *GetEmailVerifyCodeResponse) String() string {
 
 }
 
-func (p *GetEmailVerifyCodeResponse) DeepEqual(ano *GetEmailVerifyCodeResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *GetEmailVerifyCodeResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
+// 定义用户注册能力
 type UserInfoMeta struct {
-	UserName *string `thrift:"user_name,1,optional" frugal:"1,optional,string" json:"user_name,omitempty"`
-	Password string  `thrift:"password,2,required" frugal:"2,required,string" json:"password"`
-	Email    string  `thrift:"email,3,required" frugal:"3,required,string" json:"email"`
-	Phone    *string `thrift:"phone,4,optional" frugal:"4,optional,string" json:"phone,omitempty"`
-	Profile  *string `thrift:"profile,5,optional" frugal:"5,optional,string" json:"profile,omitempty"`
+	UserName *string `thrift:"user_name,1,optional" form:"user_name" json:"user_name,omitempty" query:"user_name"`
+	Password string  `thrift:"password,2,required" form:"password,required" json:"password,required" query:"password,required"`
+	Email    string  `thrift:"email,3,required" form:"email,required" json:"email,required" query:"email,required"`
+	Phone    *string `thrift:"phone,4,optional" form:"phone" json:"phone,omitempty" query:"phone"`
+	Profile  *string `thrift:"profile,5,optional" form:"profile" json:"profile,omitempty" query:"profile"`
 }
 
 func NewUserInfoMeta() *UserInfoMeta {
@@ -467,21 +409,6 @@ func (p *UserInfoMeta) GetProfile() (v string) {
 		return UserInfoMeta_Profile_DEFAULT
 	}
 	return *p.Profile
-}
-func (p *UserInfoMeta) SetUserName(val *string) {
-	p.UserName = val
-}
-func (p *UserInfoMeta) SetPassword(val string) {
-	p.Password = val
-}
-func (p *UserInfoMeta) SetEmail(val string) {
-	p.Email = val
-}
-func (p *UserInfoMeta) SetPhone(val *string) {
-	p.Phone = val
-}
-func (p *UserInfoMeta) SetProfile(val *string) {
-	p.Profile = val
 }
 
 var fieldIDToName_UserInfoMeta = map[int16]string{
@@ -806,85 +733,10 @@ func (p *UserInfoMeta) String() string {
 
 }
 
-func (p *UserInfoMeta) DeepEqual(ano *UserInfoMeta) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.UserName) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.Password) {
-		return false
-	}
-	if !p.Field3DeepEqual(ano.Email) {
-		return false
-	}
-	if !p.Field4DeepEqual(ano.Phone) {
-		return false
-	}
-	if !p.Field5DeepEqual(ano.Profile) {
-		return false
-	}
-	return true
-}
-
-func (p *UserInfoMeta) Field1DeepEqual(src *string) bool {
-
-	if p.UserName == src {
-		return true
-	} else if p.UserName == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.UserName, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UserInfoMeta) Field2DeepEqual(src string) bool {
-
-	if strings.Compare(p.Password, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UserInfoMeta) Field3DeepEqual(src string) bool {
-
-	if strings.Compare(p.Email, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UserInfoMeta) Field4DeepEqual(src *string) bool {
-
-	if p.Phone == src {
-		return true
-	} else if p.Phone == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.Phone, *src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UserInfoMeta) Field5DeepEqual(src *string) bool {
-
-	if p.Profile == src {
-		return true
-	} else if p.Profile == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.Profile, *src) != 0 {
-		return false
-	}
-	return true
-}
-
 type UserSignUpRequest struct {
-	UserInfo   *UserInfoMeta `thrift:"user_info,1,required" frugal:"1,required,UserInfoMeta" json:"user_info"`
-	VerifyCode int64         `thrift:"VerifyCode,2,required" frugal:"2,required,i64" json:"VerifyCode"`
-	Base       *base.Base    `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
+	UserInfo   *UserInfoMeta `thrift:"user_info,1,required" form:"user_info,required" json:"user_info,required" query:"user_info,required"`
+	VerifyCode int64         `thrift:"VerifyCode,2,required" form:"VerifyCode,required" json:"VerifyCode,required" query:"VerifyCode,required"`
+	Base       *base.Base    `thrift:"base,255,optional" form:"base" json:"base,omitempty" query:"base"`
 }
 
 func NewUserSignUpRequest() *UserSignUpRequest {
@@ -914,15 +766,6 @@ func (p *UserSignUpRequest) GetBase() (v *base.Base) {
 		return UserSignUpRequest_Base_DEFAULT
 	}
 	return p.Base
-}
-func (p *UserSignUpRequest) SetUserInfo(val *UserInfoMeta) {
-	p.UserInfo = val
-}
-func (p *UserSignUpRequest) SetVerifyCode(val int64) {
-	p.VerifyCode = val
-}
-func (p *UserSignUpRequest) SetBase(val *base.Base) {
-	p.Base = val
 }
 
 var fieldIDToName_UserSignUpRequest = map[int16]string{
@@ -1151,49 +994,9 @@ func (p *UserSignUpRequest) String() string {
 
 }
 
-func (p *UserSignUpRequest) DeepEqual(ano *UserSignUpRequest) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.UserInfo) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.VerifyCode) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.Base) {
-		return false
-	}
-	return true
-}
-
-func (p *UserSignUpRequest) Field1DeepEqual(src *UserInfoMeta) bool {
-
-	if !p.UserInfo.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-func (p *UserSignUpRequest) Field2DeepEqual(src int64) bool {
-
-	if p.VerifyCode != src {
-		return false
-	}
-	return true
-}
-func (p *UserSignUpRequest) Field255DeepEqual(src *base.Base) bool {
-
-	if !p.Base.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type UserSignUpResponse struct {
-	AccountId int64          `thrift:"account_id,1,required" frugal:"1,required,i64" json:"account_id"`
-	BaseResp  *base.BaseResp `thrift:"base_resp,255,optional" frugal:"255,optional,base.BaseResp" json:"base_resp,omitempty"`
+	AccountID int64          `thrift:"account_id,1,required" form:"account_id,required" json:"account_id,required" query:"account_id,required"`
+	BaseResp  *base.BaseResp `thrift:"base_resp,255,optional" form:"base_resp" json:"base_resp,omitempty" query:"base_resp"`
 }
 
 func NewUserSignUpResponse() *UserSignUpResponse {
@@ -1203,8 +1006,8 @@ func NewUserSignUpResponse() *UserSignUpResponse {
 func (p *UserSignUpResponse) InitDefault() {
 }
 
-func (p *UserSignUpResponse) GetAccountId() (v int64) {
-	return p.AccountId
+func (p *UserSignUpResponse) GetAccountID() (v int64) {
+	return p.AccountID
 }
 
 var UserSignUpResponse_BaseResp_DEFAULT *base.BaseResp
@@ -1214,12 +1017,6 @@ func (p *UserSignUpResponse) GetBaseResp() (v *base.BaseResp) {
 		return UserSignUpResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
-}
-func (p *UserSignUpResponse) SetAccountId(val int64) {
-	p.AccountId = val
-}
-func (p *UserSignUpResponse) SetBaseResp(val *base.BaseResp) {
-	p.BaseResp = val
 }
 
 var fieldIDToName_UserSignUpResponse = map[int16]string{
@@ -1235,7 +1032,7 @@ func (p *UserSignUpResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetAccountId bool = false
+	var issetAccountID bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1256,7 +1053,7 @@ func (p *UserSignUpResponse) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetAccountId = true
+				issetAccountID = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1281,7 +1078,7 @@ func (p *UserSignUpResponse) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetAccountId {
+	if !issetAccountID {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1311,7 +1108,7 @@ func (p *UserSignUpResponse) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.AccountId = _field
+	p.AccountID = _field
 	return nil
 }
 func (p *UserSignUpResponse) ReadField255(iprot thrift.TProtocol) error {
@@ -1359,7 +1156,7 @@ func (p *UserSignUpResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("account_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.AccountId); err != nil {
+	if err := oprot.WriteI64(p.AccountID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1399,44 +1196,197 @@ func (p *UserSignUpResponse) String() string {
 
 }
 
-func (p *UserSignUpResponse) DeepEqual(ano *UserSignUpResponse) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.AccountId) {
-		return false
-	}
-	if !p.Field255DeepEqual(ano.BaseResp) {
-		return false
-	}
-	return true
-}
-
-func (p *UserSignUpResponse) Field1DeepEqual(src int64) bool {
-
-	if p.AccountId != src {
-		return false
-	}
-	return true
-}
-func (p *UserSignUpResponse) Field255DeepEqual(src *base.BaseResp) bool {
-
-	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type UserService interface {
 	GetEmailVerifyCode(ctx context.Context, req *GetEmailVerifyCodeRequest) (r *GetEmailVerifyCodeResponse, err error)
 
 	UserSignUp(ctx context.Context, req *UserSignUpRequest) (r *UserSignUpResponse, err error)
 }
 
+type UserServiceClient struct {
+	c thrift.TClient
+}
+
+func NewUserServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *UserServiceClient {
+	return &UserServiceClient{
+		c: thrift.NewTStandardClient(f.GetProtocol(t), f.GetProtocol(t)),
+	}
+}
+
+func NewUserServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *UserServiceClient {
+	return &UserServiceClient{
+		c: thrift.NewTStandardClient(iprot, oprot),
+	}
+}
+
+func NewUserServiceClient(c thrift.TClient) *UserServiceClient {
+	return &UserServiceClient{
+		c: c,
+	}
+}
+
+func (p *UserServiceClient) Client_() thrift.TClient {
+	return p.c
+}
+
+func (p *UserServiceClient) GetEmailVerifyCode(ctx context.Context, req *GetEmailVerifyCodeRequest) (r *GetEmailVerifyCodeResponse, err error) {
+	var _args UserServiceGetEmailVerifyCodeArgs
+	_args.Req = req
+	var _result UserServiceGetEmailVerifyCodeResult
+	if err = p.Client_().Call(ctx, "GetEmailVerifyCode", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *UserServiceClient) UserSignUp(ctx context.Context, req *UserSignUpRequest) (r *UserSignUpResponse, err error) {
+	var _args UserServiceUserSignUpArgs
+	_args.Req = req
+	var _result UserServiceUserSignUpResult
+	if err = p.Client_().Call(ctx, "UserSignUp", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+type UserServiceProcessor struct {
+	processorMap map[string]thrift.TProcessorFunction
+	handler      UserService
+}
+
+func (p *UserServiceProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+	p.processorMap[key] = processor
+}
+
+func (p *UserServiceProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+	processor, ok = p.processorMap[key]
+	return processor, ok
+}
+
+func (p *UserServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+	return p.processorMap
+}
+
+func NewUserServiceProcessor(handler UserService) *UserServiceProcessor {
+	self := &UserServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
+	self.AddToProcessorMap("GetEmailVerifyCode", &userServiceProcessorGetEmailVerifyCode{handler: handler})
+	self.AddToProcessorMap("UserSignUp", &userServiceProcessorUserSignUp{handler: handler})
+	return self
+}
+func (p *UserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	name, _, seqId, err := iprot.ReadMessageBegin()
+	if err != nil {
+		return false, err
+	}
+	if processor, ok := p.GetProcessorFunction(name); ok {
+		return processor.Process(ctx, seqId, iprot, oprot)
+	}
+	iprot.Skip(thrift.STRUCT)
+	iprot.ReadMessageEnd()
+	x := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function "+name)
+	oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
+	x.Write(oprot)
+	oprot.WriteMessageEnd()
+	oprot.Flush(ctx)
+	return false, x
+}
+
+type userServiceProcessorGetEmailVerifyCode struct {
+	handler UserService
+}
+
+func (p *userServiceProcessorGetEmailVerifyCode) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserServiceGetEmailVerifyCodeArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := UserServiceGetEmailVerifyCodeResult{}
+	var retval *GetEmailVerifyCodeResponse
+	if retval, err2 = p.handler.GetEmailVerifyCode(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetEmailVerifyCode: "+err2.Error())
+		oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type userServiceProcessorUserSignUp struct {
+	handler UserService
+}
+
+func (p *userServiceProcessorUserSignUp) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserServiceUserSignUpArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("UserSignUp", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := UserServiceUserSignUpResult{}
+	var retval *UserSignUpResponse
+	if retval, err2 = p.handler.UserSignUp(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UserSignUp: "+err2.Error())
+		oprot.WriteMessageBegin("UserSignUp", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("UserSignUp", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
 type UserServiceGetEmailVerifyCodeArgs struct {
-	Req *GetEmailVerifyCodeRequest `thrift:"req,1,required" frugal:"1,required,GetEmailVerifyCodeRequest" json:"req"`
+	Req *GetEmailVerifyCodeRequest `thrift:"req,1,required"`
 }
 
 func NewUserServiceGetEmailVerifyCodeArgs() *UserServiceGetEmailVerifyCodeArgs {
@@ -1453,9 +1403,6 @@ func (p *UserServiceGetEmailVerifyCodeArgs) GetReq() (v *GetEmailVerifyCodeReque
 		return UserServiceGetEmailVerifyCodeArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *UserServiceGetEmailVerifyCodeArgs) SetReq(val *GetEmailVerifyCodeRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_UserServiceGetEmailVerifyCodeArgs = map[int16]string{
@@ -1592,28 +1539,8 @@ func (p *UserServiceGetEmailVerifyCodeArgs) String() string {
 
 }
 
-func (p *UserServiceGetEmailVerifyCodeArgs) DeepEqual(ano *UserServiceGetEmailVerifyCodeArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *UserServiceGetEmailVerifyCodeArgs) Field1DeepEqual(src *GetEmailVerifyCodeRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type UserServiceGetEmailVerifyCodeResult struct {
-	Success *GetEmailVerifyCodeResponse `thrift:"success,0,optional" frugal:"0,optional,GetEmailVerifyCodeResponse" json:"success,omitempty"`
+	Success *GetEmailVerifyCodeResponse `thrift:"success,0,optional"`
 }
 
 func NewUserServiceGetEmailVerifyCodeResult() *UserServiceGetEmailVerifyCodeResult {
@@ -1630,9 +1557,6 @@ func (p *UserServiceGetEmailVerifyCodeResult) GetSuccess() (v *GetEmailVerifyCod
 		return UserServiceGetEmailVerifyCodeResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *UserServiceGetEmailVerifyCodeResult) SetSuccess(x interface{}) {
-	p.Success = x.(*GetEmailVerifyCodeResponse)
 }
 
 var fieldIDToName_UserServiceGetEmailVerifyCodeResult = map[int16]string{
@@ -1763,28 +1687,8 @@ func (p *UserServiceGetEmailVerifyCodeResult) String() string {
 
 }
 
-func (p *UserServiceGetEmailVerifyCodeResult) DeepEqual(ano *UserServiceGetEmailVerifyCodeResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *UserServiceGetEmailVerifyCodeResult) Field0DeepEqual(src *GetEmailVerifyCodeResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type UserServiceUserSignUpArgs struct {
-	Req *UserSignUpRequest `thrift:"req,1,required" frugal:"1,required,UserSignUpRequest" json:"req"`
+	Req *UserSignUpRequest `thrift:"req,1,required"`
 }
 
 func NewUserServiceUserSignUpArgs() *UserServiceUserSignUpArgs {
@@ -1801,9 +1705,6 @@ func (p *UserServiceUserSignUpArgs) GetReq() (v *UserSignUpRequest) {
 		return UserServiceUserSignUpArgs_Req_DEFAULT
 	}
 	return p.Req
-}
-func (p *UserServiceUserSignUpArgs) SetReq(val *UserSignUpRequest) {
-	p.Req = val
 }
 
 var fieldIDToName_UserServiceUserSignUpArgs = map[int16]string{
@@ -1940,28 +1841,8 @@ func (p *UserServiceUserSignUpArgs) String() string {
 
 }
 
-func (p *UserServiceUserSignUpArgs) DeepEqual(ano *UserServiceUserSignUpArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *UserServiceUserSignUpArgs) Field1DeepEqual(src *UserSignUpRequest) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
 type UserServiceUserSignUpResult struct {
-	Success *UserSignUpResponse `thrift:"success,0,optional" frugal:"0,optional,UserSignUpResponse" json:"success,omitempty"`
+	Success *UserSignUpResponse `thrift:"success,0,optional"`
 }
 
 func NewUserServiceUserSignUpResult() *UserServiceUserSignUpResult {
@@ -1978,9 +1859,6 @@ func (p *UserServiceUserSignUpResult) GetSuccess() (v *UserSignUpResponse) {
 		return UserServiceUserSignUpResult_Success_DEFAULT
 	}
 	return p.Success
-}
-func (p *UserServiceUserSignUpResult) SetSuccess(x interface{}) {
-	p.Success = x.(*UserSignUpResponse)
 }
 
 var fieldIDToName_UserServiceUserSignUpResult = map[int16]string{
@@ -2109,24 +1987,4 @@ func (p *UserServiceUserSignUpResult) String() string {
 	}
 	return fmt.Sprintf("UserServiceUserSignUpResult(%+v)", *p)
 
-}
-
-func (p *UserServiceUserSignUpResult) DeepEqual(ano *UserServiceUserSignUpResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *UserServiceUserSignUpResult) Field0DeepEqual(src *UserSignUpResponse) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
 }

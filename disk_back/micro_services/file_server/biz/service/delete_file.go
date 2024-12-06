@@ -5,7 +5,7 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/internal/enum"
-	errno2 "github.com/cutejiuges/disk_back/internal/errno"
+	"github.com/cutejiuges/disk_back/internal/errno"
 	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
@@ -31,7 +31,7 @@ func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) 
 		klog.CtxErrorf(ctx, "service.ProcessDeleteFile -> dao.QueryFileMetaList error: %v", err)
 		data.SetStatus(thrift.Int8Ptr(enum.OperateFileStatusFailed))
 		data.SetStatusName(thrift.StringPtr(enum.OperateFileStatusMap[enum.OperateFileStatusFailed]))
-		return data, &errno2.BizError{Code: errno2.ErrCodeDbUnknownError, Msg: err.Error()}
+		return data, &errno.BizError{Code: errno.ErrCodeDbUnknownError, Msg: err.Error()}
 	}
 	//2. 根据文件的引用次数，判断本次操作是删除文件记录还是减少引用次数
 	dropFileIds := make([]int64, 0)

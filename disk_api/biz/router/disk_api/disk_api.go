@@ -24,4 +24,8 @@ func Register(r *server.Hertz) {
 		_file.POST("/queryFileInfo", append(_queryfileinfoMw(), disk_api.QueryFileInfo)...)
 		_file.POST("/uploadFileBatch", append(_uploadfilebatchMw(), disk_api.UploadFileBatch)...)
 	}
+	{
+		_user := root.Group("/user", _userMw()...)
+		_user.POST("/getEmailVerifyCode", append(_getemailverifycodeMw(), disk_api.GetEmailVerifyCode)...)
+	}
 }

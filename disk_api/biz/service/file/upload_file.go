@@ -56,7 +56,7 @@ func ProcessUploadFileBatch(ctx context.Context, c *app.RequestContext, req *dis
 	}
 	rpcReq.SetFiles(fileList)
 
-	rpcResp, err := rpc.GetDiskBackClient().UploadFileBatch(ctx, &rpcReq)
+	rpcResp, err := rpc.GetFileServerClient().UploadFileBatch(ctx, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "ProcessUploadFileBatch -> rpc UploadFile error: %v", err)
 		return nil, err

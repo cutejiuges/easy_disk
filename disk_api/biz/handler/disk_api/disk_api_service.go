@@ -8,7 +8,9 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	disk_api "github.com/cutejiuges/disk_api/biz/model/disk_api"
 	file_server "github.com/cutejiuges/disk_api/biz/model/file_server"
+	user_server "github.com/cutejiuges/disk_api/biz/model/user_server"
 	file_service "github.com/cutejiuges/disk_api/biz/service/file"
+	user_service "github.com/cutejiuges/disk_api/biz/service/user"
 	"github.com/cutejiuges/disk_api/infra/localutils"
 )
 
@@ -69,5 +71,20 @@ func UploadFileBatch(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp, err := file_service.ProcessUploadFileBatch(ctx, c, &req)
+	localutils.Wrapper(c, resp, err)
+}
+
+// GetEmailVerifyCode .
+// @router user/getEmailVerifyCode [POST]
+func GetEmailVerifyCode(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user_server.GetEmailVerifyCodeRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp, err := user_service.ProcessGetEmailVerifyCode(ctx, &req)
 	localutils.Wrapper(c, resp, err)
 }

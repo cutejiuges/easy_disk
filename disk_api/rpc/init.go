@@ -9,4 +9,5 @@ package rpc
 
 func InitRpcClient() {
 	initFileServerClient()
+	initUserServerClient()
 }

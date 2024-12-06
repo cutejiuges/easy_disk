@@ -11,6 +11,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
+	GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest, callOptions ...callopt.Option) (r *user_server.GetEmailVerifyCodeResponse, err error)
 	UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest, callOptions ...callopt.Option) (r *user_server.UserSignUpResponse, err error)
 }
 
@@ -41,6 +42,11 @@ func MustNewClient(destService string, opts ...client.Option) Client {
 
 type kUserServiceClient struct {
 	*kClient
+}
+
+func (p *kUserServiceClient) GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest, callOptions ...callopt.Option) (r *user_server.GetEmailVerifyCodeResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetEmailVerifyCode(ctx, req)
 }
 
 func (p *kUserServiceClient) UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest, callOptions ...callopt.Option) (r *user_server.UserSignUpResponse, err error) {
