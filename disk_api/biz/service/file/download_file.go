@@ -23,7 +23,7 @@ func ProcessDownloadFile(ctx context.Context, request *file_server.DownloadFileR
 		hlog.CtxErrorf(ctx, "converter req error: %v", err)
 		return nil, err
 	}
-	resp, err := rpc.GetDiskBackClient().DownloadFile(ctx, &rpcReq)
+	resp, err := rpc.GetFileServerClient().DownloadFile(ctx, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "file_service.ProcessDownloadFile -> rpc DownloadFile error: %v", err)
 		return nil, err

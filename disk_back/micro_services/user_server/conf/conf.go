@@ -28,6 +28,7 @@ type Config struct {
 	MySQL    MySQL    `yaml:"mysql"`
 	Redis    Redis    `yaml:"redis"`
 	Registry Registry `yaml:"registry"`
+	Email    Email    `yaml:"email"`
 }
 
 type MySQL struct {
@@ -58,6 +59,13 @@ type Registry struct {
 	RegistryAddress string `yaml:"registry_address"`
 }
 
+type Email struct {
+	Host       string `yaml:"host"`
+	TLSAddr    string `yaml:"tls_addr"`
+	ServerName string `yaml:"server_name"`
+	Password   string `yaml:"password"`
+}
+
 // GetConf 获取配置实例
 func GetConf() *Config {
 	once.Do(initConf)
@@ -65,7 +73,7 @@ func GetConf() *Config {
 }
 
 func initConf() {
-	prefix := "micro_services/file_server/conf"
+	prefix := "micro_services/user_server/conf"
 	configFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
 	content, err := os.ReadFile(configFileRelPath)
 	if err != nil {

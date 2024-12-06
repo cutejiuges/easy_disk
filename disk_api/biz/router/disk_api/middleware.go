@@ -60,3 +60,13 @@ func _uploadfilebatchMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _userMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getemailverifycodeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

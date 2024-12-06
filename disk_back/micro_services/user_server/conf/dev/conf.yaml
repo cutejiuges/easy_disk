@@ -20,4 +20,7 @@ redis:
   db: 1
 
 email:
-
+  host: "cutejiuge@163.com"
+  tls_addr: "smtp.163.com:465"
+  server_name: "smtp.163.com"
+  password: "UB6TF4XsuBZYNxpV"

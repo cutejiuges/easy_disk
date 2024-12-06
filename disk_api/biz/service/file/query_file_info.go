@@ -23,7 +23,7 @@ func ProcessQueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoReq
 		hlog.CtxErrorf(ctx, "file_service.ProcessQueryFileInfo -> localutils.Converter, err: %v", err)
 		return nil, err
 	}
-	resp, err := rpc.GetDiskBackClient().QueryFileInfo(ctx, &rpcReq)
+	resp, err := rpc.GetFileServerClient().QueryFileInfo(ctx, &rpcReq)
 	if err != nil {
 		hlog.CtxErrorf(ctx, "file_service.ProcessQueryFileInfo -> rpc.QueryFileInfo, err: %v", err)
 		return nil, err
