@@ -11,27 +11,7 @@ func rootMw() []app.HandlerFunc {
 	return nil
 }
 
-func _pingMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _apiMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _echoMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _fileMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _uploadfileMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
@@ -51,11 +31,6 @@ func _downloadfileMw() []app.HandlerFunc {
 	return nil
 }
 
-func _editfileinfoMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _uploadfilebatchMw() []app.HandlerFunc {
 	// your code...
 	return nil
@@ -67,6 +42,11 @@ func _userMw() []app.HandlerFunc {
 }
 
 func _getemailverifycodeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _usersignupMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

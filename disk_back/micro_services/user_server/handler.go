@@ -11,8 +11,7 @@ type UserServiceImpl struct{}
 
 // UserSignUp implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest) (resp *user_server.UserSignUpResponse, err error) {
-	// TODO: Your code here...
-	return
+	return handler.NewUserSignUpHandler(ctx, req).Handle()
 }
 
 // GetEmailVerifyCode implements the UserServiceImpl interface.

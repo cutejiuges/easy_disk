@@ -170,6 +170,8 @@ type DiskApiService interface {
 	DeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (r *file_server.DeleteFileResponse, err error)
 	//用户服务
 	GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest) (r *user_server.GetEmailVerifyCodeResponse, err error)
+
+	UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest) (r *user_server.UserSignUpResponse, err error)
 }
 
 type DiskApiServiceClient struct {
@@ -243,6 +245,15 @@ func (p *DiskApiServiceClient) GetEmailVerifyCode(ctx context.Context, req *user
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *DiskApiServiceClient) UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest) (r *user_server.UserSignUpResponse, err error) {
+	var _args DiskApiServiceUserSignUpArgs
+	_args.Req = req
+	var _result DiskApiServiceUserSignUpResult
+	if err = p.Client_().Call(ctx, "UserSignUp", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type DiskApiServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -269,6 +280,7 @@ func NewDiskApiServiceProcessor(handler DiskApiService) *DiskApiServiceProcessor
 	self.AddToProcessorMap("DownloadFile", &diskApiServiceProcessorDownloadFile{handler: handler})
 	self.AddToProcessorMap("DeleteFile", &diskApiServiceProcessorDeleteFile{handler: handler})
 	self.AddToProcessorMap("GetEmailVerifyCode", &diskApiServiceProcessorGetEmailVerifyCode{handler: handler})
+	self.AddToProcessorMap("UserSignUp", &diskApiServiceProcessorUserSignUp{handler: handler})
 	return self
 }
 func (p *DiskApiServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -512,6 +524,54 @@ func (p *diskApiServiceProcessorGetEmailVerifyCode) Process(ctx context.Context,
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("GetEmailVerifyCode", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type diskApiServiceProcessorUserSignUp struct {
+	handler DiskApiService
+}
+
+func (p *diskApiServiceProcessorUserSignUp) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DiskApiServiceUserSignUpArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("UserSignUp", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := DiskApiServiceUserSignUpResult{}
+	var retval *user_server.UserSignUpResponse
+	if retval, err2 = p.handler.UserSignUp(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UserSignUp: "+err2.Error())
+		oprot.WriteMessageBegin("UserSignUp", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("UserSignUp", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1996,5 +2056,299 @@ func (p *DiskApiServiceGetEmailVerifyCodeResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("DiskApiServiceGetEmailVerifyCodeResult(%+v)", *p)
+
+}
+
+type DiskApiServiceUserSignUpArgs struct {
+	Req *user_server.UserSignUpRequest `thrift:"req,1"`
+}
+
+func NewDiskApiServiceUserSignUpArgs() *DiskApiServiceUserSignUpArgs {
+	return &DiskApiServiceUserSignUpArgs{}
+}
+
+func (p *DiskApiServiceUserSignUpArgs) InitDefault() {
+}
+
+var DiskApiServiceUserSignUpArgs_Req_DEFAULT *user_server.UserSignUpRequest
+
+func (p *DiskApiServiceUserSignUpArgs) GetReq() (v *user_server.UserSignUpRequest) {
+	if !p.IsSetReq() {
+		return DiskApiServiceUserSignUpArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_DiskApiServiceUserSignUpArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *DiskApiServiceUserSignUpArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *DiskApiServiceUserSignUpArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUserSignUpArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := user_server.NewUserSignUpRequest()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
+func (p *DiskApiServiceUserSignUpArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UserSignUp_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DiskApiServiceUserSignUpArgs(%+v)", *p)
+
+}
+
+type DiskApiServiceUserSignUpResult struct {
+	Success *user_server.UserSignUpResponse `thrift:"success,0,optional"`
+}
+
+func NewDiskApiServiceUserSignUpResult() *DiskApiServiceUserSignUpResult {
+	return &DiskApiServiceUserSignUpResult{}
+}
+
+func (p *DiskApiServiceUserSignUpResult) InitDefault() {
+}
+
+var DiskApiServiceUserSignUpResult_Success_DEFAULT *user_server.UserSignUpResponse
+
+func (p *DiskApiServiceUserSignUpResult) GetSuccess() (v *user_server.UserSignUpResponse) {
+	if !p.IsSetSuccess() {
+		return DiskApiServiceUserSignUpResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_DiskApiServiceUserSignUpResult = map[int16]string{
+	0: "success",
+}
+
+func (p *DiskApiServiceUserSignUpResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *DiskApiServiceUserSignUpResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DiskApiServiceUserSignUpResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := user_server.NewUserSignUpResponse()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *DiskApiServiceUserSignUpResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UserSignUp_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *DiskApiServiceUserSignUpResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DiskApiServiceUserSignUpResult(%+v)", *p)
 
 }

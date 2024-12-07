@@ -27,5 +27,6 @@ func Register(r *server.Hertz) {
 	{
 		_user := root.Group("/user", _userMw()...)
 		_user.POST("/getEmailVerifyCode", append(_getemailverifycodeMw(), disk_api.GetEmailVerifyCode)...)
+		_user.POST("/signUp", append(_usersignupMw(), disk_api.UserSignUp)...)
 	}
 }

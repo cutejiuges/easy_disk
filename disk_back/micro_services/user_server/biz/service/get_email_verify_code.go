@@ -6,7 +6,6 @@ import (
 	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/user_server"
 	"github.com/cutejiuges/disk_back/micro_services/user_server/biz/cache"
-	"github.com/cutejiuges/disk_back/micro_services/user_server/infra/email"
 )
 
 /**
@@ -22,14 +21,15 @@ func ProcessGetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVer
 
 	var err error
 	//调用邮箱服务发送验证码
-	err = email.SendVerifyCode(req.GetEmail(), code)
-	if err != nil {
-		klog.CtxErrorf(ctx, "service.ProcessGetEmailVerifyCode -> email.SendVerifyCode error: %v", err)
-		return err
-	}
+	//err = email.SendVerifyCode(req.GetEmail(), code)
+	//if err != nil {
+	//	klog.CtxErrorf(ctx, "service.ProcessGetEmailVerifyCode -> email.SendVerifyCode error: %v", err)
+	//	return err
+	//}
+	klog.CtxInfof(ctx, "VerifyCode: %d", code)
 
 	//将code存储到redis中，时长1min
-	err = cache.SaveVerifyCode(req.GetEmail(), code)
+	err = cache.SaveVerifyCode(ctx, req.GetEmail(), code)
 	if err != nil {
 		klog.CtxErrorf(ctx, "service.ProcessGetEmailVerifyCode -> cache.SaveVerifyCode error: %v", err)
 		return err

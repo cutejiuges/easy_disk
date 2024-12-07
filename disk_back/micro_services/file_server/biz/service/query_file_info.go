@@ -9,7 +9,7 @@ import (
 	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/file_server"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo"
 )
 
 /**
@@ -21,7 +21,7 @@ import (
 
 func ProcessQueryFileInfo(ctx context.Context, req *file_server.QueryFileInfoRequest) ([]*file_server.QueryFileInfoData, int64, error) {
 	data := make([]*file_server.QueryFileInfoData, 0)
-	fileParam := &param.QueryFileMetaParam{
+	fileParam := &pojo.QueryFileMetaParam{
 		IdList: req.GetID(),
 		Status: req.GetStatus(),
 		Page:   int(req.GetPage()),

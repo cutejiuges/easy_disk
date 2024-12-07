@@ -11,7 +11,7 @@ import (
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/dao"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo"
 	"os"
 	"sync"
 )
@@ -26,7 +26,7 @@ import (
 func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) (*file_server.DeleteFileData, error) {
 	data := file_server.NewDeleteFileData()
 	//1. 根据id查询所有待删除的文件信息
-	fileList, err := dao.QueryFileMetaList(ctx, &param.QueryFileMetaParam{IdList: req.GetId()})
+	fileList, err := dao.QueryFileMetaList(ctx, &pojo.QueryFileMetaParam{IdList: req.GetId()})
 	if err != nil {
 		klog.CtxErrorf(ctx, "service.ProcessDeleteFile -> dao.QueryFileMetaList error: %v", err)
 		data.SetStatus(thrift.Int8Ptr(enum.OperateFileStatusFailed))
@@ -73,7 +73,7 @@ func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) 
 		}(path)
 	}
 	qry := query.Use(mysql.DB())
-	if err := dao.DeleteFile(ctx, qry, &param.EditFileMetaParam{IdList: dropFileIds}); err != nil {
+	if err := dao.DeleteFile(ctx, qry, &pojo.EditFileMetaParam{IdList: dropFileIds}); err != nil {
 		for _, id := range dropFileIds {
 			failed.Put(id, &file_server.OperateFileRes{Id: id, Msg: "文件删除失败, " + err.Error()})
 		}
@@ -94,7 +94,7 @@ func ProcessDeleteFile(ctx context.Context, req *file_server.DeleteFileRequest) 
 
 func decreaseFileRefNum(ctx context.Context, fileIds []int64) error {
 	qry := query.Use(mysql.DB())
-	return dao.ModifyFileRef(ctx, qry, &param.EditFileMetaParam{
+	return dao.ModifyFileRef(ctx, qry, &pojo.EditFileMetaParam{
 		IdList:   fileIds,
 		RefDealt: int64(-1),
 	})

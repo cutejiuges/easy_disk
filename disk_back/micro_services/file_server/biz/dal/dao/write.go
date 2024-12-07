@@ -6,7 +6,7 @@ import (
 	errno2 "github.com/cutejiuges/disk_back/internal/errno"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo"
 )
 
 /**
@@ -46,7 +46,7 @@ func CreateFilesInBatch(ctx context.Context, q *query.Query, fileList []*model.F
 	return dao.CreateInBatches(fileMetaList, batchSize)
 }
 
-func DeleteFile(ctx context.Context, q *query.Query, params *param.EditFileMetaParam) error {
+func DeleteFile(ctx context.Context, q *query.Query, params *pojo.EditFileMetaParam) error {
 	if params.ID <= 0 && params.FileKey == "" && len(params.IdList) <= 0 {
 		return nil
 	}
@@ -65,7 +65,7 @@ func DeleteFile(ctx context.Context, q *query.Query, params *param.EditFileMetaP
 	return err
 }
 
-func ModifyFileRef(ctx context.Context, q *query.Query, param *param.EditFileMetaParam) error {
+func ModifyFileRef(ctx context.Context, q *query.Query, param *pojo.EditFileMetaParam) error {
 	if len(param.IdList) <= 0 {
 		return &errno2.BizError{
 			Code: errno2.ErrCodeDbUnknownError,
