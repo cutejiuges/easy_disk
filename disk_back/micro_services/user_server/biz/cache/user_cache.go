@@ -22,6 +22,11 @@ func GenVerifyCodeKey(email string) string {
 // SaveVerifyCode 存储用户验证码
 func SaveVerifyCode(email string, code int64) error {
 	key := GenVerifyCodeKey(email)
-	err := redis.DB().SetEx(context.Background(), key, code, time.Second*60).Err()
-	return err
+	return redis.DB().SetEx(context.Background(), key, code, time.Second*60).Err()
+}
+
+// GetVerifyCode 获取用户验证码
+func GetVerifyCode(email string) (int64, error) {
+	key := GenVerifyCodeKey(email)
+	return redis.DB().Get(context.Background(), key).Int64()
 }
