@@ -20,13 +20,13 @@ func GenVerifyCodeKey(email string) string {
 }
 
 // SaveVerifyCode 存储用户验证码
-func SaveVerifyCode(email string, code int64) error {
+func SaveVerifyCode(ctx context.Context, email string, code int64) error {
 	key := GenVerifyCodeKey(email)
-	return redis.DB().SetEx(context.Background(), key, code, time.Second*60).Err()
+	return redis.DB().SetEx(ctx, key, code, time.Second*60).Err()
 }
 
 // GetVerifyCode 获取用户验证码
-func GetVerifyCode(email string) (int64, error) {
+func GetVerifyCode(ctx context.Context, email string) (int64, error) {
 	key := GenVerifyCodeKey(email)
-	return redis.DB().Get(context.Background(), key).Int64()
+	return redis.DB().Get(ctx, key).Int64()
 }

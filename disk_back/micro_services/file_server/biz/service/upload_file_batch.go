@@ -13,8 +13,7 @@ import (
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/bo"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo"
 	"os"
 	"sync"
 )
@@ -109,9 +108,9 @@ func writeFileEntity(path string, content []byte) error {
 }
 
 // 根据key在mysql中查询文件是否上传过
-func fileExistInDB(ctx context.Context, fileKey string) (bo.SimpleFile, bool) {
-	simpleFile := bo.SimpleFile{}
-	f, err := dao.QuerySingleFileMeta(ctx, &param.QueryFileMetaParam{
+func fileExistInDB(ctx context.Context, fileKey string) (pojo.SimpleFile, bool) {
+	simpleFile := pojo.SimpleFile{}
+	f, err := dao.QuerySingleFileMeta(ctx, &pojo.QueryFileMetaParam{
 		FileKey: fileKey,
 	})
 	if err != nil {
@@ -125,8 +124,8 @@ func fileExistInDB(ctx context.Context, fileKey string) (bo.SimpleFile, bool) {
 }
 
 // 执行文件保存动作
-func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile bo.SimpleFile, err error) {
-	simpleFile = bo.SimpleFile{ID: 0, Msg: "文件上传失败"}
+func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile pojo.SimpleFile, err error) {
+	simpleFile = pojo.SimpleFile{ID: 0, Msg: "文件上传失败"}
 	//对未上传的文件执行文件写入
 	id, err := cache.GetNextUniqID(ctx)
 	if err != nil {
@@ -168,7 +167,7 @@ func saveFileInfo(ctx context.Context, path string, content []byte) (simpleFile 
 
 func increaseFileRefNum(ctx context.Context, fileIds []int64) error {
 	qry := query.Use(mysql.DB())
-	return dao.ModifyFileRef(ctx, qry, &param.EditFileMetaParam{
+	return dao.ModifyFileRef(ctx, qry, &pojo.EditFileMetaParam{
 		IdList:   fileIds,
 		RefDealt: int64(1),
 	})

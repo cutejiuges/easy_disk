@@ -1,4 +1,4 @@
-package bo
+package pojo
 
 /**
  * @Author: cutejiuge cutejiuge@163.com

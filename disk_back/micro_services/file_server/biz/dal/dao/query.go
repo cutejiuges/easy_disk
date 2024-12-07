@@ -7,7 +7,7 @@ import (
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/model"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/model/query"
 	"github.com/cutejiuges/disk_back/micro_services/file_server/biz/dal/mysql"
-	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo/param"
+	"github.com/cutejiuges/disk_back/micro_services/file_server/pojo"
 )
 
 /**
@@ -17,7 +17,7 @@ import (
  * @Description: 文件元信息查询接口
  */
 
-func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (*model.FileMeta, error) {
+func QuerySingleFileMeta(ctx context.Context, param *pojo.QueryFileMetaParam) (*model.FileMeta, error) {
 	q := query.Use(mysql.DB()).FileMeta
 	dao := q.WithContext(ctx)
 	if param.ID != 0 {
@@ -30,7 +30,7 @@ func QuerySingleFileMeta(ctx context.Context, param *param.QueryFileMetaParam) (
 	return dao.First()
 }
 
-func QueryFileMetaListByPage(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
+func QueryFileMetaListByPage(ctx context.Context, param *pojo.QueryFileMetaParam) ([]*model.FileMeta, int64, error) {
 	q := query.Use(mysql.DB()).FileMeta
 	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusDeleted))
 	if len(param.IdList) > 0 {
@@ -53,7 +53,7 @@ func QueryFileMetaListByPage(ctx context.Context, param *param.QueryFileMetaPara
 	return dao.FindByPage((param.Page-1)*param.Size, param.Size)
 }
 
-func QueryFileMetaList(ctx context.Context, param *param.QueryFileMetaParam) ([]*model.FileMeta, error) {
+func QueryFileMetaList(ctx context.Context, param *pojo.QueryFileMetaParam) ([]*model.FileMeta, error) {
 	q := query.Use(mysql.DB()).FileMeta
 	dao := q.WithContext(ctx).Where(q.Status.Neq(enum.FileMetaStatusDeleted))
 	if len(param.IdList) > 0 {

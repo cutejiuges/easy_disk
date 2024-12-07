@@ -17,3 +17,9 @@ func GenerateVerifyCode() int64 {
 	r := rand.New(src)
 	return r.Int63n(900000) + 100000
 }
+
+func GenUserSuffix() int {
+	src := rand.NewSource(time.Now().Unix())
+	r := rand.New(src)
+	return r.Int()
+}

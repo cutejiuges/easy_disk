@@ -1,4 +1,4 @@
-package param
+package pojo
 
 /**
  * @Author: cutejiuge cutejiuge@163.com

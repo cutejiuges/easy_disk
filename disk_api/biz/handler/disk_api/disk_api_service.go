@@ -88,3 +88,18 @@ func GetEmailVerifyCode(ctx context.Context, c *app.RequestContext) {
 	resp, err := user_service.ProcessGetEmailVerifyCode(ctx, &req)
 	localutils.Wrapper(c, resp, err)
 }
+
+// UserSignUp .
+// @router user/signUp [POST]
+func UserSignUp(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user_server.UserSignUpRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp, err := user_service.ProcessUserSignUp(ctx, &req)
+	localutils.Wrapper(c, resp, err)
+}

@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cutejiuges/disk_back/internal/errno"
+	"github.com/cutejiuges/disk_back/internal/util"
 	"github.com/cutejiuges/disk_back/kitex_gen/user_server"
 	"github.com/cutejiuges/disk_back/micro_services/user_server/biz/service"
-	"regexp"
 )
 
 /**
@@ -32,9 +32,7 @@ func NewGetEmailVerifyCodeHandler(ctx context.Context, req *user_server.GetEmail
 }
 
 func (h *GetEmailVerifyCodeHandler) checkParam() error {
-	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*` //匹配电子邮箱
-	reg := regexp.MustCompile(pattern)
-	if !reg.MatchString(h.req.GetEmail()) {
+	if !util.CheckEmail(h.req.GetEmail()) {
 		return &errno.BizError{
 			Code: errno.ErrCodeParamIllegal,
 			Msg:  "邮箱地址不合法",
