@@ -57,7 +57,6 @@ func (h *UserSignUpHandler) checkParam() error {
 	if userInfo.GetUserName() == "" {
 		userInfo.SetUserName(thrift.StringPtr(fmt.Sprintf("游客%d", util.GenUserSuffix())))
 	}
-	userInfo.SetPassword(util.GetSha256Key([]byte(userInfo.GetPassword())))
 	return nil
 }
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
@@ -65,11 +66,13 @@ func ProcessUserSignUp(ctx context.Context, req *user_server.UserSignUpRequest) 
 	}
 	//记录不存在需要注册
 	qry := query.Use(mysql.DB())
+	bytes, _ := json.Marshal(req.GetUserInfo().GetProfile())
+	profileStr := string(bytes)
 	user := &model.User{
 		UserName: req.GetUserInfo().GetUserName(),
 		Password: req.GetUserInfo().GetPassword(),
 		Email:    req.GetUserInfo().GetEmail(),
-		Profile:  req.GetUserInfo().GetProfile(),
+		Profile:  profileStr,
 		Status:   enum.UserStatusEnable,
 	}
 	err = dao.CreateUser(ctx, qry, user)
