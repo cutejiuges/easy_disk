@@ -5,11 +5,12 @@ package main
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cutejiuges/disk_api/biz/handler"
+	"github.com/cutejiuges/disk_api/mw"
 )
 
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {
 	r.GET("/ping", handler.Ping)
 
-	// your code ...
+	r.POST("/login", mw.JwtMiddleware.LoginHandler)
 }
