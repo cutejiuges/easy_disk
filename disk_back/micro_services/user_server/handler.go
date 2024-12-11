@@ -18,3 +18,9 @@ func (s *UserServiceImpl) UserSignUp(ctx context.Context, req *user_server.UserS
 func (s *UserServiceImpl) GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest) (resp *user_server.GetEmailVerifyCodeResponse, err error) {
 	return handler.NewGetEmailVerifyCodeHandler(ctx, req).Handle()
 }
+
+// UserSignIn implements the UserServiceImpl interface.
+func (s *UserServiceImpl) UserSignIn(ctx context.Context, req *user_server.UserSignInRequest) (resp *user_server.UserSignInResponse, err error) {
+	// TODO: Your code here...
+	return
+}

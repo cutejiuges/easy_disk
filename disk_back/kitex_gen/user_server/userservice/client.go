@@ -13,6 +13,7 @@ import (
 type Client interface {
 	GetEmailVerifyCode(ctx context.Context, req *user_server.GetEmailVerifyCodeRequest, callOptions ...callopt.Option) (r *user_server.GetEmailVerifyCodeResponse, err error)
 	UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest, callOptions ...callopt.Option) (r *user_server.UserSignUpResponse, err error)
+	UserSignIn(ctx context.Context, req *user_server.UserSignInRequest, callOptions ...callopt.Option) (r *user_server.UserSignInResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -52,4 +53,9 @@ func (p *kUserServiceClient) GetEmailVerifyCode(ctx context.Context, req *user_s
 func (p *kUserServiceClient) UserSignUp(ctx context.Context, req *user_server.UserSignUpRequest, callOptions ...callopt.Option) (r *user_server.UserSignUpResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UserSignUp(ctx, req)
+}
+
+func (p *kUserServiceClient) UserSignIn(ctx context.Context, req *user_server.UserSignInRequest, callOptions ...callopt.Option) (r *user_server.UserSignInResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UserSignIn(ctx, req)
 }

@@ -27,6 +27,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"UserSignIn": kitex.NewMethodInfo(
+		userSignInHandler,
+		newUserServiceUserSignInArgs,
+		newUserServiceUserSignInResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -129,6 +136,24 @@ func newUserServiceUserSignUpResult() interface{} {
 	return user_server.NewUserServiceUserSignUpResult()
 }
 
+func userSignInHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user_server.UserServiceUserSignInArgs)
+	realResult := result.(*user_server.UserServiceUserSignInResult)
+	success, err := handler.(user_server.UserService).UserSignIn(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUserSignInArgs() interface{} {
+	return user_server.NewUserServiceUserSignInArgs()
+}
+
+func newUserServiceUserSignInResult() interface{} {
+	return user_server.NewUserServiceUserSignInResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -154,6 +179,16 @@ func (p *kClient) UserSignUp(ctx context.Context, req *user_server.UserSignUpReq
 	_args.Req = req
 	var _result user_server.UserServiceUserSignUpResult
 	if err = p.c.Call(ctx, "UserSignUp", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UserSignIn(ctx context.Context, req *user_server.UserSignInRequest) (r *user_server.UserSignInResponse, err error) {
+	var _args user_server.UserServiceUserSignInArgs
+	_args.Req = req
+	var _result user_server.UserServiceUserSignInResult
+	if err = p.c.Call(ctx, "UserSignIn", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
